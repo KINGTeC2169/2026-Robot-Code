@@ -10,6 +10,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.spark.config.SparkMaxConfig;
 //import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.ctre.phoenix6.controls.VelocityVoltage;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.MathUtil;
@@ -26,23 +27,25 @@ import frc.robot.Constants;
 
 
 public class Indexer extends SubsystemBase{
-    private TalonFX toBackMotor; //i need to look at the CAD tp see if these are okish names
+    private TalonFX toBackMotor; 
     private TalonFX toSideMotor;
-    private TalonFX toFlyMotor;
-
+    private TalonFX preShootMotor; //this one is probably supposed to be different than the other 2 but i just did it the same for now
+    
+    private VelocityVoltage indexVelocity = new VelocityVoltage(0);
+    private double speed;
     public Indexer(){
 
         var talonFXConfigs = new TalonFXConfiguration(); //idk what this actually does
 
-        var slot0Configs = talonFXConfigs.Slot0; //again idk what this does but in last years code it appears too be setting up the kracken
+        var slot0Configs = talonFXConfigs.Slot0; //again idk what this does but in last years code it appears too be setting up the kraken
         slot0Configs.kP = 0.01;
 
         toBackMotor.getConfigurator().apply(talonFXConfigs);
         toBackMotor.setNeutralMode(NeutralModeValue.Brake);
         toSideMotor.getConfigurator().apply(talonFXConfigs);
         toSideMotor.setNeutralMode(NeutralModeValue.Brake);
-        toFlyMotor.getConfigurator().apply(talonFXConfigs);
-        toFlyMotor.setNeutralMode(NeutralModeValue.Brake);
+        preShootMotor.getConfigurator().apply(talonFXConfigs);
+        preShootMotor.setNeutralMode(NeutralModeValue.Brake);
     }
 
     public TalonFX getToBackMotor(){
@@ -54,6 +57,36 @@ public class Indexer extends SubsystemBase{
     }
 
     public TalonFX getToFlyMotor(){
-        return toFlyMotor;
+        return preShootMotor;
+    }
+
+    public void setVoltageMotors(double volts){
+        toBackMotor.setVoltage(volts);
+        toSideMotor.setVoltage(volts);
+        preShootMotor.setVoltage(volts);
+    }
+    public void setSpeed(double rpm){
+        speed = rpm;
+    }   
+
+    public double getSpeed(){//should probably make seperate ones for the different motors
+        //return speed;
+        return 60 * toBackMotor.getRotorVelocity().getValueAsDouble();
+    }
+    public void Spin(){
+        indexVelocity.withVelocity(speed/60);
+        toBackMotor.setControl(indexVelocity);
+        toSideMotor.setControl(indexVelocity);
+        preShootMotor.setControl(indexVelocity);
+
+        
+    }
+
+    @Override //again i dont realy know what this does but there was onein my ftc code to so like it makes a little sense
+    public void periodic(){
+        Spin();
+
+        SmartDashboard.putNumber("Indexer speed", getSpeed());
+
     }
 }
