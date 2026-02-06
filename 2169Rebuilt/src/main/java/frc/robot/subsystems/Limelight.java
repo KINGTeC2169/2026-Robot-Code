@@ -3,13 +3,12 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Constants;
 import frc.robot.Constants.Vision;
 import Util.LimelightHelpers;
 
 public class Limelight {
 
-    private static String hoodName = Constants.Vision.hoodLimelightName;
+    private static String hoodName = Vision.hoodLimelightName;
   
     public Limelight(){
         SmartDashboard.putNumber("tx", getTx());
@@ -39,13 +38,13 @@ public class Limelight {
         Alliance color = DriverStation.getAlliance().get();
         
         if(color == Alliance.Red){
-            for(double tag : Constants.Vision.redHubTags){
+            for(double tag : Vision.redHubTags){
                 if(id == tag) return true;
             }
         }
         
         if (color == Alliance.Blue) {
-            for(double tag : Constants.Vision.blueHubTags){
+            for(double tag : Vision.blueHubTags){
                 if(id == tag) return true;
             }
         
