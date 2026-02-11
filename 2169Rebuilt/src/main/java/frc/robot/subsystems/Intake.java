@@ -40,6 +40,7 @@ public class Intake extends SubsystemBase{
     }
 
     // Set the position for the pivot to move to
+    // idk if this function is really needed, but it might be useful *shrug*
     public void setPivotPosition(double position){
         position = MathUtil.clamp(position, pivotMinHeight, pivotMaxHeight);
 
@@ -61,6 +62,18 @@ public class Intake extends SubsystemBase{
     // Return the position of the pivot motor
     public double getPosition(){
         return encoder.get();
+    }
+
+    //  MISC functions
+
+    // lower the intake to the grab position
+    public void lowerIntake(){
+        setVoltagePivot(pivotPID.calculate(getPosition(), IntakeConstants.pivotMinHeight));
+    }
+    
+    // raise the intake to the raised position
+    public void raiseIntake(){
+        setVoltagePivot(pivotPID.calculate(getPosition(), IntakeConstants.pivotMaxHeight));
     }
 
     @Override
