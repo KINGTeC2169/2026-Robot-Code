@@ -3,7 +3,10 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.controls.VelocityDutyCycle;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.units.measure.Velocity;
+import frc.robot.Constants.ShooterConstants;
+import frc.robot.Constants.TurretConstants;
 
 public class Shooter {
 
@@ -13,6 +16,9 @@ public class Shooter {
 
     private VelocityDutyCycle flywheelControl;
 
+    PIDController turretPID = new PIDController(TurretConstants.kp, TurretConstants.ki, TurretConstants.kd);
+    PIDController flywheelPID = new PIDController(ShooterConstants.kp, ShooterConstants.ki, ShooterConstants.kd);
+
     private double targetRPM;
 
 
@@ -21,7 +27,6 @@ public class Shooter {
     /*turret constants:
     degree variable for end of turret rotation
     */
-
 
     /*turret variables:
     degree variable for end of turret rotation
@@ -61,20 +66,18 @@ public class Shooter {
         return flywheelRight.getSupplyCurrent().getValueAsDouble();
     }
 
+    //sets the shooter to 
     public void setFlywheelRPM(double rpm) {
-        /*flywheelControl = new VelocityDutyCycle(rpm / 6000.0); // Assuming max RPM is 6000
+        flywheelControl = new VelocityDutyCycle(rpm / 6000.0); 
         flywheelLeft.setControl(flywheelControl);
         flywheelRight.setControl(flywheelControl);
-        */
     }
 
     public boolean isReady() {
         double leftRPM = getLeftRPM();
         double rightRPM = getRightRPM();
-        double tolerance = 15; // RPM tolerance
-
-        boolean equalSpeed = Math.abs(leftRPM - targetRPM) <= tolerance && Math.abs(rightRPM - targetRPM) <= tolerance;
-        boolean atTarget = Math.abs(getLeftRPM() - targetRPM) <= tolerance && Math.abs(getRightRPM() - targetRPM) <= tolerance;
+        boolean equalSpeed = Math.abs(leftRPM - targetRPM) <= ShooterConstants.flyTolerance && Math.abs(rightRPM - targetRPM) <= ShooterConstants.flyTolerance;
+        boolean atTarget = Math.abs(getLeftRPM() - targetRPM) <= ShooterConstants.flyTolerance && Math.abs(getRightRPM() - targetRPM) <= ShooterConstants.flyTolerance;
         return equalSpeed && atTarget;
     }
 
@@ -86,5 +89,7 @@ public class Shooter {
          * the safest way to do this quickly, so i will wait a 
          * little while to see some ideas for the turret model.
          */
+
+         
     }
 }
