@@ -1,14 +1,16 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.MathUtil;
 import com.ctre.phoenix6.controls.VelocityDutyCycle;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.units.measure.Velocity;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.TurretConstants;
 
-public class Shooter {
+public class Shooter extends SubsystemBase{
 
     private TalonFX turret;
     private TalonFX flywheelLeft;
@@ -47,8 +49,8 @@ public class Shooter {
 
     public void setTargetRPM(double rpm) {
         targetRPM = rpm;
+        //actually need the math from vision for this
     }
-
 
     public double getLeftRPM() {
         return 60 * flywheelLeft.getRotorVelocity().getValueAsDouble();
@@ -67,10 +69,22 @@ public class Shooter {
     }
 
     //sets the shooter to 
-    public void setFlywheelRPM(double rpm) {
-        flywheelControl = new VelocityDutyCycle(rpm / 6000.0); 
+    public void setFlywheelRPM(double targetRPM) {
+        /*flywheelControl = new VelocityDutyCycle(rpm / 6000.0); 
         flywheelLeft.setControl(flywheelControl);
         flywheelRight.setControl(flywheelControl);
+        */
+
+        targetRPM = MathUtil.clamp(targetRPM, 0, 6000); //clamping to max RPM of the motors
+        if(targetRPM > 0) {
+            double leftOutput = flywheelPID.calculate(getLeftRPM(), targetRPM);
+            double rightOutput = flywheelPID.calculate(getRightRPM(), targetRPM);
+            flywheelLeft.setControl(new VelocityDutyCycle(leftOutput / 6000.0));
+            flywheelRight.setControl(new VelocityDutyCycle(rightOutput / 6000.0));
+        } else {
+            flywheelLeft.setControl(new VelocityDutyCycle(0));
+            flywheelRight.setControl(new VelocityDutyCycle(0));
+        }
     }
 
     public boolean isReady() {
@@ -81,6 +95,8 @@ public class Shooter {
         return equalSpeed && atTarget;
     }
 
+
+    //not using this until vision phew
     public void whipTurret() {
         /*
          * need to find the most inoffensive way to quickly spin
@@ -89,7 +105,11 @@ public class Shooter {
          * the safest way to do this quickly, so i will wait a 
          * little while to see some ideas for the turret model.
          */
+    }
+    
 
-         
+    @Override
+    public void periodic() {
+        setFlywheelRPM(targetRPM);
     }
 }

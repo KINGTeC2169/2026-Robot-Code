@@ -17,6 +17,8 @@ public final class Constants {
         public static double ki = 0.0; 
         public static double kd = 0.0;
 
+        public static double shootRPM = 0.0; //not actually a constant...
+
         public static final double flyTolerance = 15.0;
     }
 }
