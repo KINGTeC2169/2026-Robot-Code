@@ -7,25 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Alpha1"
+            "pathName": "Gamma1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Alpha2"
+            "pathName": "Gamma2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Alpha3"
+            "pathName": "Gamma3"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Alpha4"
+            "pathName": "Gamma4"
           }
         }
       ]

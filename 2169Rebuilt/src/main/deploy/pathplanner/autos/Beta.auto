@@ -7,25 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Alpha1"
+            "pathName": "Beta1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Alpha2"
+            "pathName": "Beta2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Alpha3"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Alpha4"
+            "pathName": "Beta3"
           }
         }
       ]
