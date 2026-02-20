@@ -2,7 +2,11 @@ package frc.robot;
 
 
 public final class Constants {
+    
     public static final class Ports{
+        //Driver station controller ids
+        public static final int leftStick = 0;
+        public static final int rightStick = 1;
         public static final int pivotMotor = 0;         // TODO: REPLACE WITH REAL MOTOR ID
         public static final int spinMotor = 0;          // TODO: REPLACE WITH REAL MOTOR ID
         public static final int intakeEncoder = 0;      // TODO: REPLACE WITH REAL ENCODER ID

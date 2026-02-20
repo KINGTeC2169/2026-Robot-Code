@@ -86,7 +86,10 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    System.out.println(m_robotContainer.leftStick.getY());
+    
+  }
 
   /** This function is called once when the robot is disabled. */
   @Override
@@ -96,26 +99,26 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
   
-  newAutoName = m_robotContainer.getAutonomousCommand().getName();
+  // newAutoName = m_robotContainer.getAutonomousCommand().getName();
 
-    if (autoName != newAutoName) {
-      autoName = newAutoName;
-      if (AutoBuilder.getAllAutoNames().contains(autoName)) {
+  //   if (autoName != newAutoName) {
+  //     autoName = newAutoName;
+  //     if (AutoBuilder.getAllAutoNames().contains(autoName)) {
           
-          try {
-            pathPlannerPaths = PathPlannerAuto.getPathGroupFromAutoFile(newAutoName);
-          } catch (Exception e) {
-            e.printStackTrace();
-            pathPlannerPaths = null;
-          }
-          List<Pose2d> poses = new ArrayList<>();
-          for (PathPlannerPath path : pathPlannerPaths) {
-              if (DriverStation.getAlliance().get() == Alliance.Red) poses.addAll(path.flipPath().getAllPathPoints().stream().map(point -> new Pose2d(point.position.getX(), point.position.getY(), new Rotation2d())).collect(Collectors.toList()));
-              else poses.addAll(path.getAllPathPoints().stream().map(point -> new Pose2d(point.position.getX(), point.position.getY(), new Rotation2d())).collect(Collectors.toList()));
-            }
-        //  m_robotContainer.logger.field.getObject("path").setPoses(poses); UNCOMMENT AFTER DRIVETRAIN TELEMTRY
-      }
-    }
+  //         try {
+  //           pathPlannerPaths = PathPlannerAuto.getPathGroupFromAutoFile(newAutoName);
+  //         } catch (Exception e) {
+  //           e.printStackTrace();
+  //           pathPlannerPaths = null;
+  //         }
+  //         List<Pose2d> poses = new ArrayList<>();
+  //         for (PathPlannerPath path : pathPlannerPaths) {
+  //             if (DriverStation.getAlliance().get() == Alliance.Red) poses.addAll(path.flipPath().getAllPathPoints().stream().map(point -> new Pose2d(point.position.getX(), point.position.getY(), new Rotation2d())).collect(Collectors.toList()));
+  //             else poses.addAll(path.getAllPathPoints().stream().map(point -> new Pose2d(point.position.getX(), point.position.getY(), new Rotation2d())).collect(Collectors.toList()));
+  //           }
+  //       //  m_robotContainer.logger.field.getObject("path").setPoses(poses); UNCOMMENT AFTER DRIVETRAIN TELEMTRY
+  //     }
+  //   }
   }  
   /** This function is called once when test mode is enabled. */
   @Override
