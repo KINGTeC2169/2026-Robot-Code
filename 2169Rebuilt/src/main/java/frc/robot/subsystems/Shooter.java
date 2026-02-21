@@ -96,8 +96,11 @@ public class Shooter extends SubsystemBase{
     }
 
     public void stopFlywheel(){
-        flywheelLeft.setControl(new VelocityDutyCycle(0));
-        flywheelRight.setControl(new VelocityDutyCycle(0));
+        //flywheelLeft.setControl(new VelocityDutyCycle(0));
+        //flywheelRight.setControl(new VelocityDutyCycle(0));
+
+        flywheelLeft.setVoltage(0);
+        flywheelRight.setVoltage(0);
     }
 
     //not using this until vision phew
