@@ -3,6 +3,7 @@ package frc.robot;
 import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -15,9 +16,19 @@ import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 
 public class RobotContainer {
-    private double speed = 0.5;
+
+  public final Shooter shooter = new Shooter();
+  public final Intake intake = new Intake();
+  public final Indexer indexer = new Indexer();
+
+
+  public SendableChooser<Command> autoChooser;  
+  private double speed = 0.5;
     private double MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
@@ -30,11 +41,11 @@ public class RobotContainer {
     private final SwerveRequest.RobotCentric forwardStraight = new SwerveRequest.RobotCentric()
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
-    private final Telemetry logger = new Telemetry(MaxSpeed);
+    final Telemetry logger = new Telemetry(MaxSpeed);
 
-    //private final CommandXboxController joystick = new CommandXboxController(0);
+    private final CommandXboxController m_driveController = new CommandXboxController(0);
 
-     public final Joystick leftStick = new Joystick(Constants.Ports.leftStick);
+    public final Joystick leftStick = new Joystick(Constants.Ports.leftStick);
   public final JoystickButton topLeftButton = new JoystickButton(leftStick, 1);
   public final JoystickButton bottomLeftButton = new JoystickButton(leftStick, 2);
 
@@ -48,7 +59,7 @@ public class RobotContainer {
     public RobotContainer() {
 
         //drivetrain = TunerConstants.createDrivetrain();
-
+        autoChooser = AutoBuilder.buildAutoChooser();
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
@@ -95,6 +106,6 @@ public class RobotContainer {
 
     public Command getAutonomousCommand() {
     //An example command will be run in autonomous
-    return null; //autoChooser.getSelected();
+    return autoChooser.getSelected(); //autoChooser.getSelected();
  }
 }
