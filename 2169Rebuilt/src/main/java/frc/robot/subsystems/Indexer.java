@@ -95,6 +95,16 @@ public class Indexer extends SubsystemBase{
         preShootMotor.setControl(indexVelocity);
     }
 
+    public void StopIndexer(){
+        toBackMotor.stopMotor();
+        toSideMotor.stopMotor();
+    }
+
+    public void StopPreShoot(){
+         preShootMotor.stopMotor();
+    }
+
+
     @Override //again i dont realy know what this does but there was onein my ftc code to so like it makes a little sense
     public void periodic(){
         SpinIndexer();
