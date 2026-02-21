@@ -7,6 +7,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.units.measure.Velocity;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.Ports;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.TurretConstants;
 
@@ -43,8 +44,8 @@ public class Shooter extends SubsystemBase{
     //Constructor for the three shooter motors
     public Shooter() {
         turret = new TalonFX(0);
-        flywheelLeft = new TalonFX(1);
-        flywheelRight = new TalonFX(2);
+        flywheelLeft = new TalonFX(Ports.leftFly);
+        flywheelRight = new TalonFX(Ports.rightFly);
     }
 
     public void setTargetRPM(double rpm) {
@@ -75,7 +76,8 @@ public class Shooter extends SubsystemBase{
         flywheelRight.setControl(flywheelControl);
         */
 
-        targetRPM = MathUtil.clamp(targetRPM, 0, 6000); //clamping to max RPM of the motors
+        //targetRPM = MathUtil.clamp(targetRPM, 0, 6000); //clamping to max RPM of the motors
+        /* 
         if(targetRPM > 0) {
             double leftOutput = flywheelPID.calculate(getLeftRPM(), targetRPM);
             double rightOutput = flywheelPID.calculate(getRightRPM(), targetRPM);
@@ -85,13 +87,17 @@ public class Shooter extends SubsystemBase{
             flywheelLeft.setControl(new VelocityDutyCycle(0));
             flywheelRight.setControl(new VelocityDutyCycle(0));
         }
+        */
+
+        flywheelLeft.setVoltage(-targetRPM / 6000 * 12);
+        flywheelRight.setVoltage(targetRPM / 6000 * 12);
     }
 
     public boolean isReady() {
-        double leftRPM = getLeftRPM();
-        double rightRPM = getRightRPM();
-        boolean equalSpeed = Math.abs(leftRPM - targetRPM) <= ShooterConstants.flyTolerance && Math.abs(rightRPM - targetRPM) <= ShooterConstants.flyTolerance;
-        boolean atTarget = Math.abs(getLeftRPM() - targetRPM) <= ShooterConstants.flyTolerance && Math.abs(getRightRPM() - targetRPM) <= ShooterConstants.flyTolerance;
+        double leftRPM = Math.abs(getLeftRPM());
+        double rightRPM = Math.abs(getRightRPM());
+        boolean equalSpeed = Math.abs(leftRPM - rightRPM) <= ShooterConstants.flyTolerance;
+        boolean atTarget = Math.abs(leftRPM - targetRPM) <= ShooterConstants.flyTolerance && Math.abs(rightRPM - targetRPM) <= ShooterConstants.flyTolerance;
         return equalSpeed && atTarget;
     }
 

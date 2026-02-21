@@ -42,12 +42,13 @@ public class Shoot extends Command{
     @Override
     public void end(boolean interrupted){
         shooter.stopFlywheel();
+        shooter.setTargetRPM(0);
         //index.StopPreShoot();
     }
 
     @Override
     public boolean isFinished(){
-        if(num == 200){
+        if(num >= 200){
             return true;
         }        return false;
     }

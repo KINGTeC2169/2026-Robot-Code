@@ -8,6 +8,10 @@ public final class Constants {
         public static final int leftStick = 0;
         public static final int rightStick = 1;
         public static final int controller = 2;
+        public static final int leftFly = 11;
+        public static final int rightFly = 14;
+        public static final int toBackMotor = 0;        // TODO: REPLACE WITH REAL MOTOR ID
+        public static final int toFrontMotor = 0;       // TODO: REPLACE WITH REAL MOTOR ID
         public static final int pivotMotor = 0;         // TODO: REPLACE WITH REAL MOTOR ID
         public static final int spinMotor = 13;          // TODO: REPLACE WITH REAL MOTOR ID
         public static final int intakeEncoder = 0;      // TODO: REPLACE WITH REAL ENCODER ID
@@ -38,8 +42,8 @@ public final class Constants {
         public static double ki = 0.0; 
         public static double kd = 0.0;
 
-        public static double shootRPM = 0.0; //not actually a constant...
+        //public static double shootRPM = 0.0; //not actually a constant...
 
-        public static final double flyTolerance = 15.0;
+        public static final double flyTolerance = 50.0;
     }
 }

@@ -19,7 +19,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.Constants.Ports;
 //import frc.robot.Constants.IntakeConstants;
 
 //I copied and pasted all of the imports from last years code and commented out the stuff with errors so hopefully thats right?
@@ -36,19 +36,25 @@ public class Indexer extends SubsystemBase{
     private double preShootSpeed;
     public Indexer(){
 
-        var talonFXConfigs = new TalonFXConfiguration(); //idk what this actually does
+        toBackMotor = new TalonFX(Ports.toBackMotor);
+        toSideMotor = new TalonFX(Ports.toFrontMotor);
 
-        var slot0Configs = talonFXConfigs.Slot0; //again idk what this does but in last years code it appears too be setting up the kraken
-        slot0Configs.kP = 0.01;
+        //var talonFXConfigs = new TalonFXConfiguration(); //idk what this actually does
 
+        //var slot0Configs = talonFXConfigs.Slot0; //again idk what this does but in last years code it appears too be setting up the kraken
+        //slot0Configs.kP = 0.01;
+
+        /* 
         toBackMotor.getConfigurator().apply(talonFXConfigs);
         toBackMotor.setNeutralMode(NeutralModeValue.Brake);
         toSideMotor.getConfigurator().apply(talonFXConfigs);
         toSideMotor.setNeutralMode(NeutralModeValue.Brake);
         preShootMotor.getConfigurator().apply(talonFXConfigs);
         preShootMotor.setNeutralMode(NeutralModeValue.Brake);
+        */
     }
 
+    /* 
     public TalonFX getToBackMotor(){
         return toBackMotor;
     }
@@ -60,6 +66,7 @@ public class Indexer extends SubsystemBase{
     public TalonFX getPreShootMotor(){
         return preShootMotor;
     }
+    */
 
     public void setVoltageMotors(double volts){
         toBackMotor.setVoltage(volts);
