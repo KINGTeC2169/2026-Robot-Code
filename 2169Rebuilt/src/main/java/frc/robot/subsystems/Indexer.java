@@ -33,6 +33,7 @@ public class Indexer extends SubsystemBase{
     
     private VelocityVoltage indexVelocity = new VelocityVoltage(0);
     private double speed;
+    private double preShootSpeed;
     public Indexer(){
 
         var talonFXConfigs = new TalonFXConfiguration(); //idk what this actually does
@@ -67,7 +68,15 @@ public class Indexer extends SubsystemBase{
     }
     public void setSpeed(double rpm){
         speed = rpm;
-    }   
+    }
+    
+    public void setPreShootSpeed(double rpm){
+        preShootSpeed = rpm;
+    }
+
+    public double getPreShootSpeed(){
+        return 60 * preShootMotor.getRotorVelocity().getValueAsDouble();
+    }
 
     public double getSpeed(){//should probably make seperate ones for the different motors
         //return speed;
@@ -77,14 +86,24 @@ public class Indexer extends SubsystemBase{
         indexVelocity.withVelocity(speed/60);
         toBackMotor.setControl(indexVelocity);
         toSideMotor.setControl(indexVelocity);
-        preShootMotor.setControl(indexVelocity);
+        
         
     }
 
-    public void SpinPreShooter(double preShootSpeed){
+    public void SpinPreShooter(){
         indexVelocity.withVelocity(preShootSpeed/60);
         preShootMotor.setControl(indexVelocity);
     }
+
+    public void StopIndexer(){
+        toBackMotor.stopMotor();
+        toSideMotor.stopMotor();
+    }
+
+    public void StopPreShoot(){
+         preShootMotor.stopMotor();
+    }
+
 
     @Override //again i dont realy know what this does but there was onein my ftc code to so like it makes a little sense
     public void periodic(){
