@@ -56,7 +56,7 @@ public class Indexer extends SubsystemBase{
         return toSideMotor;
     }
 
-    public TalonFX getPreShootMotor(){
+    public TalonFX getToFlyMotor(){
         return preShootMotor;
     }
 
@@ -73,22 +73,18 @@ public class Indexer extends SubsystemBase{
         //return speed;
         return 60 * toBackMotor.getRotorVelocity().getValueAsDouble();
     }
-    public void SpinIndexer(){
+    public void Spin(){
         indexVelocity.withVelocity(speed/60);
         toBackMotor.setControl(indexVelocity);
         toSideMotor.setControl(indexVelocity);
         preShootMotor.setControl(indexVelocity);
-        
-    }
 
-    public void SpinPreShooter(double preShootSpeed){
-        indexVelocity.withVelocity(preShootSpeed/60);
-        preShootMotor.setControl(indexVelocity);
+        
     }
 
     @Override //again i dont realy know what this does but there was onein my ftc code to so like it makes a little sense
     public void periodic(){
-        SpinIndexer();
+        Spin();
 
         SmartDashboard.putNumber("Indexer speed", getSpeed());
 
