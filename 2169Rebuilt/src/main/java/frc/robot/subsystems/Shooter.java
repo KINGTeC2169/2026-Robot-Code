@@ -95,6 +95,11 @@ public class Shooter extends SubsystemBase{
         return equalSpeed && atTarget;
     }
 
+    public void stopFlywheel() {
+        flywheelLeft.setControl(new VelocityDutyCycle(0));
+        flywheelRight.setControl(new VelocityDutyCycle(0));
+    }
+
 
     //not using this until vision phew
     public void whipTurret() {
