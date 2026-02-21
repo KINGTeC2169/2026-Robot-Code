@@ -7,6 +7,7 @@ public final class Constants {
         //Driver station controller ids
         public static final int leftStick = 0;
         public static final int rightStick = 1;
+        public static final int controller = 2;
         public static final int pivotMotor = 11;         // TODO: REPLACE WITH REAL MOTOR ID
         public static final int spinMotor = 12;          // TODO: REPLACE WITH REAL MOTOR ID
         public static final int intakeEncoder = 13;      // TODO: REPLACE WITH REAL ENCODER ID

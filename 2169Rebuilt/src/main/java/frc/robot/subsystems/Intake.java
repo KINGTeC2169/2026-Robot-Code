@@ -76,6 +76,11 @@ public class Intake extends SubsystemBase{
         setVoltagePivot(pivotPID.calculate(getPosition(), IntakeConstants.pivotMaxHeight));
     }
 
+    // stop the intake from spinning
+    public void stopIntake(){
+        setVoltageSpin(0);
+    }
+
     @Override
     public void periodic(){
         SmartDashboard.putNumber("Pivot Velocity", getVelocityPivot());

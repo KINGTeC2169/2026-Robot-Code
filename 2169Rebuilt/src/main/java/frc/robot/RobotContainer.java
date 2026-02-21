@@ -4,6 +4,7 @@ import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
+import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Joystick;
@@ -16,7 +17,19 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Indexer;
+
+import frc.robot.commands.IntakeBall;
+import frc.robot.commands.StopIntake;
+
 public class RobotContainer {
+
+    private Intake intake = new Intake();
+    private Shooter shooter = new Shooter();
+    private Indexer indexer = new Indexer();
+
     private double speed = 0.5;
     private double dif = 0.0; 
     private double MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -31,7 +44,7 @@ public class RobotContainer {
 
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
-    //private final CommandXboxController joystick = new CommandXboxController(0);
+    private final CommandXboxController operatorControl = new CommandXboxController(Constants.Ports.controller);
 
      public final Joystick leftStick = new Joystick(Constants.Ports.leftStick);
   public final JoystickButton topLeftButton = new JoystickButton(leftStick, 1);
@@ -46,7 +59,9 @@ public class RobotContainer {
 
     public RobotContainer() {
 
-        //drivetrain = TunerConstants.createDrivetrain();
+        NamedCommands.registerCommand("Intake", new IntakeBall(intake, indexer));
+
+        //drivetrain = TunerConstants.createDrivetrain(); idk why this was here if it drives  and is called above
 
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
@@ -66,6 +81,18 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
+
+        /*
+        sticks to aim and turn
+        rt for shoot
+        a for intake
+         */
+
+
+        operatorControl.a().onTrue(new IntakeBall(intake, indexer)); 
+        operatorControl.b().onTrue(new StopIntake(intake, indexer));
+
+
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
        
