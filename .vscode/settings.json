@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
   "java.configuration.updateBuildConfiguration": "automatic",
   "java.server.launchMode": "Standard",
   "files.exclude": {
@@ -60,7 +59,3 @@
   ],
   "java.dependency.enableDependencyCheckup": false
 }
-=======
-    "java.configuration.updateBuildConfiguration": "interactive"
-}
->>>>>>> origin/Shootertestingstuff
