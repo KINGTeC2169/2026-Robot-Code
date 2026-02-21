@@ -9,12 +9,14 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Shooter;
 
 public class RobotContainer {
     private double speed = 0.5;
@@ -43,7 +45,12 @@ public class RobotContainer {
   private final JoystickButton topRightButton = new JoystickButton(rightStick, 1);
   public final JoystickButton bottomRightButton = new JoystickButton(rightStick, 2);
 
+    public final CommandXboxController buttonBoard = new CommandXboxController(Constants.Ports.buttons);
+    private final CommandXboxController m_driverController = new CommandXboxController(Constants.Ports.controller);
+
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+
+    public final Shooter shooter = new Shooter();
 
     public RobotContainer() {
 
@@ -84,6 +91,11 @@ public class RobotContainer {
         //Reset orientation
         topRightButton.onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
+        buttonBoard.button(4).whileTrue(Commands.run(() -> shooter.setTurretVoltage(0.1 * 12), shooter));
+        buttonBoard.button(3).whileTrue(Commands.run(() -> shooter.setTurretVoltage(-0.1 * 12), shooter));
+        
+        m_driverController.x().whileTrue(Commands.run(() -> shooter.setTurretVoltage(0.1 * 12), shooter));
+        m_driverController.b().whileTrue(Commands.run(() -> shooter.setTurretVoltage(-0.1 * 12), shooter));
         // Reset the field-centric heading on left bumper press.
         //joystick.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 

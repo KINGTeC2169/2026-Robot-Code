@@ -87,6 +87,10 @@ public class Shooter extends SubsystemBase{
         }
     }
 
+    public void setTurretVoltage(double volts) {
+        turret.setVoltage(volts);
+    }
+
     public boolean isReady() {
         double leftRPM = getLeftRPM();
         double rightRPM = getRightRPM();
