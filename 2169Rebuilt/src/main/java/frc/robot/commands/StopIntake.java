@@ -19,7 +19,7 @@ public class StopIntake extends Command {
     @Override
     public void initialize(){
         intake.stopIntake();  
-        intake.raiseIntake();
+        //intake.raiseIntake();
         //stop indexer
     }
 
@@ -31,7 +31,7 @@ public class StopIntake extends Command {
     public void end(boolean interrupted){
         //not super necessary i think
         intake.setVoltageSpin(0);
-        intake.raiseIntake();
+        //intake.raiseIntake();
     }
 
     @Override

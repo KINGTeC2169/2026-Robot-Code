@@ -18,7 +18,7 @@ public class IntakeBall extends Command {
 
     @Override
     public void initialize(){
-        intake.lowerIntake();  
+        //intake.lowerIntake();  
     }
 
     @Override
@@ -34,7 +34,7 @@ public class IntakeBall extends Command {
         intake.setVoltageSpin(0);
         // indexer.setVoltage(0); TODO: MAKE THIS WORK WITH INDEXER
 
-        intake.raiseIntake();
+        //intake.raiseIntake();
     }
 
     @Override
