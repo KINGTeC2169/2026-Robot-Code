@@ -69,7 +69,7 @@ public class Shooter extends SubsystemBase{
     }
 
     //sets the shooter to 
-    public void setFlywheelRPM(double targetRPM) {
+    public void setFlywheelRPM() {
         /*flywheelControl = new VelocityDutyCycle(rpm / 6000.0); 
         flywheelLeft.setControl(flywheelControl);
         flywheelRight.setControl(flywheelControl);
@@ -79,7 +79,7 @@ public class Shooter extends SubsystemBase{
         if(targetRPM > 0) {
             double leftOutput = flywheelPID.calculate(getLeftRPM(), targetRPM);
             double rightOutput = flywheelPID.calculate(getRightRPM(), targetRPM);
-            flywheelLeft.setControl(new VelocityDutyCycle(leftOutput / 6000.0));
+            flywheelLeft.setControl(new VelocityDutyCycle(-leftOutput / 6000.0));
             flywheelRight.setControl(new VelocityDutyCycle(rightOutput / 6000.0));
         } else {
             flywheelLeft.setControl(new VelocityDutyCycle(0));
@@ -96,8 +96,8 @@ public class Shooter extends SubsystemBase{
     }
 
     public void stopFlywheel(){
-        stopFlywheelLeft.setControl(new VelocityDutyCycle(0));
-        stopFlywheelRight.setControl(new VelocityDutyCycle(0));
+        flywheelLeft.setControl(new VelocityDutyCycle(0));
+        flywheelRight.setControl(new VelocityDutyCycle(0));
     }
 
     //not using this until vision phew
@@ -114,6 +114,6 @@ public class Shooter extends SubsystemBase{
 
     @Override
     public void periodic() {
-        setFlywheelRPM(targetRPM);
+        setFlywheelRPM();
     }
 }

@@ -24,6 +24,7 @@ import frc.robot.subsystems.Indexer;
 
 import frc.robot.commands.IntakeBall;
 import frc.robot.commands.StopIntake;
+import frc.robot.commands.Shoot;
 
 public class RobotContainer {
 
@@ -65,6 +66,7 @@ public class RobotContainer {
 
         NamedCommands.registerCommand("Intake", new IntakeBall(intake, indexer));
         NamedCommands.registerCommand("StopIntake", new StopIntake(intake, indexer));
+        NamedCommands.registerCommand("Shoot", new Shoot(shooter, intake, 10)); //4000 is a placeholder for the target RPM, needs to be tuned
 
         //drivetrain = TunerConstants.createDrivetrain(); idk why this was here if it drives  and is called above
         //autoChooser = AutoBuilder.buildAutoChooser();
@@ -91,6 +93,7 @@ public class RobotContainer {
 
         operatorControl.a().onTrue(new IntakeBall(intake, indexer)); 
         operatorControl.b().onTrue(new StopIntake(intake, indexer));
+        operatorControl.rightTrigger().whileTrue(new Shoot(shooter, intake, 10)); //4000 is a placeholder for the target RPM, needs to be tuned
 
 
         // Note that X is defined as forward according to WPILib convention,
