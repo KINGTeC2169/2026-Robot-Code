@@ -3,6 +3,7 @@ package frc.robot;
 import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -26,12 +27,13 @@ import frc.robot.commands.StopIntake;
 
 public class RobotContainer {
 
-    private Intake intake = new Intake();
-    private Shooter shooter = new Shooter();
-    private Indexer indexer = new Indexer();
+  public final Shooter shooter = new Shooter();
+  public final Intake intake = new Intake();
+  public final Indexer indexer = new Indexer();
 
-    private double speed = 0.5;
-    private double dif = 0.0; 
+
+  public SendableChooser<Command> autoChooser;  
+  private double speed = 0.5;
     private double MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
@@ -41,12 +43,14 @@ public class RobotContainer {
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
+    private final SwerveRequest.RobotCentric forwardStraight = new SwerveRequest.RobotCentric()
+            .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
-    private final Telemetry logger = new Telemetry(MaxSpeed);
+    final Telemetry logger = new Telemetry(MaxSpeed);
 
     private final CommandXboxController operatorControl = new CommandXboxController(Constants.Ports.controller);
 
-     public final Joystick leftStick = new Joystick(Constants.Ports.leftStick);
+    public final Joystick leftStick = new Joystick(Constants.Ports.leftStick);
   public final JoystickButton topLeftButton = new JoystickButton(leftStick, 1);
   public final JoystickButton bottomLeftButton = new JoystickButton(leftStick, 2);
 
@@ -60,22 +64,18 @@ public class RobotContainer {
     public RobotContainer() {
 
         NamedCommands.registerCommand("Intake", new IntakeBall(intake, indexer));
+        NamedCommands.registerCommand("StopIntake", new StopIntake(intake, indexer));
 
         //drivetrain = TunerConstants.createDrivetrain(); idk why this was here if it drives  and is called above
-
+        autoChooser = AutoBuilder.buildAutoChooser();
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-            drive.withVelocityX(-leftStick.getY() * MaxSpeed * speed + (dif * MaxSpeed)) // Drive forward with negative Y (forward)
+            drive.withVelocityX(-leftStick.getY() * MaxSpeed * speed) // Drive forward with negative Y (forward)
                     .withVelocityY(-leftStick.getX() * MaxSpeed * speed) // Drive left with negative X (left)
                     .withRotationalRate(rightStick.getTwist() * MaxAngularRate * speed * 2) // Drive counterclockwise with negative X (left)
                     )
         );
-
-        //Reset orientation
-        topRightButton.onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
-
-        drivetrain.registerTelemetry(logger::telemeterize);    
 
         configureBindings();
     }
@@ -103,7 +103,6 @@ public class RobotContainer {
             drivetrain.applyRequest(() -> idle).ignoringDisable(true)
         );
 
-       
         /* 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
@@ -113,17 +112,20 @@ public class RobotContainer {
         joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
         */
 
+        //Reset orientation
+        topRightButton.onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+
         // Reset the field-centric heading on left bumper press.
         //joystick.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }
 
-    public SendableChooser<Command> autoChooser;
+    //public SendableChooser<Command> autoChooser;
     //public final Telemetry logger = new Telemetry(MaxSpeed); //needs the Telemtry file
 
     public Command getAutonomousCommand() {
     //An example command will be run in autonomous
-    return null; //autoChooser.getSelected();
+    return autoChooser.getSelected(); //autoChooser.getSelected();
  }
 }
