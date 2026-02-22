@@ -48,9 +48,13 @@ public class Shoot extends Command{
 
     @Override
     public boolean isFinished(){
+        /* 
+        //4 seconds
         if(num >= 200){
             return true;
-        }        return false;
+        }        
+        */
+        return false;
     }
 
 }

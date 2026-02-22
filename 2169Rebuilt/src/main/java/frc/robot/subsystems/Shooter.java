@@ -17,7 +17,7 @@ public class Shooter extends SubsystemBase{
     private TalonFX flywheelLeft;
     private TalonFX flywheelRight;
 
-    private VelocityDutyCycle flywheelControl;
+    //private VelocityDutyCycle flywheelControl;
 
     PIDController turretPID = new PIDController(TurretConstants.kp, TurretConstants.ki, TurretConstants.kd);
     PIDController flywheelPID = new PIDController(ShooterConstants.kp, ShooterConstants.ki, ShooterConstants.kd);
@@ -61,12 +61,13 @@ public class Shooter extends SubsystemBase{
         return 60 * flywheelRight.getRotorVelocity().getValueAsDouble();
     }
 
-     public double getLeftCurrent(){
-        return flywheelLeft.getSupplyCurrent().getValueAsDouble();
+
+     public double getLeftVoltage(){
+        return flywheelLeft.getSupplyVoltage().getValueAsDouble();
     }
 
-     public double getRightCurrent(){
-        return flywheelRight.getSupplyCurrent().getValueAsDouble();
+     public double getRightVoltage(){
+        return flywheelRight.getSupplyVoltage().getValueAsDouble();
     }
 
     //sets the shooter to 
@@ -77,20 +78,20 @@ public class Shooter extends SubsystemBase{
         */
 
         //targetRPM = MathUtil.clamp(targetRPM, 0, 6000); //clamping to max RPM of the motors
-        /* 
+         
         if(targetRPM > 0) {
-            double leftOutput = flywheelPID.calculate(getLeftRPM(), targetRPM);
-            double rightOutput = flywheelPID.calculate(getRightRPM(), targetRPM);
-            flywheelLeft.setControl(new VelocityDutyCycle(-leftOutput / 6000.0));
-            flywheelRight.setControl(new VelocityDutyCycle(rightOutput / 6000.0));
+            double leftOutput = flywheelPID.calculate(getLeftVoltage(), targetRPM / 6000.0 * 12);
+            double rightOutput = flywheelPID.calculate(getRightVoltage(), targetRPM / 6000.0 * 12);
+            flywheelLeft.setVoltage(leftOutput);
+            flywheelRight.setVoltage(rightOutput);
         } else {
-            flywheelLeft.setControl(new VelocityDutyCycle(0));
-            flywheelRight.setControl(new VelocityDutyCycle(0));
+            flywheelLeft.setVoltage(0);
+            flywheelRight.setVoltage(0);
         }
-        */
+        
 
-        flywheelLeft.setVoltage(-targetRPM / 6000 * 12);
-        flywheelRight.setVoltage(targetRPM / 6000 * 12);
+        //flywheelLeft.setVoltage(-targetRPM / 6000 * 12);
+        //flywheelRight.setVoltage(targetRPM / 6000 * 12);
     }
 
     public boolean isReady() {
