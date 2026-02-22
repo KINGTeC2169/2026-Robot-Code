@@ -6,6 +6,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.units.measure.Velocity;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Ports;
 import frc.robot.Constants.ShooterConstants;
@@ -124,6 +125,7 @@ public class Shooter extends SubsystemBase{
 
     @Override
     public void periodic() {
-        setFlywheelRPM();
+        SmartDashboard.putNumber("Left Flywheel Voltage", getLeftVoltage());
+        SmartDashboard.putNumber("Right Flywheel Voltage", getRightVoltage());
     }
 }
