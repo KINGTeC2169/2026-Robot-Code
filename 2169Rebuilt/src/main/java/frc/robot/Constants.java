@@ -38,9 +38,9 @@ public final class Constants {
     }
 
     public static final class ShooterConstants {
-        public static double kp = 0.9; 
+        public static double kp = 0.1; 
         public static double ki = 0; 
-        public static double kd = 0.2;
+        public static double kd = 0;
 
         //public static double shootRPM = 0.0; //not actually a constant...
 
