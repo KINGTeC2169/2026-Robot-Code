@@ -34,7 +34,7 @@ public class RobotContainer {
   public final Indexer indexer = new Indexer();
 
 
-  //public SendableChooser<Command> autoChooser;  
+  public SendableChooser<Command> autoChooser;  
   private double speed = 0.5;
     private double MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
@@ -70,7 +70,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("Shoot", new Shoot(shooter, intake, 10)); 
         NamedCommands.registerCommand("StopShoot", new StopShoot(shooter));
 
-        //autoChooser = AutoBuilder.buildAutoChooser();
+        autoChooser = AutoBuilder.buildAutoChooser();
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
@@ -124,11 +124,10 @@ public class RobotContainer {
         drivetrain.registerTelemetry(logger::telemeterize);
     }
 
-    //public SendableChooser<Command> autoChooser;
-    //public final Telemetry logger = new Telemetry(MaxSpeed); //needs the Telemtry file
 
-    //public Command getAutonomousCommand() {
+    public Command getAutonomousCommand() {
     //An example command will be run in autonomous
-    //return autoChooser.getSelected(); //autoChooser.getSelected();
+    return autoChooser.getSelected(); //autoChooser.getSelected();
+    }
  }
 
