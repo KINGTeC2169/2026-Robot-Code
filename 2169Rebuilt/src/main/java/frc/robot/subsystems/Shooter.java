@@ -83,7 +83,7 @@ public class Shooter extends SubsystemBase{
         if(targetRPM > 0) {
             double leftOutput = flywheelPID.calculate(getLeftVoltage(), targetRPM / 6000.0 * 12);
             double rightOutput = flywheelPID.calculate(getRightVoltage(), targetRPM / 6000.0 * 12);
-            flywheelLeft.setVoltage(leftOutput);
+            flywheelLeft.setVoltage(-leftOutput);
             flywheelRight.setVoltage(rightOutput);
         } else {
             flywheelLeft.setVoltage(0);
@@ -125,7 +125,7 @@ public class Shooter extends SubsystemBase{
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Left Flywheel Voltage", getLeftVoltage());
-        SmartDashboard.putNumber("Right Flywheel Voltage", getRightVoltage());
+        SmartDashboard.putNumber("Left Flywheel RPM", getLeftRPM());
+        SmartDashboard.putNumber("Right Flywheel RPM", getRightRPM());
     }
 }
