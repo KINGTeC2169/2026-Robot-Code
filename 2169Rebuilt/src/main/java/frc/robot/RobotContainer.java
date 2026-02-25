@@ -96,6 +96,9 @@ public class RobotContainer {
         operatorControl.b().whileTrue(new StopIntake(intake, indexer));
         operatorControl.rightBumper().whileTrue(new Shoot(shooter, intake, 3200)); 
         operatorControl.leftBumper().whileTrue(new StopShoot(shooter)); 
+        operatorControl.rightBumper().debounce(.09).onTrue(new Shoot(shooter, intake, 100));
+
+
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
        
@@ -124,11 +127,10 @@ public class RobotContainer {
         drivetrain.registerTelemetry(logger::telemeterize);
     }
 
-    //public SendableChooser<Command> autoChooser;
-    //public final Telemetry logger = new Telemetry(MaxSpeed); //needs the Telemtry file
 
     //public Command getAutonomousCommand() {
     //An example command will be run in autonomous
     //return autoChooser.getSelected(); //autoChooser.getSelected();
- }
+    }
+ 
 

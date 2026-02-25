@@ -13,20 +13,20 @@ public class IndexBalls extends Command{
     }
     @Override
     public void initialize(){
-         indexer.setSpeed(takeSpeed);
-        indexer.SpinIndexer();
+        //indexer.setSpeed(takeSpeed);
+        //indexer.SpinIndexer();
 
     }
     @Override
     public void execute(){
-        indexer.setSpeed(takeSpeed);
-        indexer.SpinIndexer();
+        //indexer.setSpeed(takeSpeed);
+        //indexer.SpinIndexer();
     }
 
     //@Override //gave me an error
     public void end(){
-        indexer.setSpeed(0);
-        indexer.SpinIndexer();
+        //indexer.setSpeed(0);
+        //indexer.SpinIndexer();
     }
 
     /*public boolean isFinished(){
