@@ -27,96 +27,58 @@ import frc.robot.Constants.Ports;
 
 
 public class Indexer extends SubsystemBase{
-    private TalonFX toBackMotor; 
-    private TalonFX toSideMotor;
-    private TalonFX preShootMotor; //this one is probably supposed to be different than the other 2 but i just did it the same for now
-    
-    private VelocityVoltage indexVelocity = new VelocityVoltage(0);
-    private double speed;
-    private double preShootSpeed;
+    private TalonFX indexMotor; 
+    private TalonFX feeder; 
+    private double indexSpeed;
+    private double feederSpeed;
+
+
     public Indexer(){
-
-        toBackMotor = new TalonFX(Ports.toBackMotor);
-        toSideMotor = new TalonFX(Ports.toFrontMotor);
-
-        //var talonFXConfigs = new TalonFXConfiguration(); //idk what this actually does
-
-        //var slot0Configs = talonFXConfigs.Slot0; //again idk what this does but in last years code it appears too be setting up the kraken
-        //slot0Configs.kP = 0.01;
-
-        /* 
-        toBackMotor.getConfigurator().apply(talonFXConfigs);
-        toBackMotor.setNeutralMode(NeutralModeValue.Brake);
-        toSideMotor.getConfigurator().apply(talonFXConfigs);
-        toSideMotor.setNeutralMode(NeutralModeValue.Brake);
-        preShootMotor.getConfigurator().apply(talonFXConfigs);
-        preShootMotor.setNeutralMode(NeutralModeValue.Brake);
-        */
+        indexMotor = new TalonFX(Ports.indexMotor);
+        feeder = new TalonFX(Ports.feeder);
     }
 
-    /* 
-    public TalonFX getToBackMotor(){
-        return toBackMotor;
+    
+    public TalonFX getindexMotor(){
+        return indexMotor;
     }
 
-    public TalonFX getToSideMotor(){
-        return toSideMotor;
-    }
-
-    public TalonFX getPreShootMotor(){
-        return preShootMotor;
-    }
-    */
-
-    public void setVoltageMotors(double volts){
-        toBackMotor.setVoltage(volts);
-        toSideMotor.setVoltage(volts);
-        preShootMotor.setVoltage(volts);
-    }
-    public void setSpeed(double rpm){
-        speed = rpm;
+    public TalonFX getfeeder(){
+        return feeder;
     }
     
-    public void setPreShootSpeed(double rpm){
-        preShootSpeed = rpm;
+    public void setIndexerVoltage(double volts){
+        indexMotor.setVoltage(volts);
     }
 
-    public double getPreShootSpeed(){
-        return 60 * preShootMotor.getRotorVelocity().getValueAsDouble();
+    public void setfeederVoltage(double voltage){
+        feederSpeed = voltage;
     }
 
-    public double getSpeed(){//should probably make seperate ones for the different motors
+    public double getfeederRPM(){
+        return 60 * feeder.getRotorVelocity().getValueAsDouble();
+    }
+
+    public double getIndexerRPM(){//should probably make seperate ones for the different motors
         //return speed;
-        return 60 * toBackMotor.getRotorVelocity().getValueAsDouble();
-    }
-    public void SpinIndexer(){
-        indexVelocity.withVelocity(speed/60);
-        toBackMotor.setControl(indexVelocity);
-        toSideMotor.setControl(indexVelocity);
-        
-        
-    }
-
-    public void SpinPreShooter(){
-        indexVelocity.withVelocity(preShootSpeed/60);
-        preShootMotor.setControl(indexVelocity);
+        return 60 * indexMotor.getRotorVelocity().getValueAsDouble();
     }
 
     public void StopIndexer(){
-        toBackMotor.stopMotor();
-        toSideMotor.stopMotor();
+        indexMotor.stopMotor();
+        feeder.stopMotor();
     }
 
     public void StopPreShoot(){
-         preShootMotor.stopMotor();
+         feeder.stopMotor();
+    }
+
+    public void StopIndex(){
+        indexMotor.stopMotor();
     }
 
 
     @Override //again i dont realy know what this does but there was onein my ftc code to so like it makes a little sense
     public void periodic(){
-        SpinIndexer();
-
-        SmartDashboard.putNumber("Indexer speed", getSpeed());
-
     }
 }

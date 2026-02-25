@@ -127,5 +127,8 @@ public class Shooter extends SubsystemBase{
     public void periodic() {
         SmartDashboard.putNumber("Left Flywheel RPM", getLeftRPM());
         SmartDashboard.putNumber("Right Flywheel RPM", getRightRPM());
+
+        SmartDashboard.putNumber("Left Flywheel Voltage", getLeftVoltage());
+        SmartDashboard.putNumber("Right Flywheel Voltage", getRightVoltage());
     }
 }

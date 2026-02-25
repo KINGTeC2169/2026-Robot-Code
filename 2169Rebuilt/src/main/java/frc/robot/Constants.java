@@ -10,10 +10,10 @@ public final class Constants {
         public static final int controller = 2;
         public static final int leftFly = 11;
         public static final int rightFly = 14;
-        public static final int toBackMotor = 0;        // TODO: REPLACE WITH REAL MOTOR ID
-        public static final int toFrontMotor = 0;       // TODO: REPLACE WITH REAL MOTOR ID
+        public static final int indexMotor = 0;        // TODO: REPLACE WITH REAL MOTOR ID
+        public static final int feeder = 0;            // TODO: REPLACE WITH REAL MOTOR ID
         public static final int pivotMotor = 0;         // TODO: REPLACE WITH REAL MOTOR ID
-        public static final int spinMotor = 13;          // TODO: REPLACE WITH REAL MOTOR ID
+        public static final int spinMotor = 13; 
         public static final int intakeEncoder = 0;      // TODO: REPLACE WITH REAL ENCODER ID
     }
 

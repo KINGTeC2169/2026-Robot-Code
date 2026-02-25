@@ -94,8 +94,11 @@ public class RobotContainer {
 
         operatorControl.a().whileTrue(new IntakeBall(intake, indexer)); 
         operatorControl.b().whileTrue(new StopIntake(intake, indexer));
-        operatorControl.rightBumper().whileTrue(new Shoot(shooter, intake, 100)); 
+        //operatorControl.rightBumper().whileTrue(new Shoot(shooter, intake, 100)); 
         operatorControl.leftBumper().whileTrue(new StopShoot(shooter)); 
+        operatorControl.rightBumper().debounce(.09).onTrue(new Shoot(shooter, intake, 100));
+
+
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
        
