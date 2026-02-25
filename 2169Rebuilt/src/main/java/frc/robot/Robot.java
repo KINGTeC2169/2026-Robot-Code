@@ -73,7 +73,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-  // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+  m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
@@ -113,7 +113,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
  
-    /* 
+    
   newAutoName = m_robotContainer.getAutonomousCommand().getName();
 
    if (autoName != newAutoName) {
@@ -135,7 +135,7 @@ public class Robot extends TimedRobot {
       }
     }
         
-    */
+    
     
   }
   /** This function is called once when test mode is enabled. */
