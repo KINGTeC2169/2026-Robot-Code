@@ -1,5 +1,8 @@
 package frc.robot;
 
+import com.pathplanner.lib.config.PIDConstants;
+
+import edu.wpi.first.math.controller.PIDController;
 
 public final class Constants {
     
@@ -45,5 +48,10 @@ public final class Constants {
         //public static double shootRPM = 0.0; //not actually a constant...
 
         public static final double flyTolerance = 50.0; //rpm
+    }
+
+    public static final class DriveConstants {
+        public static PIDConstants autoTranslationPID = new PIDConstants(0, 0, 0);
+        public static PIDConstants autoRotationPID = new PIDConstants(0, 0, 0);
     }
 }
