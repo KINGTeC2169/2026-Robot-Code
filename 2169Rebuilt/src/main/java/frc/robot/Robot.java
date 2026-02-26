@@ -13,6 +13,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
+import choreo.auto.AutoChooser;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -43,6 +44,7 @@ public class Robot extends TimedRobot {
   public Robot() {
    m_robotContainer = new RobotContainer();
    pdh = new PowerDistribution();
+
   }
 
   /**
@@ -59,6 +61,7 @@ public class Robot extends TimedRobot {
      if (DriverStation.isAutonomous()){
       Elastic.selectTab("Autonomous");
     }
+    SmartDashboard.putData(m_robotContainer.autoChooser);
   }
 
   /**
