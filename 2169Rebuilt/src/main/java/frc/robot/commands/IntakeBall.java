@@ -9,6 +9,8 @@ public class IntakeBall extends Command {
     private Intake intake;
     private Indexer indexer;
     private Timer timer;
+
+    private boolean hasStarted = false;
     
     public IntakeBall(Intake intake, Indexer indexer) {
         this.intake = intake;
@@ -18,6 +20,7 @@ public class IntakeBall extends Command {
 
     @Override
     public void initialize(){
+        timer = new Timer();
         //intake.lowerIntake();  
     }
 
@@ -26,7 +29,10 @@ public class IntakeBall extends Command {
         intake.setVoltageSpin(0.4 * 12);    //TODO: REPLACE WITH REAL VOLTAGE
         // indexer.setVoltage(0); TODO: MAKE THIS WORK WITH INDEXER
 
-        if(intake.getVelocitySpin() < 100) timer.start();   // TODO: REPLACE WITH REAL VELOCITY 
+        if(intake.getVelocitySpin() < 100 && !hasStarted) {
+            timer.start();
+            hasStarted = true;
+        }
     }
 
     @Override
