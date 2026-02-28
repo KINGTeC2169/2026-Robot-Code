@@ -24,12 +24,17 @@ import edu.wpi.first.wpilibj.util.Color8Bit;
 public class Telemetry {
     private final double MaxSpeed;
     public final Field2d field = new Field2d();
+    private final NetworkTableInstance inst = NetworkTableInstance.getDefault();
+    
     /**
      * Construct a telemetry object, with the specified max speed of the robot
      * 
      * @param maxSpeed Maximum speed in meters per second
      */
+
     public Telemetry(double maxSpeed) {
+        inst.startServer();
+        
         MaxSpeed = maxSpeed;
         SignalLogger.start();
 
@@ -37,10 +42,12 @@ public class Telemetry {
         for (int i = 0; i < 4; ++i) {
             SmartDashboard.putData("Module " + i, m_moduleMechanisms[i]);
         }
+        inst.setServerTeam(2169);
+        inst.startDSClient();
+        inst.setServer("host", NetworkTableInstance.kDefaultPort4);
     }
 
     /* What to publish over networktables for telemetry */
-    private final NetworkTableInstance inst = NetworkTableInstance.getDefault();
 
     /* Robot swerve drive state */
     private final NetworkTable driveStateTable = inst.getTable("DriveState");
