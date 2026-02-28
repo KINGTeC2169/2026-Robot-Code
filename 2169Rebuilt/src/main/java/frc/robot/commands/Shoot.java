@@ -12,6 +12,7 @@ public class Shoot extends Command{
     //private Indexer index;
     private double rpm;
     private int num;
+    private boolean on;
 
 
     public Shoot(Shooter shoot, Intake itake, double rotationsPerMinute){
@@ -19,6 +20,7 @@ public class Shoot extends Command{
         this.intake = itake;
         //this.index = indexer;
         this.rpm = rotationsPerMinute;
+        addRequirements(shooter);
     }
 
     @Override
@@ -26,11 +28,17 @@ public class Shoot extends Command{
         shooter.setTargetRPM(rpm);
         //intake.raiseIntake();
         num = 0;
+        if (on){
+            on = false;
+        }
+        on = true;
     }
 
     @Override
     public void execute(){
-        shooter.setFlywheelRPM();
+        if (on){
+            shooter.setFlywheelRPM();
+        }
         /* 
         if(shooter.isReady()){
             index.SpinPreShooter();
@@ -44,6 +52,7 @@ public class Shoot extends Command{
         shooter.stopFlywheel();
         shooter.setTargetRPM(0);
         //index.StopPreShoot();
+        on = false;
     }
 
     @Override
@@ -54,7 +63,7 @@ public class Shoot extends Command{
             return true;
         }        
         */
-        return false;
+        return !on;
     }
 
 }

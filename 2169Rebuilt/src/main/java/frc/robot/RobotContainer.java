@@ -5,6 +5,7 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
+import com.fasterxml.jackson.databind.util.Named;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -22,10 +23,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Indexer;
 
-import frc.robot.commands.IntakeBall;
-import frc.robot.commands.StopIntake;
-import frc.robot.commands.Shoot;
-import frc.robot.commands.StopShoot;
+import frc.robot.commands.*;
 
 public class RobotContainer {
 
@@ -69,6 +67,8 @@ public class RobotContainer {
         NamedCommands.registerCommand("StopIntake", new StopIntake(intake, indexer));
         NamedCommands.registerCommand("Shoot", new Shoot(shooter, intake, 10)); 
         NamedCommands.registerCommand("StopShoot", new StopShoot(shooter));
+        NamedCommands.registerCommand("SpinTurret", new SpinTurret(shooter, 12));
+        NamedCommands.registerCommand("Index", new IndexBalls(indexer));
 
         autoChooser = AutoBuilder.buildAutoChooser();
         drivetrain.setDefaultCommand(
@@ -94,9 +94,10 @@ public class RobotContainer {
 
         operatorControl.a().whileTrue(new IntakeBall(intake, indexer)); 
         operatorControl.b().whileTrue(new StopIntake(intake, indexer));
-        operatorControl.rightBumper().whileTrue(new Shoot(shooter, intake, 3200)); 
+        //operatorControl.rightBumper().whileTrue(new Shoot(shooter, intake, 3200)); //hold to shoot
         operatorControl.leftBumper().whileTrue(new StopShoot(shooter)); 
-        operatorControl.rightBumper().debounce(.09).onTrue(new Shoot(shooter, intake, 100));
+        operatorControl.rightBumper().debounce(.09).onTrue(new Shoot(shooter, intake, 100)); //toggle shoot
+        operatorControl.leftStick().whileTrue(new SpinTurret(shooter, leftStick.getX()));
 
 
         // Note that X is defined as forward according to WPILib convention,

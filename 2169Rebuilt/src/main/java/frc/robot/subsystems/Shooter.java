@@ -6,6 +6,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.units.measure.Velocity;
+import edu.wpi.first.wpilibj.DutyCycle;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Ports;
@@ -17,6 +18,8 @@ public class Shooter extends SubsystemBase{
     private TalonFX turret;
     private TalonFX flywheelLeft;
     private TalonFX flywheelRight;
+
+    private DutyCycle turretEncoder;
 
     //private VelocityDutyCycle flywheelControl;
 
@@ -71,6 +74,10 @@ public class Shooter extends SubsystemBase{
         return flywheelRight.getSupplyVoltage().getValueAsDouble();
     }
 
+    public double getTurretVoltage() {
+        return turret.getSupplyVoltage().getValueAsDouble();
+    }
+
     //sets the shooter to 
     public void setFlywheelRPM() {
         /*flywheelControl = new VelocityDutyCycle(rpm / 6000.0); 
@@ -95,6 +102,10 @@ public class Shooter extends SubsystemBase{
         //flywheelRight.setVoltage(targetRPM / 6000 * 12);
     }
 
+    public void stopTurret(){
+        turret.setVoltage(0);
+    }
+
     public boolean isReady() {
         double leftRPM = Math.abs(getLeftRPM());
         double rightRPM = Math.abs(getRightRPM());
@@ -104,22 +115,24 @@ public class Shooter extends SubsystemBase{
     }
 
     public void stopFlywheel(){
-        //flywheelLeft.setControl(new VelocityDutyCycle(0));
-        //flywheelRight.setControl(new VelocityDutyCycle(0));
-
         flywheelLeft.setVoltage(0);
         flywheelRight.setVoltage(0);
     }
 
-    //not using this until vision phew
-    public void whipTurret() {
-        /*
-         * need to find the most inoffensive way to quickly spin
-         * the turret in a nonviolent way to almost the opposite 
-         * side. im very worried about the wires and im not sure
-         * the safest way to do this quickly, so i will wait a 
-         * little while to see some ideas for the turret model.
-         */
+    //not using calculations until vision phew
+    public void whipTurret(double voltage) {
+        /* 
+        turretPID.setSetpoint(0); //TODO: REPLACE WITH VISION ANGLE
+        set the tolerance too
+
+        encoder values would be a lot more accurate than voltage
+        but that requires the robot
+        so
+        */
+
+        double input = turretPID.calculate(getTurretVoltage(), (voltage / 12) * 0.0025);
+        input = MathUtil.clamp(input, -TurretConstants.maxVoltage, TurretConstants.maxVoltage);
+        turret.setVoltage(input);
     }
     
 

@@ -37,7 +37,8 @@ public final class Constants {
         public static double ki = 0.0; 
         public static double kd = 0.0;
 
-        //angles junk
+        //max 18 rpm
+        public static double maxVoltage = 0.003; //TODO: REPLACE WITH REAL MAX VOLTAGE
     }
 
     public static final class ShooterConstants {
