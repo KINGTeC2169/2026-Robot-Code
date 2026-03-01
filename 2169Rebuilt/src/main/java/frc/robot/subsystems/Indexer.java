@@ -51,7 +51,7 @@ public class Indexer extends SubsystemBase{
         indexMotor.setVoltage(volts);
     }
 
-    public void setfeederVoltage(double voltage){
+    public void setFeederVoltage(double voltage){
         feederSpeed = voltage;
     }
 

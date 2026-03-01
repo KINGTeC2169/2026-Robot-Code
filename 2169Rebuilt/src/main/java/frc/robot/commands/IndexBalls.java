@@ -3,6 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Indexer;
 
+
 public class IndexBalls extends Command{
     private Indexer indexer;
 
@@ -19,14 +20,13 @@ public class IndexBalls extends Command{
     }
     @Override
     public void execute(){
-        //indexer.setSpeed(takeSpeed);
-        //indexer.SpinIndexer();
+        indexer.setIndexerVoltage(0 * 12);
+        indexer.setFeederVoltage(0 * 12);
     }
 
     //@Override //gave me an error
     public void end(){
-        //indexer.setSpeed(0);
-        //indexer.SpinIndexer();
+        indexer.StopIndexer();
     }
 
     /*public boolean isFinished(){
