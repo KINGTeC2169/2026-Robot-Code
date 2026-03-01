@@ -86,5 +86,6 @@ public class Intake extends SubsystemBase{
         SmartDashboard.putNumber("Pivot Velocity", getVelocityPivot());
         SmartDashboard.putNumber("Spin Velocity", getVelocitySpin());
         SmartDashboard.putNumber("Encoder Position", getPosition());
+        SmartDashboard.putData("Pivot PID", pivotPID);
     }
 }

@@ -29,7 +29,7 @@ public class StopIntake extends Command {
     public void end(boolean interrupted){
         //not super necessary i think
         intake.setVoltageSpin(0);
-        //intake.raiseIntake();
+        intake.raiseIntake();
     }
 
     @Override

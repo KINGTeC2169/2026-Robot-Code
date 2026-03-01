@@ -21,8 +21,8 @@ public final class Constants {
     }
 
     public static final class IntakeConstants{
-        public static final double pivotMaxHeight = 0;  // TODO: REPLACE WITH REAL NUM
-        public static final double pivotMinHeight = -.34;  // TODO: REPLACE WITH REAL NUM
+        public static final double pivotMaxHeight = -0.06;  // TODO: REPLACE WITH REAL NUM
+        public static final double pivotMinHeight = -.3291;  // TODO: REPLACE WITH REAL NUM
 
         public static final double kP = 0;  // TODO: REPLACE WITH REAL KP
         public static final double kI = 0;  // TODO: REPLACE WITH REAL KI
@@ -33,7 +33,7 @@ public final class Constants {
     
     public static final class TurretConstants {
 
-        public static double kp = 0.0; 
+        public static double kp = 0.01; 
         public static double ki = 0.0; 
         public static double kd = 0.0;
 
