@@ -15,9 +15,9 @@ public final class Constants {
         public static final int rightFly = 14;
         public static final int indexMotor = 0;        // TODO: REPLACE WITH REAL MOTOR ID
         public static final int feeder = 0;            // TODO: REPLACE WITH REAL MOTOR ID
-        public static final int pivotMotor = 0;         // TODO: REPLACE WITH REAL MOTOR ID
+        public static final int pivotMotor = 12;         // TODO: REPLACE WITH REAL MOTOR ID
         public static final int spinMotor = 13; 
-        public static final int intakeEncoder = 0;      // TODO: REPLACE WITH REAL ENCODER ID
+        public static final int intakeEncoder = 16;      // TODO: REPLACE WITH REAL ENCODER ID
     }
 
     public static final class IntakeConstants{

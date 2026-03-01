@@ -26,7 +26,7 @@ public class IntakeBall extends Command {
 
     @Override
     public void execute(){
-        intake.setVoltageSpin(0.4 * 12);    //TODO: REPLACE WITH REAL VOLTAGE
+        intake.setVoltageSpin(-0.3 * 12);    
         // indexer.setVoltage(0); TODO: MAKE THIS WORK WITH INDEXER
 
         if(intake.getVelocitySpin() < 100 && !hasStarted) {
