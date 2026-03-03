@@ -12,10 +12,31 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Ports;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.TurretConstants;
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.hardware.CANcoder;
+
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.sim.SparkFlexSim;
+import com.revrobotics.sim.SparkLimitSwitchSim;
+import com.revrobotics.sim.SparkMaxSim;
+import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkClosedLoopController;
+import com.revrobotics.spark.SparkFlex;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
+import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.simulation.ElevatorSim;
+import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
+import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 
 public class Shooter extends SubsystemBase{
 
-    private TalonFX turret;
+    private SparkMax turret;
     private TalonFX flywheelLeft;
     private TalonFX flywheelRight;
 
@@ -47,7 +68,8 @@ public class Shooter extends SubsystemBase{
 
     //Constructor for the three shooter motors
     public Shooter() {
-        turret = new TalonFX(0);
+        //turret = new TalonFX(0); //changing to SparkMax
+        turret = new SparkMax(0, MotorType.kBrushless);
         flywheelLeft = new TalonFX(Ports.leftFly);
         flywheelRight = new TalonFX(Ports.rightFly);
     }
@@ -75,7 +97,7 @@ public class Shooter extends SubsystemBase{
     }
 
     public double getTurretVoltage() {
-        return turret.getSupplyVoltage().getValueAsDouble();
+        return turret.getBusVoltage()/*.getValueAsDouble()*/;
     }
 
     //sets the shooter to 
