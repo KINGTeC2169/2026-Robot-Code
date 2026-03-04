@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.math.MathUtil;
 import com.ctre.phoenix6.controls.VelocityDutyCycle;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.units.measure.Velocity;
@@ -15,7 +16,7 @@ import frc.robot.Constants.TurretConstants;
 
 public class Shooter extends SubsystemBase{
 
-    private TalonFX turret;
+    private SparkMax turret;
     private TalonFX flywheelLeft;
     private TalonFX flywheelRight;
 
@@ -48,6 +49,7 @@ public class Shooter extends SubsystemBase{
     //Constructor for the three shooter motors
     public Shooter() {
         //turret = new TalonFX(0);
+        turret = new SparkMax(Ports.turret, SparkMax.MotorType.kBrushless);
         flywheelLeft = new TalonFX(Ports.leftFly);
         flywheelRight = new TalonFX(Ports.rightFly);
     }
@@ -75,7 +77,7 @@ public class Shooter extends SubsystemBase{
     }
 
     public double getTurretVoltage() {
-        return turret.getSupplyVoltage().getValueAsDouble();
+        return turret.getBusVoltage();
     }
 
     //sets the shooter to 

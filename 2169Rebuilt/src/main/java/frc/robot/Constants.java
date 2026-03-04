@@ -13,6 +13,7 @@ public final class Constants {
         public static final int controller = 2;
         public static final int leftFly = 11;
         public static final int rightFly = 14;
+        public static final int turret = 8;
         public static final int indexMotor = 0;        // TODO: REPLACE WITH REAL MOTOR ID
         public static final int feeder = 16;            
         public static final int pivotMotor = 12;         // TODO: REPLACE WITH REAL MOTOR ID
