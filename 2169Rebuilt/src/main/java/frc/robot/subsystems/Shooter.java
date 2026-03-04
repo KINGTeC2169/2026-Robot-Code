@@ -57,6 +57,10 @@ public class Shooter extends SubsystemBase{
         //actually need the math from vision for this
     }
 
+    public void setTurretVoltage(double voltage) {
+        turret.setVoltage(voltage);
+    }
+
     public double getLeftRPM() {
         return 60 * flywheelLeft.getRotorVelocity().getValueAsDouble();
     }

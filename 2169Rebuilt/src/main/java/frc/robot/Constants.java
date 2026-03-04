@@ -15,14 +15,14 @@ public final class Constants {
         public static final int rightFly = 14;
         public static final int indexMotor = 0;        // TODO: REPLACE WITH REAL MOTOR ID
         public static final int feeder = 16;            
-        public static final int pivotMotor = 12;         // TODO: REPLACE WITH REAL MOTOR ID
+        public static final int pivotMotor = 12;
         public static final int spinMotor = 13; 
-        public static final int intakeEncoder = 16;      // TODO: REPLACE WITH REAL ENCODER ID
+        public static final int intakeEncoder = 16;
     }
 
     public static final class IntakeConstants{
-        public static final double pivotMaxHeight = -0.06;  // TODO: REPLACE WITH REAL NUM
-        public static final double pivotMinHeight = -.3291;  // TODO: REPLACE WITH REAL NUM
+        public static final double pivotMaxHeight = -0.06;
+        public static final double pivotMinHeight = -.3291;
 
         public static final double kP = 0;  // TODO: REPLACE WITH REAL KP
         public static final double kI = 0;  // TODO: REPLACE WITH REAL KI
@@ -39,6 +39,8 @@ public final class Constants {
 
         //max 18 rpm
         public static double maxVoltage = 0.003; //TODO: REPLACE WITH REAL MAX VOLTAGE
+        public static double maxAngle = 0;       //TODO: REPLACE WITH REAL MAX ANGLE
+        public static double minAngle = 0;       //TODO: REPLACE WITH REAL MIN ANGLE 
     }
 
     public static final class ShooterConstants {
