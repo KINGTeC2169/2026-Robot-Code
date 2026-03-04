@@ -55,7 +55,6 @@ public class Shooter extends SubsystemBase{
     public Shooter() {
         //turret = new TalonFX(0);
         turret = new SparkMax(Ports.turret, SparkMax.MotorType.kBrushless);
-        turretEncoder = new SparkMax(Ports.turret, SparkMax.MotorType.kBrushless);
         flywheelLeft = new TalonFX(Ports.leftFly);
         flywheelRight = new TalonFX(Ports.rightFly);
     }
