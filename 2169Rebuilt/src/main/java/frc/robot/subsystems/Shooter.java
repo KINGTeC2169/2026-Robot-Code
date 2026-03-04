@@ -1,9 +1,13 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.MathUtil;
+
+import java.util.IllegalFormatConversionException;
+
 import com.ctre.phoenix6.controls.VelocityDutyCycle;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.units.measure.Velocity;
@@ -17,10 +21,11 @@ import frc.robot.Constants.TurretConstants;
 public class Shooter extends SubsystemBase{
 
     private SparkMax turret;
+    private SparkMax turretEncoder;
     private TalonFX flywheelLeft;
     private TalonFX flywheelRight;
 
-    private DutyCycle turretEncoder;
+    private SparkMaxConfig turretConfig;
 
     //private VelocityDutyCycle flywheelControl;
 
@@ -50,6 +55,7 @@ public class Shooter extends SubsystemBase{
     public Shooter() {
         //turret = new TalonFX(0);
         turret = new SparkMax(Ports.turret, SparkMax.MotorType.kBrushless);
+        turretEncoder = new SparkMax(Ports.turret, SparkMax.MotorType.kBrushless);
         flywheelLeft = new TalonFX(Ports.leftFly);
         flywheelRight = new TalonFX(Ports.rightFly);
     }
@@ -138,7 +144,12 @@ public class Shooter extends SubsystemBase{
 
         double input = turretPID.calculate(getTurretVoltage(), (voltage / 12) * 0.0025);
         input = MathUtil.clamp(input, -TurretConstants.maxVoltage, TurretConstants.maxVoltage);
-        turret.setVoltage(input);
+        //makes sure that turret doesnt move out of bounds
+        if (turret.getEncoder().getPosition() >= ShooterConstants.encoderExpectedMin && turret.getEncoder().getPosition() <= ShooterConstants.encoderExpectedMax) {
+            turret.setVoltage(input);
+        } else {
+            turret.setVoltage(0);
+        }
     }
     
 
@@ -151,5 +162,12 @@ public class Shooter extends SubsystemBase{
         SmartDashboard.putNumber("Right Flywheel Voltage", getRightVoltage());
 
         SmartDashboard.putData("Shooter PID", flywheelPID);
+
+        // if (turret.getEncoder().getPosition() <= ShooterConstants.encoderExpectedMin){
+        //     turret.setVoltage(.001 * 12);
+        // } 
+        // if (turret.getEncoder().getPosition() >= ShooterConstants.encoderExpectedMax){
+        //     turret.setVoltage(-.001 * 12);
+        // }
     }
 }

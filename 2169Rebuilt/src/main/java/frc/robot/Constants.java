@@ -22,7 +22,7 @@ public final class Constants {
     }
 
     public static final class IntakeConstants{
-        public static final double pivotMaxHeight = -0.06;
+        public static final double pivotMaxHeight = -0.06;  // TODO: REPLACE WITH REAL MAX HEIGHT
         public static final double pivotMinHeight = -.3291;
 
         public static final double kP = 0;  // TODO: REPLACE WITH REAL KP
@@ -30,6 +30,7 @@ public final class Constants {
         public static final double kD = 0;  // TODO: REPLACE WITH REAL KD
 
         public static final double encoderExpectedZero = 0; // TODO: REPLACE WITH REAL ENCODER ZERO
+        
     }
     
     public static final class TurretConstants {
@@ -52,6 +53,9 @@ public final class Constants {
         //public static double shootRPM = 0.0; //not actually a constant...
 
         public static final double flyTolerance = 50.0; //rpm
+
+        public static final double encoderExpectedMax = 0;  // TODO: REPLACE WITH REAL ENCODER MAX
+        public static final double encoderExpectedMin = 0;  // TODO: REPLACE WITH REAL ENCODER MIN
     }
 
     public static final class DriveConstants {
