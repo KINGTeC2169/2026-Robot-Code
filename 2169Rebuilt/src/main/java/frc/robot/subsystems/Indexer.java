@@ -51,12 +51,20 @@ public class Indexer extends SubsystemBase{
         indexMotor.setVoltage(volts);
     }
 
+    public double getFeederVoltage(){
+        return feeder.getMotorVoltage().getValueAsDouble();
+    }
+
     public void setFeederVoltage(double voltage){
         feederSpeed = voltage;
     }
 
     public double getfeederRPM(){
         return 60 * feeder.getRotorVelocity().getValueAsDouble();
+    }
+
+    public void spinFeeder(){
+        feeder.setVoltage(9);
     }
 
     public double getIndexerRPM(){//should probably make seperate ones for the different motors
@@ -70,7 +78,7 @@ public class Indexer extends SubsystemBase{
     }
 
     public void StopPreShoot(){
-         feeder.stopMotor();
+         feeder.setVoltage(0);
     }
 
     public void StopIndex(){

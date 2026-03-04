@@ -94,10 +94,12 @@ public class RobotContainer {
 
         operatorControl.a().whileTrue(new IntakeBall(intake, indexer)); 
         operatorControl.b().whileTrue(new StopIntake(intake, indexer));
-        //operatorControl.rightBumper().whileTrue(new Shoot(shooter, intake, 3200)); //hold to shoot
+        operatorControl.rightBumper().whileTrue(new Shoot(shooter, intake, 4500)); //hold to shoot
         operatorControl.leftBumper().whileTrue(new StopShoot(shooter)); 
-        operatorControl.rightBumper().debounce(.09).onTrue(new Shoot(shooter, intake, 100)); //toggle shoot
+        operatorControl.leftTrigger().whileTrue(new IndexBalls(indexer));
+        //operatorControl.rightBumper().debounce(.09).onTrue(new Shoot(shooter, intake, 100)); //toggle shoot
         operatorControl.leftStick().whileTrue(new SpinTurret(shooter, leftStick.getX()));
+        //operatorControl.leftTrigger().onFalse();
 
 
         // Note that X is defined as forward according to WPILib convention,

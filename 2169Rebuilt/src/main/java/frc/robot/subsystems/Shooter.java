@@ -47,7 +47,7 @@ public class Shooter extends SubsystemBase{
 
     //Constructor for the three shooter motors
     public Shooter() {
-        turret = new TalonFX(0);
+        //turret = new TalonFX(0);
         flywheelLeft = new TalonFX(Ports.leftFly);
         flywheelRight = new TalonFX(Ports.rightFly);
     }
@@ -90,8 +90,8 @@ public class Shooter extends SubsystemBase{
         if(targetRPM > 0) {
             double leftOutput = flywheelPID.calculate(getLeftVoltage(), targetRPM / 6000.0 * 12);
             double rightOutput = flywheelPID.calculate(getRightVoltage(), targetRPM / 6000.0 * 12);
-            flywheelLeft.setVoltage(-leftOutput);
-            flywheelRight.setVoltage(rightOutput);
+            flywheelLeft.setVoltage(leftOutput);
+            flywheelRight.setVoltage(-rightOutput);
         } else {
             flywheelLeft.setVoltage(0);
             flywheelRight.setVoltage(0);
@@ -143,5 +143,7 @@ public class Shooter extends SubsystemBase{
 
         SmartDashboard.putNumber("Left Flywheel Voltage", getLeftVoltage());
         SmartDashboard.putNumber("Right Flywheel Voltage", getRightVoltage());
+
+        SmartDashboard.putData("Shooter PID", flywheelPID);
     }
 }

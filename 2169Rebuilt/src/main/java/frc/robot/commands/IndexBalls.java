@@ -16,20 +16,24 @@ public class IndexBalls extends Command{
     public void initialize(){
         //indexer.setSpeed(takeSpeed);
         //indexer.SpinIndexer();
-
+        indexer.spinFeeder();
     }
     @Override
     public void execute(){
-        indexer.setIndexerVoltage(0 * 12);
-        indexer.setFeederVoltage(0 * 12);
+        //indexer.setIndexerVoltage(0 * 12);
+        indexer.spinFeeder();
     }
 
-    //@Override //gave me an error
-    public void end(){
-        indexer.StopIndexer();
+    @Override
+    public void end(boolean isInterrupted){
+        //indexer.StopIndexer();
+        indexer.StopPreShoot();
     }
 
-    /*public boolean isFinished(){
-
-    }*/
+    //temporary finish condiiton? 
+    /* 
+    public boolean isFinished(){
+        return true;
+    }
+    */
 }
