@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Ports;
-//import frc.robot.Constants.IntakeConstants;
+import frc.robot.Constants.IntakeConstants;
 
 //I copied and pasted all of the imports from last years code and commented out the stuff with errors so hopefully thats right?
 //im also just kinda winging this since i dont really know what im doing...
@@ -34,7 +34,7 @@ public class Indexer extends SubsystemBase{
 
 
     public Indexer(){
-        indexMotor = new TalonFX(Ports.indexMotor);
+        indexer = new TalonFX(Ports.indexMotor);
         feeder = new TalonFX(Ports.feeder);
         indexerVolts = IntakeConstants.initialIndexerVoltage;
         feederVolts = IntakeConstants.initialFeederVoltage;

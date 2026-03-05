@@ -1,0 +1,49 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Epsilon1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Epsilon2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Epsilon3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Epsilon4"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Epsilon5"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Epsilon6"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "Bottom",
+  "choreoAuto": true
+}
