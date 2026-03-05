@@ -54,6 +54,8 @@ public final class Constants {
 
         //public static double shootRPM = 0.0; //not actually a constant...
 
+        public static double[] shootSpeeds = {0, 0, 0, 0, 0,}; //rpm, arranged lowest to highest
+
         public static final double flyTolerance = 50.0; //rpm
 
         public static final double encoderExpectedMax = 0;  // TODO: REPLACE WITH REAL ENCODER MAX

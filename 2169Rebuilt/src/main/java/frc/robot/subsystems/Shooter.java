@@ -33,6 +33,7 @@ public class Shooter extends SubsystemBase{
     PIDController flywheelPID = new PIDController(ShooterConstants.kp, ShooterConstants.ki, ShooterConstants.kd);
 
     private double targetRPM;
+    private int speed;
 
 
 //some needed info
@@ -57,6 +58,18 @@ public class Shooter extends SubsystemBase{
         turret = new SparkMax(Ports.turret, SparkMax.MotorType.kBrushless);
         flywheelLeft = new TalonFX(Ports.leftFly);
         flywheelRight = new TalonFX(Ports.rightFly);
+    }
+    public void changeSpeed(int amount) {
+        int proposal = speed + amount;
+        if(proposal < TurretConstants.speeds.length && proposal > -1) {
+            speed = proposal;
+            setTargetRPM();
+        }
+    }
+
+    public void setTargetRPM() {
+        targetRPM = ShooterConstants.shootSpeeds[speed];
+        //actually need the math from vision for this
     }
 
     public void setTargetRPM(double rpm) {
