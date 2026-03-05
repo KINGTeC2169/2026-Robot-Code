@@ -14,7 +14,7 @@ public final class Constants {
         public static final int leftFly = 11;
         public static final int rightFly = 14;
         public static final int turret = 17;
-        public static final int indexMotor = 0;        // TODO: REPLACE WITH REAL MOTOR ID
+        public static final int indexMotor = 15;        
         public static final int feeder = 16;            
         public static final int pivotMotor = 12;
         public static final int spinMotor = 13; 
@@ -22,10 +22,10 @@ public final class Constants {
     }
 
     public static final class IntakeConstants{
-        public static final double pivotMaxHeight = -0.06;  // TODO: REPLACE WITH REAL MAX HEIGHT
-        public static final double pivotMinHeight = -.3291;
+        public static final double pivotMaxHeight = -0.164;  
+        public static final double pivotMinHeight = -.32;
 
-        public static final double kP = 0;  // TODO: REPLACE WITH REAL KP
+        public static final double kP = .8;  // TODO: REPLACE WITH REAL KP
         public static final double kI = 0;  // TODO: REPLACE WITH REAL KI
         public static final double kD = 0;  // TODO: REPLACE WITH REAL KD
 

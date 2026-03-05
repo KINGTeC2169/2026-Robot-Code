@@ -105,7 +105,7 @@ public class RobotContainer {
         operatorControl.leftBumper().whileTrue(new StopShoot(shooter, indexer)); 
         //operatorControl.leftTrigger().whileTrue(new IndexBalls(indexer));
         operatorControl.rightBumper().debounce(.09).onTrue(new Shoot(shooter, 100)); //toggle shoot
-        operatorControl.rightStick().whileTrue(new SpinTurret(shooter, leftStick.getX()));
+        //operatorControl.rightStick().whileTrue(new SpinTurret(shooter, leftStick.getX()));
         operatorControl.rightTrigger().whileTrue(new Feed(shooter, indexer)); 
         //operatorControl.leftTrigger().onFalse();
         operatorControl.povUp().debounce(.09).onTrue(new ModifySpeed(shooter, 1));
@@ -114,6 +114,8 @@ public class RobotContainer {
 
 
         // Note that X is defined as forward according to WPILib convention,
+
+        
         // and Y is defined as to the left according to WPILib convention.
        
         // Idle while the robot is disabled. This ensures the configured

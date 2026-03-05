@@ -68,12 +68,20 @@ public class Intake extends SubsystemBase{
 
     // lower the intake to the grab position
     public void lowerIntake(){
-        setVoltagePivot(pivotPID.calculate(getPosition(), IntakeConstants.pivotMinHeight));
+        if(getPosition() >= -.25){
+            setVoltagePivot(pivotPID.calculate(getPosition(), IntakeConstants.pivotMinHeight));
+        } else{
+            setVoltagePivot(0);
+        }
     }
     
     // raise the intake to the raised position
     public void raiseIntake(){
-        setVoltagePivot(pivotPID.calculate(getPosition(), IntakeConstants.pivotMaxHeight));
+        if(getPosition() <= -.2){
+            setVoltagePivot(pivotPID.calculate(getPosition(), IntakeConstants.pivotMaxHeight));
+        } else{
+            setVoltagePivot(0);
+        }
     }
 
     // stop the intake from spinning

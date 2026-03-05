@@ -26,6 +26,7 @@ public class StopIntake extends Command {
     @Override
     public void execute(){
         num++;
+        intake.raiseIntake();
     }
 
     @Override

@@ -18,15 +18,16 @@ public class IntakeBall extends Command {
 
     @Override
     public void initialize(){
-        //intake.lowerIntake();  
+        intake.lowerIntake();  
     }
 
     @Override
     public void execute(){
+        intake.lowerIntake();
         intake.setVoltageSpin(0.4 * 12);    //TODO: REPLACE WITH REAL VOLTAGE
         // indexer.setVoltage(0); TODO: MAKE THIS WORK WITH INDEXER
 
-        if(intake.getVelocitySpin() < 100) timer.start();   // TODO: REPLACE WITH REAL VELOCITY 
+        //if(intake.getVelocitySpin() < 100) timer.start();   // TODO: REPLACE WITH REAL VELOCITY 
     }
 
     @Override
@@ -39,6 +40,7 @@ public class IntakeBall extends Command {
 
     @Override
     public boolean isFinished(){
-        return timer.get() > 3;    // TODO: TEMPORARY FINISH CONDITION, REPLACE WITH REAL ONE
+        //return timer.get() > 3;    // TODO: TEMPORARY FINISH CONDITION, REPLACE WITH REAL ONE
+        return true;
     }
 }
