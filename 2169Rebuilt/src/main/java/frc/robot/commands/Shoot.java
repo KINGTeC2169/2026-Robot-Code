@@ -10,16 +10,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class Shoot extends Command{
     
     private Shooter shooter;
-    //private Intake intake;
-    //private Indexer index;
     private double rpm;
     private int num;
 
 
     public Shoot(Shooter shoot, double rotationsPerMinute){
         this.shooter = shoot;
-        //this.intake = itake;
-        //this.index = indexer;
         this.rpm = rotationsPerMinute;
         addRequirements(shooter);
     }
@@ -27,7 +23,6 @@ public class Shoot extends Command{
     @Override
     public void initialize(){
         shooter.setTargetRPM(rpm);
-        //intake.raiseIntake();
         num = 0;
         if (ShooterConstants.shooterOn){
             ShooterConstants.shooterOn = false;
@@ -41,11 +36,6 @@ public class Shoot extends Command{
         if (ShooterConstants.shooterOn){
             shooter.setFlywheelRPM();
         }
-        /* 
-        if(shooter.isReady()){
-            index.SpinPreShooter();
-        }
-        */
         num++;
     }
 
@@ -53,7 +43,6 @@ public class Shoot extends Command{
     public void end(boolean interrupted){
         shooter.stopFlywheel();
         shooter.setTargetRPM(0);
-        //index.StopPreShoot();
         ShooterConstants.shooterOn = false;
     }
 

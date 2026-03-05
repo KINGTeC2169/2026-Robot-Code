@@ -66,9 +66,10 @@ public class RobotContainer {
 
     public RobotContainer() {
 
+        //finish these...
         NamedCommands.registerCommand("Intake", new IntakeBall(intake, indexer));
         NamedCommands.registerCommand("StopIntake", new StopIntake(intake, indexer));
-        NamedCommands.registerCommand("Shoot", new Shoot(shooter, intake, 10)); 
+        NamedCommands.registerCommand("Shoot", new Shoot(shooter, 10)); 
         NamedCommands.registerCommand("StopShoot", new StopShoot(shooter));
         NamedCommands.registerCommand("SpinTurret", new SpinTurret(shooter, 12));
         NamedCommands.registerCommand("Index", new IndexBalls(indexer));
@@ -99,11 +100,12 @@ public class RobotContainer {
 
         operatorControl.a().whileTrue(new IntakeBall(intake, indexer)); 
         operatorControl.b().whileTrue(new StopIntake(intake, indexer));
-        operatorControl.rightBumper().whileTrue(new Shoot(shooter, intake, 4500)); //hold to shoot
+        //operatorControl.rightBumper().whileTrue(new Shoot(shooter, 4500)); //hold to shoot
         operatorControl.leftBumper().whileTrue(new StopShoot(shooter)); 
-        operatorControl.leftTrigger().whileTrue(new IndexBalls(indexer));
-        //operatorControl.rightBumper().debounce(.09).onTrue(new Shoot(shooter, intake, 100)); //toggle shoot
+        //operatorControl.leftTrigger().whileTrue(new IndexBalls(indexer));
+        operatorControl.rightBumper().debounce(.09).onTrue(new Shoot(shooter, 100)); //toggle shoot
         operatorControl.leftStick().whileTrue(new SpinTurret(shooter, leftStick.getX()));
+        operatorControl.rightTrigger().whileTrue(new Feed(shooter, indexer)); 
         //operatorControl.leftTrigger().onFalse();
 
 
