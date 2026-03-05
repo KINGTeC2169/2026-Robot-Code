@@ -7,33 +7,39 @@ import frc.robot.subsystems.Intake;
 public class StopIntake extends Command {
     private Intake intake;
     private Indexer indexer;
+
+    private int num;
     
     public StopIntake(Intake intake, Indexer indexer) {
         this.intake = intake;
         this.indexer = indexer;
+        
         addRequirements(intake, indexer);
     }
 
     @Override
     public void initialize(){
-        intake.stopIntake();  
-        //intake.raiseIntake();
-        //stop indexer
+        intake.raiseIntake();
+        num = 0;
     }
 
     @Override
     public void execute(){
+        num++;
     }
 
     @Override
     public void end(boolean interrupted){
-        //not super necessary i think
         intake.setVoltageSpin(0);
-        intake.raiseIntake();
+        
     }
 
     @Override
     public boolean isFinished(){
-        return true;
+        //4 seconds
+        if(num >= 200){
+            return true;
+        }   
+        return false;
     }
 }
