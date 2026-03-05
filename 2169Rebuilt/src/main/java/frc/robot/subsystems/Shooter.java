@@ -25,6 +25,8 @@ public class Shooter extends SubsystemBase{
     private TalonFX flywheelLeft;
     private TalonFX flywheelRight;
 
+    private int gear;
+
     private SparkMaxConfig turretConfig;
 
     //private VelocityDutyCycle flywheelControl;
@@ -58,6 +60,7 @@ public class Shooter extends SubsystemBase{
         turret = new SparkMax(Ports.turret, SparkMax.MotorType.kBrushless);
         flywheelLeft = new TalonFX(Ports.leftFly);
         flywheelRight = new TalonFX(Ports.rightFly);
+        gear = ShooterConstants.defaultGear;
     }
     public void changeSpeed(int amount) {
         int proposal = speed + amount;
@@ -75,6 +78,19 @@ public class Shooter extends SubsystemBase{
     public void setTargetRPM(double rpm) {
         targetRPM = rpm;
         //actually need the math from vision for this
+    }
+
+    public void changeGear(int num){
+        if(num > 0 && gear < 5){
+            gear += num;
+        }
+        if (num < 0 && gear > 1){
+            gear += num;
+        }
+    }
+
+    public int getGear(){
+        return gear;
     }
 
     public void setTurretVoltage(double voltage) {

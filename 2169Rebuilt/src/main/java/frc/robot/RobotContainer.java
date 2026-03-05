@@ -107,6 +107,9 @@ public class RobotContainer {
         operatorControl.leftStick().whileTrue(new SpinTurret(shooter, leftStick.getX()));
         operatorControl.rightTrigger().whileTrue(new Feed(shooter, indexer)); 
         //operatorControl.leftTrigger().onFalse();
+        operatorControl.povUp().debounce(.09).onTrue(new ModifySpeed(shooter, 1));
+        operatorControl.povDown().debounce(.09).onTrue(new ModifySpeed(shooter, -1));
+
 
 
         // Note that X is defined as forward according to WPILib convention,
