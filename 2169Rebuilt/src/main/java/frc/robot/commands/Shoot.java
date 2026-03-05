@@ -4,20 +4,21 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Indexer;
 
+import frc.robot.Constants.ShooterConstants;
+
 import edu.wpi.first.wpilibj2.command.Command;
 public class Shoot extends Command{
     
     private Shooter shooter;
-    private Intake intake;
+    //private Intake intake;
     //private Indexer index;
     private double rpm;
     private int num;
-    private boolean on;
 
 
-    public Shoot(Shooter shoot, Intake itake, double rotationsPerMinute){
+    public Shoot(Shooter shoot, double rotationsPerMinute){
         this.shooter = shoot;
-        this.intake = itake;
+        //this.intake = itake;
         //this.index = indexer;
         this.rpm = rotationsPerMinute;
         addRequirements(shooter);
@@ -28,15 +29,16 @@ public class Shoot extends Command{
         shooter.setTargetRPM(rpm);
         //intake.raiseIntake();
         num = 0;
-        if (on){
-            on = false;
+        if (ShooterConstants.shooterOn){
+            ShooterConstants.shooterOn = false;
+        }else{
+            ShooterConstants.shooterOn = true;
         }
-        on = true;
     }
 
     @Override
     public void execute(){
-        if (on){
+        if (ShooterConstants.shooterOn){
             shooter.setFlywheelRPM();
         }
         /* 
@@ -52,7 +54,7 @@ public class Shoot extends Command{
         shooter.stopFlywheel();
         shooter.setTargetRPM(0);
         //index.StopPreShoot();
-        on = false;
+        ShooterConstants.shooterOn = false;
     }
 
     @Override
@@ -63,7 +65,7 @@ public class Shoot extends Command{
             return true;
         }        
         */
-        return !on;
+        return !ShooterConstants.shooterOn;
     }
 
 }
