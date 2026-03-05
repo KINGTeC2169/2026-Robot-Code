@@ -197,6 +197,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         configureAutoBuilder();
     }
 
+    
+
     /**
      * Returns a command that applies the specified control request to this swerve drivetrain.
      *
@@ -313,7 +315,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     /**Pathplanner configurations*/
     private void configureAutoBuilder() {
         try{
-          //  DriveConstants.config = RobotConfig.fromGUISettings();
+          //DriveConstants.config = RobotConfig.fromGUISettings();
         } catch (Exception e) {
             // Handle exception as needed
             e.printStackTrace();
