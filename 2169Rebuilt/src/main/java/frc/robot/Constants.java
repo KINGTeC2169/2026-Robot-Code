@@ -32,6 +32,12 @@ public final class Constants {
         public static final double encoderExpectedZero = 0; // TODO: REPLACE WITH REAL ENCODER ZERO
         
     }
+
+    public static final class IndexerConstants{
+        public static final double initialIndexerVoltage = 0; // TODO: Make value real
+        public static final double initialFeederVoltage = 9;
+    }
+    
     
     public static final class TurretConstants {
 

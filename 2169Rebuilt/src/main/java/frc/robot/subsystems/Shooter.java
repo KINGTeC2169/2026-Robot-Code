@@ -61,7 +61,7 @@ public class Shooter extends SubsystemBase{
     }
     public void changeSpeed(int amount) {
         int proposal = speed + amount;
-        if(proposal < TurretConstants.speeds.length && proposal > -1) {
+        if(proposal < ShooterConstants.shootSpeeds.length && proposal > -1) {
             speed = proposal;
             setTargetRPM();
         }

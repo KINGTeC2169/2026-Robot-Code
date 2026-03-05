@@ -29,7 +29,7 @@ public class Feed extends Command{
 
         @Override
         public void end(boolean interrupted){
-            indexer.StopPreShoot();
+            indexer.stopFeeder();
         }
 
         @Override

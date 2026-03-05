@@ -27,7 +27,7 @@ public class IndexBalls extends Command{
     @Override
     public void end(boolean isInterrupted){
         //indexer.StopIndexer();
-        indexer.StopPreShoot();
+        indexer.stopFeeder();
     }
 
     //temporary finish condiiton? 
