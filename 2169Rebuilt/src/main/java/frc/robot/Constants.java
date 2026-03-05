@@ -13,12 +13,12 @@ public final class Constants {
         public static final int controller = 2;
         public static final int leftFly = 11;
         public static final int rightFly = 14;
-        public static final int turret = 8;
+        public static final int turret = 17;
         public static final int indexMotor = 0;        // TODO: REPLACE WITH REAL MOTOR ID
         public static final int feeder = 16;            
         public static final int pivotMotor = 12;
         public static final int spinMotor = 13; 
-        public static final int intakeEncoder = 16;
+        public static final int intakeEncoder = 18;
     }
 
     public static final class IntakeConstants{
@@ -72,8 +72,8 @@ public final class Constants {
     }
 
     public static final class DriveConstants {
-        public static PIDConstants autoTranslationPID = new PIDConstants(0, 0, 0);
-        public static PIDConstants autoRotationPID = new PIDConstants(0, 0, 0);
+        public static PIDConstants autoTranslationPID = new PIDConstants(5, 0, 0);
+        public static PIDConstants autoRotationPID = new PIDConstants(5, 0, 0);
     }
 
     public final class Vision{
