@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Ports;
+import frc.robot.Constants.IndexerConstants;;
 //import frc.robot.Constants.IntakeConstants;
 
 //I copied and pasted all of the imports from last years code and commented out the stuff with errors so hopefully thats right?
@@ -27,66 +28,104 @@ import frc.robot.Constants.Ports;
 
 
 public class Indexer extends SubsystemBase{
-    private TalonFX indexMotor; 
+    private TalonFX indexer; 
     private TalonFX feeder; 
-    private double indexSpeed;
-    private double feederSpeed;
-
+    private double indexerVolts;
+    private double feederVolts;
 
     public Indexer(){
-        indexMotor = new TalonFX(Ports.indexMotor);
+        indexer = new TalonFX(Ports.indexMotor);
         feeder = new TalonFX(Ports.feeder);
-    }
-
-    
-    public TalonFX getindexMotor(){
-        return indexMotor;
-    }
-
-    public TalonFX getfeeder(){
-        return feeder;
-    }
-    
-    public void setIndexerVoltage(double volts){
-        indexMotor.setVoltage(volts);
-    }
-
-    public double getFeederVoltage(){
-        return feeder.getMotorVoltage().getValueAsDouble();
-    }
-
-    public void setFeederVoltage(double voltage){
-        feederSpeed = voltage;
-    }
-
-    public double getfeederRPM(){
-        return 60 * feeder.getRotorVelocity().getValueAsDouble();
+        indexerVolts = IndexerConstants.initialIndexerVoltage;
+        feederVolts = IndexerConstants.initialFeederVoltage;
     }
 
     public void spinFeeder(){
-        feeder.setVoltage(9);
+        feeder.setVoltage(feederVolts);
     }
 
-    public double getIndexerRPM(){//should probably make seperate ones for the different motors
-        //return speed;
-        return 60 * indexMotor.getRotorVelocity().getValueAsDouble();
+    public void spinIndexer(){
+        indexer.setVoltage(-indexerVolts);
     }
 
-    public void StopIndexer(){
-        indexMotor.stopMotor();
-        feeder.stopMotor();
+    public void spinIndexer(int num){
+        indexer.setVoltage(-num * indexerVolts);
     }
 
-    public void StopPreShoot(){
-         feeder.setVoltage(0);
+    public void stopFeeder(){
+        feeder.setVoltage(0);
     }
 
-    public void StopIndex(){
-        indexMotor.stopMotor();
+    public void stopIndexer(){
+        indexer.setVoltage(0);
     }
 
 
-    @Override //again i dont realy know what this does but there was onein my ftc code to so like it makes a little sense
-    public void periodic(){
+    // these methods won't chqnge the speed until their corresponding "spin" functions
+    // (line 43 and 47) are called.
+    public void setFeederVoltage(double volts){
+        feederVolts = volts;
+    }
+
+    public void setIndexerVoltage(double volts){
+        indexerVolts = volts;
     }
 }
+//too much
+//     public Indexer(){
+//         indexMotor = new TalonFX(Ports.indexMotor);
+//         feeder = new TalonFX(Ports.feeder);
+//     }
+
+    
+//     public TalonFX getindexMotor(){
+//         return indexMotor;
+//     }
+
+//     public TalonFX getfeeder(){
+//         return feeder;
+//     }
+    
+//     public void setIndexerVoltage(double volts){
+//         indexMotor.setVoltage(volts);
+//     }
+
+//     public double getFeederVoltage(){
+//         return feeder.getMotorVoltage().getValueAsDouble();
+//     }
+
+//     public void setFeederVoltage(double voltage){
+//         feederSpeed = voltage;
+//     }
+
+//     public double getfeederRPM(){
+//         return 60 * feeder.getRotorVelocity().getValueAsDouble();
+//     }
+
+//     public void spinFeeder(){
+//         feeder.setVoltage(9);
+//     }
+
+//     public double getIndexerRPM(){//should probably make seperate ones for the different motors
+//         //return speed;
+//         return 60 * indexMotor.getRotorVelocity().getValueAsDouble();
+//     }
+
+//     public void StopIndexer(){
+//         indexMotor.stopMotor();
+//         feeder.stopMotor();
+//     }
+
+//     public void StopPreShoot(){
+//          feeder.setVoltage(0);
+//     }
+
+//     public void StopIndex(){
+//         indexMotor.stopMotor();
+//     }
+
+
+//     @Override //again i dont realy know what this does but there was onein my ftc code to so like it makes a little sense
+//     public void periodic(){
+//     }
+// }

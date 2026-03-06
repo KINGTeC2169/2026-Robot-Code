@@ -9,6 +9,8 @@ public class Feed extends Command{
         private Shooter shooter;
         private Indexer indexer;
 
+        private boolean wasReady;
+
         public Feed(Shooter shoot, Indexer index){
             this.shooter = shoot;
             this.indexer = index;
@@ -17,6 +19,7 @@ public class Feed extends Command{
 
         @Override
         public void initialize(){
+            indexer.spinIndexer();
 
         }
 
@@ -24,17 +27,23 @@ public class Feed extends Command{
         public void execute(){
             if (shooter.isReady()){
                 indexer.spinFeeder();
+                wasReady = true;
+                indexer.spinIndexer();
             }
         }
 
         @Override
         public void end(boolean interrupted){
-            indexer.StopPreShoot();
+            indexer.stopFeeder();
+            indexer.stopIndexer();
         }
 
         @Override
         public boolean isFinished(){
-            return !shooter.isReady();
+            if(wasReady && !shooter.isReady()){
+                return !shooter.isReady();
+            }
+            return false;
         }
     }
 
