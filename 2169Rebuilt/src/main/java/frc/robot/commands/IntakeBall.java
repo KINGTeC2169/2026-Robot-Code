@@ -8,7 +8,9 @@ import frc.robot.subsystems.Intake;
 public class IntakeBall extends Command {
     private Intake intake;
     private Indexer indexer;
-    private Timer timer;
+    private int timer;
+
+    private int num;
     
     public IntakeBall(Intake intake, Indexer indexer) {
         this.intake = intake;
@@ -19,12 +21,14 @@ public class IntakeBall extends Command {
     @Override
     public void initialize(){
         intake.lowerIntake();  
+        timer = 0;
     }
 
     @Override
     public void execute(){
         intake.lowerIntake();
         intake.setVoltageSpin(0.4 * 12);    //TODO: REPLACE WITH REAL VOLTAGE
+        timer++;
         // indexer.setVoltage(0); TODO: MAKE THIS WORK WITH INDEXER
 
         //if(intake.getVelocitySpin() < 100) timer.start();   // TODO: REPLACE WITH REAL VELOCITY 
@@ -33,7 +37,7 @@ public class IntakeBall extends Command {
     @Override
     public void end(boolean interrupted){
         intake.setVoltageSpin(0);
-        // indexer.setVoltage(0); TODO: MAKE THIS WORK WITH INDEXER
+        //indexer.setVoltage(0); TODO: MAKE THIS WORK WITH INDEXER
 
         //intake.raiseIntake();
     }
@@ -41,6 +45,10 @@ public class IntakeBall extends Command {
     @Override
     public boolean isFinished(){
         //return timer.get() > 3;    // TODO: TEMPORARY FINISH CONDITION, REPLACE WITH REAL ONE
-        return true;
+        //4 seconds
+        if(timer >= 200){
+            return true;
+        }   
+        return false;
     }
 }

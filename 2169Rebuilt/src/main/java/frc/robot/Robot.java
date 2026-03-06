@@ -25,6 +25,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.util.Elastic; 
+
+import frc.robot.Constants.IntakeConstants;
+import frc.robot.subsystems.Intake;
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
  * the TimedRobot documentation. If you change the name of this class or the package after creating
@@ -44,7 +47,6 @@ public class Robot extends TimedRobot {
   public Robot() {
    m_robotContainer = new RobotContainer();
    pdh = new PowerDistribution();
-
   }
 
   /**
@@ -104,7 +106,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    System.out.println(m_robotContainer.leftStick.getY());
+
     
   }
 

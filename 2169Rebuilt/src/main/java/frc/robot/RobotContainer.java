@@ -72,7 +72,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("Shoot", new Shoot(shooter, 10)); 
         NamedCommands.registerCommand("StopShoot", new StopShoot(shooter, indexer));
         NamedCommands.registerCommand("SpinTurret", new SpinTurret(shooter, 12));
-        NamedCommands.registerCommand("Index", new IndexBalls(indexer));
+        //NamedCommands.registerCommand("Index", new IndexBalls(indexer, num));
         NamedCommands.registerCommand("Feed", new Feed(shooter, indexer));
 
         autoChooser = AutoBuilder.buildAutoChooser();
@@ -99,17 +99,23 @@ public class RobotContainer {
          */
 
 
-        operatorControl.a().whileTrue(new IntakeBall(intake, indexer)); 
-        operatorControl.b().whileTrue(new StopIntake(intake, indexer));
+        operatorControl.a().debounce(.09).onTrue(new IntakeBall(intake, indexer)); 
+        operatorControl.b().debounce(.09).onTrue(new StopIntake(intake, indexer));
         //operatorControl.rightBumper().whileTrue(new Shoot(shooter, 4500)); //hold to shoot
         operatorControl.leftBumper().whileTrue(new StopShoot(shooter, indexer)); 
         //operatorControl.leftTrigger().whileTrue(new IndexBalls(indexer));
         operatorControl.rightBumper().debounce(.09).onTrue(new Shoot(shooter, 100)); //toggle shoot
         //operatorControl.rightStick().whileTrue(new SpinTurret(shooter, leftStick.getX()));
         operatorControl.rightTrigger().whileTrue(new Feed(shooter, indexer)); 
-        //operatorControl.leftTrigger().onFalse();
         operatorControl.povUp().debounce(.09).onTrue(new ModifySpeed(shooter, 1));
         operatorControl.povDown().debounce(.09).onTrue(new ModifySpeed(shooter, -1));
+        operatorControl.x().whileTrue(new IndexBalls(indexer, -1));
+        operatorControl.y().whileTrue(new IndexBalls(indexer, 1));
+        operatorControl.leftTrigger().whileTrue(new PreShoot(indexer));
+        operatorControl.start().whileTrue(new Stop(shooter, intake, indexer));
+
+
+
 
 
 

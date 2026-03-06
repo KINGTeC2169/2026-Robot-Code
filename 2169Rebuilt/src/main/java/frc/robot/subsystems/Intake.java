@@ -36,7 +36,7 @@ public class Intake extends SubsystemBase{
 
     // Set the voltage that the intake motor runs at
     public void setVoltageSpin(double volts){
-        spinMotor.setVoltage(volts);
+        spinMotor.setVoltage(-volts);
     }
 
     // Set the position for the pivot to move to
@@ -64,23 +64,40 @@ public class Intake extends SubsystemBase{
         return encoder.get();
     }
 
+    public double testing(){
+        return Math.abs(getPosition() - IntakeConstants.pivotMaxHeight * 38);
+    }
+
     //  MISC functions
 
     // lower the intake to the grab position
     public void lowerIntake(){
-        if(getPosition() >= -.25){
-            setVoltagePivot(pivotPID.calculate(getPosition(), IntakeConstants.pivotMinHeight));
-        } else{
+        // if(getPosition() >= -.25){
+        //     setVoltagePivot(pivotPID.calculate(getPosition(), IntakeConstants.pivotMinHeight));
+        // } else{
+        //     setVoltagePivot(0);
+        // }
+        
+        if(getPosition() < -.1){
             setVoltagePivot(0);
+        }else{
+            setVoltagePivot(-Math.abs(getPosition() - IntakeConstants.pivotMinHeight));
         }
+        
     }
     
     // raise the intake to the raised position
     public void raiseIntake(){
-        if(getPosition() <= -.2){
-            setVoltagePivot(pivotPID.calculate(getPosition(), IntakeConstants.pivotMaxHeight));
-        } else{
+        // if(getPosition() <= -.25){
+        //     setVoltagePivot(pivotPID.calculate(getPosition(), IntakeConstants.pivotMaxHeight));
+        // } else{
+        //     setVoltagePivot(0);
+        // }
+        
+        if(getPosition() > -.2){
             setVoltagePivot(0);
+        }else{
+            setVoltagePivot(Math.abs(getPosition() - IntakeConstants.pivotMaxHeight) * 30);
         }
     }
 
@@ -95,5 +112,7 @@ public class Intake extends SubsystemBase{
         SmartDashboard.putNumber("Spin Velocity", getVelocitySpin());
         SmartDashboard.putNumber("Encoder Position", getPosition());
         SmartDashboard.putData("Pivot PID", pivotPID);
+
+        SmartDashboard.putNumber("Pivot Input", testing());
     }
 }

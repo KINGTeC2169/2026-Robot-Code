@@ -45,7 +45,11 @@ public class Indexer extends SubsystemBase{
     }
 
     public void spinIndexer(){
-        indexer.setVoltage(indexerVolts);
+        indexer.setVoltage(-indexerVolts);
+    }
+
+    public void spinIndexer(int num){
+        indexer.setVoltage(-num * indexerVolts);
     }
 
     public void stopFeeder(){

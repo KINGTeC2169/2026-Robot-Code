@@ -23,7 +23,7 @@ public final class Constants {
 
     public static final class IntakeConstants{
         public static final double pivotMaxHeight = -0.164;  
-        public static final double pivotMinHeight = -.32;
+        public static final double pivotMinHeight = -.22;
 
         public static final double kP = .8;  // TODO: REPLACE WITH REAL KP
         public static final double kI = 0;  // TODO: REPLACE WITH REAL KI
@@ -34,7 +34,7 @@ public final class Constants {
     }
 
     public static final class IndexerConstants{
-        public static final double initialIndexerVoltage = 0; // TODO: Make value real
+        public static final double initialIndexerVoltage = 3; // TODO: Make value real
         public static final double initialFeederVoltage = 9;
     }
     
