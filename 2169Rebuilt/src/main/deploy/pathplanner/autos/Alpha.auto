@@ -11,6 +11,37 @@
           }
         },
         {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Index"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "StopShoot"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Alpha2"
@@ -32,6 +63,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "Top",
+  "folder": null,
   "choreoAuto": true
 }

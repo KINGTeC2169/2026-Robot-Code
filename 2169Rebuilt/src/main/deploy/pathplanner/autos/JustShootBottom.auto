@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Zeta3"
@@ -14,6 +20,6 @@
     }
   },
   "resetOdom": false,
-  "folder": "Bottom",
+  "folder": null,
   "choreoAuto": true
 }

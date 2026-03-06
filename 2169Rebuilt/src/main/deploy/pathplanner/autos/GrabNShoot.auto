@@ -11,9 +11,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "JustShoot2"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "JustShoot2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              }
+            ]
           }
         },
         {
@@ -26,6 +39,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "Top",
+  "folder": null,
   "choreoAuto": true
 }

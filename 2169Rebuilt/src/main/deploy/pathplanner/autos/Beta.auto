@@ -11,9 +11,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Beta2"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Beta2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              }
+            ]
           }
         },
         {
@@ -21,11 +34,17 @@
           "data": {
             "pathName": "Beta3"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Top",
+  "folder": null,
   "choreoAuto": true
 }

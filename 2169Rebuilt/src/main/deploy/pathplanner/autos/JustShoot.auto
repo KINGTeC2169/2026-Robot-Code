@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "JustShoot3"
@@ -14,6 +20,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "Top",
+  "folder": null,
   "choreoAuto": true
 }
