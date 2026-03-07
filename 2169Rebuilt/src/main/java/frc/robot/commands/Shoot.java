@@ -23,37 +23,26 @@ public class Shoot extends Command{
     @Override
     public void initialize(){
         shooter.setTargetRPM(rpm);
-        num = 0;
-        if (ShooterConstants.shooterOn){
-            ShooterConstants.shooterOn = false;
-        }else{
-            ShooterConstants.shooterOn = true;
-        }
+        shooter.toggleShoot();
     }
 
     @Override
     public void execute(){
-        if (ShooterConstants.shooterOn){
-            shooter.setFlywheelRPM();
-        }
-        num++;
     }
 
     @Override
     public void end(boolean interrupted){
-        shooter.stopFlywheel();
-        shooter.setTargetRPM(0);
-        ShooterConstants.shooterOn = false;
     }
 
     @Override
     public boolean isFinished(){
-        
+        return true;
         //4 seconds
-        if(num >= 200){
-            return true;
-        }        
-        return !ShooterConstants.shooterOn;
-    }
+    //     if(num >= 200){
+    //         return true;
+    //     }        
+    //     return !ShooterConstants.shooterOn;
+    // }
 
+}
 }

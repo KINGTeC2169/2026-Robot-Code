@@ -26,6 +26,7 @@ public class Shooter extends SubsystemBase{
     private TalonFX flywheelRight;
 
     private int gear;
+    private boolean shooting;
 
     private SparkMaxConfig turretConfig;
 
@@ -37,6 +38,7 @@ public class Shooter extends SubsystemBase{
     private double targetRPM;
     private int speed;
 
+    
 
 //some needed info
 
@@ -67,6 +69,15 @@ public class Shooter extends SubsystemBase{
         if(proposal < ShooterConstants.shootSpeeds.length && proposal > -1) {
             speed = proposal;
             setTargetRPM();
+        }
+    }
+
+    public void toggleShoot(){
+        shooting = !shooting;
+        if(shooting){
+            setFlywheelRPM();
+        } else{
+            stopFlywheel();
         }
     }
 
@@ -157,6 +168,7 @@ public class Shooter extends SubsystemBase{
     public void stopFlywheel(){
         flywheelLeft.setVoltage(0);
         flywheelRight.setVoltage(0);
+        shooting = false;
     }
 
     //not using calculations until vision phew
@@ -191,11 +203,11 @@ public class Shooter extends SubsystemBase{
 
         SmartDashboard.putData("Shooter PID", flywheelPID);
 
-        if (turret.getEncoder().getPosition() <= ShooterConstants.encoderExpectedMin){
-            turret.setVoltage(.001 * 12);
-        } 
-        if (turret.getEncoder().getPosition() >= ShooterConstants.encoderExpectedMax){
-            turret.setVoltage(-.001 * 12);
-        }
+        // if (turret.getEncoder().getPosition() <= ShooterConstants.encoderExpectedMin){
+        //     turret.setVoltage(.001 * 12);
+        // } 
+        // if (turret.getEncoder().getPosition() >= ShooterConstants.encoderExpectedMax){
+        //     turret.setVoltage(-.001 * 12);
+        // }
     }
 }

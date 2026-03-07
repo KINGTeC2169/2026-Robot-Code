@@ -14,6 +14,8 @@ public class Intake extends SubsystemBase{
     private TalonFX spinMotor;
     private DutyCycleEncoder encoder;
 
+    private boolean intaking;
+
     private PIDController pivotPID;
 
     private final double pivotMaxHeight = IntakeConstants.pivotMaxHeight;
@@ -37,6 +39,9 @@ public class Intake extends SubsystemBase{
     // Set the voltage that the intake motor runs at
     public void setVoltageSpin(double volts){
         spinMotor.setVoltage(-volts);
+        if(volts == 0){
+            intaking = false;
+        }
     }
 
     // Set the position for the pivot to move to
@@ -47,7 +52,28 @@ public class Intake extends SubsystemBase{
         setVoltagePivot(pivotPID.calculate(getPosition(), position));
     }
 
+    public void setIntaking(boolean bool){
+        intaking = bool;
+    }
+
+    public void spinToggle(){
+        intaking = !intaking;
+        if(intaking){
+            setVoltageSpin(.65 * 12);
+        } else{
+            setVoltageSpin(0);
+        }
+    }
+
+    public void spinToggleN(){
+        setVoltageSpin(-.65 * 12);
+    }
+
     // Getters
+
+    public boolean isIntaking(){
+        return intaking;
+    }
 
     // Returns the velocity of the intake motor as a double
     public double getVelocitySpin(){
@@ -104,6 +130,7 @@ public class Intake extends SubsystemBase{
     // stop the intake from spinning
     public void stopIntake(){
         setVoltageSpin(0);
+        intaking = false;
     }
 
     @Override

@@ -19,6 +19,7 @@ public class StopIntake extends Command {
 
     @Override
     public void initialize(){
+        
         intake.raiseIntake();
         num = 0;
     }

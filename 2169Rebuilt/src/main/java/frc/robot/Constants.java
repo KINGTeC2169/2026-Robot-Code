@@ -30,6 +30,8 @@ public final class Constants {
         public static final double kD = 0;  // TODO: REPLACE WITH REAL KD
 
         public static final double encoderExpectedZero = 0; // TODO: REPLACE WITH REAL ENCODER ZERO
+
+        public static boolean intaking = false;
         
     }
 
@@ -57,8 +59,7 @@ public final class Constants {
         public static double ki = 0; 
         public static double kd = 0;
 
-        public static boolean shooterOn = false; //not actually a constant...
-
+        
         public final static int defaultGear = 1;
 
         //public static double shootRPM = 0.0; //not actually a constant...
