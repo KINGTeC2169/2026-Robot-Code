@@ -18,19 +18,15 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Indexer;
 
 import frc.robot.commands.*;
 
 public class RobotContainer {
-
-  public final Shooter shooter = new Shooter();
   public final Intake intake = new Intake();
   public final Indexer indexer = new Indexer();
 
@@ -69,11 +65,11 @@ public class RobotContainer {
         //finish these...
         NamedCommands.registerCommand("Intake", new IntakeBall(intake, indexer));
         NamedCommands.registerCommand("StopIntake", new StopIntake(intake, indexer));
-        NamedCommands.registerCommand("Shoot", new Shoot(shooter, 10)); 
-        NamedCommands.registerCommand("StopShoot", new StopShoot(shooter, indexer));
-        NamedCommands.registerCommand("SpinTurret", new SpinTurret(shooter, 12));
+        //NamedCommands.registerCommand("Shoot", new Shoot(shooter, 10)); 
+        //NamedCommands.registerCommand("StopShoot", new StopShoot(shooter, indexer));
+        //NamedCommands.registerCommand("SpinTurret", new SpinTurret(shooter, 12));
         NamedCommands.registerCommand("Index", new IndexBalls(indexer, 8));
-        NamedCommands.registerCommand("Feed", new Feed(shooter, indexer));
+        //NamedCommands.registerCommand("Feed", new Feed(shooter, indexer));
 
         autoChooser = AutoBuilder.buildAutoChooser();
         drivetrain.setDefaultCommand(
@@ -99,21 +95,20 @@ public class RobotContainer {
          */
 
 
-        //operatorControl.a().debounce(.09).onTrue(new IntakeBall(intake, indexer)); 
-        operatorControl.a().debounce(.09).onTrue(new JustIntakeN(intake)); 
+        //operatorControl.a().debounce(.09).onTrue(new IntakeBall(intake, indexer));
         //operatorControl.b().debounce(.09).onTrue(new StopIntake(intake, indexer));
         //operatorControl.rightBumper().whileTrue(new Shoot(shooter, 4500)); //hold to shoot
-        operatorControl.leftBumper().debounce(.09).onTrue(new JustIntake(intake)); 
+        //operatorControl.leftBumper().debounce(.09).onTrue(new JustIntake(intake)); 
         //operatorControl.leftTrigger().whileTrue(new IndexBalls(indexer));
         //operatorControl.rightBumper().debounce(.09).onTrue(new Shoot(shooter, 3500)); //toggle shoot
         //operatorControl.rightStick().whileTrue(new SpinTurret(shooter, leftStick.getX()));
-        operatorControl.rightTrigger().whileTrue(new Feed(shooter, indexer)); 
+        //operatorControl.rightTrigger().whileTrue(new Feed(shooter, indexer)); 
         //operatorControl.povUp().debounce(.09).onTrue(new ModifySpeed(shooter, 1));
         //operatorControl.povDown().debounce(.09).onTrue(new ModifySpeed(shooter, -1));
         operatorControl.x().whileTrue(new IndexBalls(indexer, -1));
         operatorControl.y().whileTrue(new IndexBalls(indexer, 1));
-        operatorControl.leftTrigger().debounce(.09).onTrue(new Shoot(shooter, 3500));
-        operatorControl.start().debounce(.09).onTrue(new Stop(shooter, intake, indexer));
+        //operatorControl.leftTrigger().debounce(.09).onTrue(new Shoot(shooter, 3500));
+        //operatorControl.start().debounce(.09).onTrue(new Stop(shooter, intake, indexer));
 
 
 
