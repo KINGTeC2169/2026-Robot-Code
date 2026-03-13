@@ -68,8 +68,8 @@ public final class Constants {
 
         public static final double flyTolerance = 50.0; //rpm
 
-        public static final double encoderExpectedMax = 0;  // TODO: REPLACE WITH REAL ENCODER MAX
-        public static final double encoderExpectedMin = 0;  // TODO: REPLACE WITH REAL ENCODER MIN
+        public static final double encoderExpectedMax = 1;  // TODO: REPLACE WITH REAL ENCODER MAX
+        public static final double encoderExpectedMin = -1;  // TODO: REPLACE WITH REAL ENCODER MIN
     }
 
     public static final class DriveConstants {

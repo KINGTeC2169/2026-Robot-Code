@@ -203,11 +203,11 @@ public class Shooter extends SubsystemBase{
 
         SmartDashboard.putData("Shooter PID", flywheelPID);
 
-        // if (turret.getEncoder().getPosition() <= ShooterConstants.encoderExpectedMin){
-        //     turret.setVoltage(.001 * 12);
-        // } 
-        // if (turret.getEncoder().getPosition() >= ShooterConstants.encoderExpectedMax){
-        //     turret.setVoltage(-.001 * 12);
-        // }
+        if (turret.getEncoder().getPosition() <= ShooterConstants.encoderExpectedMin){
+            turret.setVoltage(.001 * 12);
+        } 
+        if (turret.getEncoder().getPosition() >= ShooterConstants.encoderExpectedMax){
+            turret.setVoltage(-.001 * 12);
+        }
     }
 }

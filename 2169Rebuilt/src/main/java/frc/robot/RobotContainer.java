@@ -106,7 +106,7 @@ public class RobotContainer {
         operatorControl.leftBumper().debounce(.09).onTrue(new JustIntake(intake)); 
         //operatorControl.leftTrigger().whileTrue(new IndexBalls(indexer));
         //operatorControl.rightBumper().debounce(.09).onTrue(new Shoot(shooter, 3500)); //toggle shoot
-        //operatorControl.rightStick().whileTrue(new SpinTurret(shooter, leftStick.getX()));
+        operatorControl.rightStick().whileTrue(new SpinTurret(shooter, rightStick.getX()));
         operatorControl.rightTrigger().whileTrue(new Feed(shooter, indexer)); 
         //operatorControl.povUp().debounce(.09).onTrue(new ModifySpeed(shooter, 1));
         //operatorControl.povDown().debounce(.09).onTrue(new ModifySpeed(shooter, -1));
@@ -114,6 +114,7 @@ public class RobotContainer {
         operatorControl.y().whileTrue(new IndexBalls(indexer, 1));
         operatorControl.leftTrigger().debounce(.09).onTrue(new Shoot(shooter, 3500));
         operatorControl.start().debounce(.09).onTrue(new Stop(shooter, intake, indexer));
+        
 
 
 
