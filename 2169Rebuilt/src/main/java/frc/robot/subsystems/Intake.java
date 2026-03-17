@@ -52,10 +52,12 @@ public class Intake extends SubsystemBase{
         setVoltagePivot(pivotPID.calculate(getPosition(), position));
     }
 
+    // boolean for the toggle
     public void setIntaking(boolean bool){
         intaking = bool;
     }
 
+    // Toggle the intake on and off
     public void spinToggle(){
         intaking = !intaking;
         if(intaking){
