@@ -22,13 +22,14 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Indexer;
+import frc.robot.Constants.IntakeConstants;
+// import frc.robot.subsystems.Indexer;
 
 import frc.robot.commands.*;
 
 public class RobotContainer {
   public final Intake intake = new Intake();
-  public final Indexer indexer = new Indexer();
+  // public final Indexer indexer = new Indexer();
 
 
   public SendableChooser<Command> autoChooser;  
@@ -38,7 +39,7 @@ public class RobotContainer {
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-            .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+            // .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
@@ -47,7 +48,7 @@ public class RobotContainer {
 
     final Telemetry logger = new Telemetry(MaxSpeed);
 
-    private final CommandXboxController operatorControl = new CommandXboxController(Constants.Ports.controller);
+    public final CommandXboxController operatorControl = new CommandXboxController(Constants.Ports.controller);
 
     public final Joystick leftStick = new Joystick(Constants.Ports.leftStick);
   public final JoystickButton topLeftButton = new JoystickButton(leftStick, 1);
@@ -63,12 +64,13 @@ public class RobotContainer {
     public RobotContainer() {
 
         //finish these...
-        NamedCommands.registerCommand("Intake", new IntakeBall(intake, indexer));
-        NamedCommands.registerCommand("StopIntake", new StopIntake(intake, indexer));
+        NamedCommands.registerCommand("Intake", new IntakeBall(intake, IntakeConstants.intakeVolts));
+        NamedCommands.registerCommand("Outtake", new IntakeBall(intake, IntakeConstants.outtakeVolts));
+        NamedCommands.registerCommand("StopIntake", new StopIntake(intake));
         //NamedCommands.registerCommand("Shoot", new Shoot(shooter, 10)); 
         //NamedCommands.registerCommand("StopShoot", new StopShoot(shooter, indexer));
         //NamedCommands.registerCommand("SpinTurret", new SpinTurret(shooter, 12));
-        NamedCommands.registerCommand("Index", new IndexBalls(indexer, 8));
+        //NamedCommands.registerCommand("Index", new IndexBalls(indexer, 8));
         //NamedCommands.registerCommand("Feed", new Feed(shooter, indexer));
 
         autoChooser = AutoBuilder.buildAutoChooser();
@@ -93,20 +95,20 @@ public class RobotContainer {
         rt for shoot
         a for intake
          */
-
-
         //operatorControl.a().debounce(.09).onTrue(new IntakeBall(intake, indexer));
-        //operatorControl.b().debounce(.09).onTrue(new StopIntake(intake, indexer));
+        operatorControl.b().debounce(.09).onTrue(new StopIntake(intake));
         //operatorControl.rightBumper().whileTrue(new Shoot(shooter, 4500)); //hold to shoot
-        //operatorControl.leftBumper().debounce(.09).onTrue(new JustIntake(intake)); 
+        operatorControl.leftBumper().debounce(.09).onTrue(new IntakeBall(intake, IntakeConstants.intakeVolts)); 
+        operatorControl.a().debounce(.09).onTrue(new IntakeBall(intake, IntakeConstants.outtakeVolts)); 
+
         //operatorControl.leftTrigger().whileTrue(new IndexBalls(indexer));
         //operatorControl.rightBumper().debounce(.09).onTrue(new Shoot(shooter, 3500)); //toggle shoot
         //operatorControl.rightStick().whileTrue(new SpinTurret(shooter, leftStick.getX()));
         //operatorControl.rightTrigger().whileTrue(new Feed(shooter, indexer)); 
         //operatorControl.povUp().debounce(.09).onTrue(new ModifySpeed(shooter, 1));
         //operatorControl.povDown().debounce(.09).onTrue(new ModifySpeed(shooter, -1));
-        operatorControl.x().whileTrue(new IndexBalls(indexer, -1));
-        operatorControl.y().whileTrue(new IndexBalls(indexer, 1));
+        // operatorControl.x().whileTrue(new IndexBalls(indexer, -1));
+        // operatorControl.y().whileTrue(new IndexBalls(indexer, 1));
         //operatorControl.leftTrigger().debounce(.09).onTrue(new Shoot(shooter, 3500));
         //operatorControl.start().debounce(.09).onTrue(new Stop(shooter, intake, indexer));
 

@@ -2,53 +2,50 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Indexer;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants.Ports;
+// import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
+
 
 public class IntakeBall extends Command {
     private Intake intake;
-    private Indexer indexer;
+    // private Indexer indexer;
     private int timer;
 
     private int num;
+    private double volts;
+    private final CommandXboxController operator = new CommandXboxController(0);
     
-    public IntakeBall(Intake intake, Indexer indexer) {
+    public IntakeBall(Intake intake, double volts) {
         this.intake = intake;
-        this.indexer = indexer;
-        addRequirements(intake, indexer);
+        this.volts = volts;
+        addRequirements(intake);
+      
     }
+
+
 
     @Override
     public void initialize(){
-        intake.lowerIntake();  
-        timer = 0;
+        if(volts > 0) {
+            volts = 0.1 * 12 + volts * operator.getRightTriggerAxis();
+        }
+        intake.intakeDirection(volts);
     }
 
     @Override
     public void execute(){
-        intake.lowerIntake();
-        intake.setVoltageSpin(0.4 * 12);    //TODO: REPLACE WITH REAL VOLTAGE
-        timer++;
-        // indexer.setVoltage(0); TODO: MAKE THIS WORK WITH INDEXER
 
-        //if(intake.getVelocitySpin() < 100) timer.start();   // TODO: REPLACE WITH REAL VELOCITY 
     }
 
     @Override
     public void end(boolean interrupted){
-        intake.setVoltageSpin(0);
-        //indexer.setVoltage(0); TODO: MAKE THIS WORK WITH INDEXER
 
-        //intake.raiseIntake();
     }
 
     @Override
     public boolean isFinished(){
-        //return timer.get() > 3;    // TODO: TEMPORARY FINISH CONDITION, REPLACE WITH REAL ONE
-        //4 seconds
-        if(timer >= 200){
-            return true;
-        }   
-        return false;
+        return true;
     }
 }

@@ -10,136 +10,139 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 
 public class Intake extends SubsystemBase{
-    private TalonFX pivotMotor;
-    private TalonFX spinMotor;
+    private TalonFX topIntake;
+    private TalonFX bottomIntake;
     private DutyCycleEncoder encoder;
 
-    private boolean intaking;
+    public boolean intaking;
+    public boolean outtaking;
+    
 
-    private PIDController pivotPID;
 
-    private final double pivotMaxHeight = IntakeConstants.pivotMaxHeight;
-    private final double pivotMinHeight = IntakeConstants.pivotMinHeight;
+
 
     public Intake(){
-        pivotMotor = new TalonFX(Ports.pivotMotor);
-        spinMotor = new TalonFX(Ports.spinMotor);
-
-        pivotPID = new PIDController(IntakeConstants.kP, IntakeConstants.kI, IntakeConstants.kD);
-        encoder = new DutyCycleEncoder(Ports.intakeEncoder, 1, IntakeConstants.encoderExpectedZero);
-    }
-
-    // Setters
-
-    // Set the voltage that the pivot motor runs at
-    public void setVoltagePivot(double volts){
-        pivotMotor.setVoltage(volts);
-    }
-
-    // Set the voltage that the intake motor runs at
-    public void setVoltageSpin(double volts){
-        spinMotor.setVoltage(-volts);
-        if(volts == 0){
-            intaking = false;
-        }
-    }
-
-    // Set the position for the pivot to move to
-    // idk if this function is really needed, but it might be useful *shrug*
-    public void setPivotPosition(double position){
-        position = MathUtil.clamp(position, pivotMinHeight, pivotMaxHeight);
-
-        setVoltagePivot(pivotPID.calculate(getPosition(), position));
-    }
-
-    public void setIntaking(boolean bool){
-        intaking = bool;
-    }
-
-    public void spinToggle(){
-        intaking = !intaking;
-        if(intaking){
-            setVoltageSpin(.65 * 12);
-        } else{
-            setVoltageSpin(0);
-        }
-    }
-
-    public void spinToggleN(){
-        setVoltageSpin(-.65 * 12);
-    }
-
-    // Getters
-
-    public boolean isIntaking(){
-        return intaking;
-    }
-
-    // Returns the velocity of the intake motor as a double
-    public double getVelocitySpin(){
-        return spinMotor.getVelocity().getValueAsDouble();
-    }
-
-    // Returns the velocity of the pivot motor as a double
-    public double getVelocityPivot(){
-        return pivotMotor.getVelocity().getValueAsDouble();
-    }
-
-    // Return the position of the pivot motor
-    public double getPosition(){
-        return encoder.get();
-    }
-
-    public double testing(){
-        return Math.abs(getPosition() - IntakeConstants.pivotMaxHeight * 38);
-    }
-
-    //  MISC functions
-
-    // lower the intake to the grab position
-    public void lowerIntake(){
-        // if(getPosition() >= -.25){
-        //     setVoltagePivot(pivotPID.calculate(getPosition(), IntakeConstants.pivotMinHeight));
-        // } else{
-        //     setVoltagePivot(0);
-        // }
-        
-        if(getPosition() < -.1){
-            setVoltagePivot(0);
-        }else{
-            setVoltagePivot(-Math.abs(getPosition() - IntakeConstants.pivotMinHeight));
-        }
-        
-    }
-    
-    // raise the intake to the raised position
-    public void raiseIntake(){
-        // if(getPosition() <= -.25){
-        //     setVoltagePivot(pivotPID.calculate(getPosition(), IntakeConstants.pivotMaxHeight));
-        // } else{
-        //     setVoltagePivot(0);
-        // }
-        
-        if(getPosition() > -.2){
-            setVoltagePivot(0);
-        }else{
-            setVoltagePivot(Math.abs(getPosition() - IntakeConstants.pivotMaxHeight) * 30);
-        }
-    }
-
-    // stop the intake from spinning
-    public void stopIntake(){
-        setVoltageSpin(0);
+        topIntake = new TalonFX(Ports.topIntake);
+        bottomIntake = new TalonFX(Ports.bottomIntake);
         intaking = false;
+        outtaking = false;
     }
+
+    public void intakeDirection(double voltage) {
+        topIntake.setVoltage(voltage);
+        bottomIntake.setVoltage(voltage);
+    }
+
+    public void stopIntaking+() {
+        topIntake.setVoltage(0);
+        bottomIntake.setVoltage(0);
+    }
+
+
+    
+    // // Setters
+
+    // // Set the voltage that the pivot motor runs at
+    // // public void setVoltagePivot(double volts){
+    // //     pivotMotor.setVoltage(volts);
+    // // }
+
+    // // Set the voltage that the intake motor runs at
+    // public void setVoltageSpin(double volts){
+    //     topIntake.setVoltage(-volts);
+    //     if(volts == 0){
+    //         intaking = false;
+    //     }
+    // }
+
+    // // Set the position for the pivot to move to
+    // // idk if this function is really needed, but it might be useful *shrug*
+    // // public void setPivotPosition(double position){
+    // //     position = MathUtil.clamp(position, pivotMinHeight, pivotMaxHeight);
+
+    // //     setVoltagePivot(pivotPID.calculate(getPosition(), position));
+    // // }
+
+    // public void setIntaking(boolean bool){
+    //     intaking = bool;
+    // }
+
+    // public void spinToggle(){
+    //     intaking = !intaking;
+    //     if(intaking){
+    //         setVoltageSpin(.65 * 12);
+    //     } else{
+    //         setVoltageSpin(0);
+    //     }
+    // }
+
+    // public void spinToggleN(){
+    //     setVoltageSpin(-.65 * 12);
+    // }
+
+    // // Getters
+
+    // public boolean isIntaking(){
+    //     return intaking;
+    // }
+
+    // // Returns the velocity of the intake motor as a double
+
+    // // Return the position of the pivot motor
+    // public double getPosition(){
+    //     return encoder.get();
+    // }
+
+    // public double testing(){
+    //     return Math.abs(getPosition() - IntakeConstants.pivotMaxHeight * 38);
+    // }
+
+    // //  MISC functions
+
+    // // lower the intake to the grab position
+    // // public void lowerIntake(){
+    // //     // if(getPosition() >= -.25){
+    // //     //     setVoltagePivot(pivotPID.calculate(getPosition(), IntakeConstants.pivotMinHeight));
+    // //     // } else{
+    // //     //     setVoltagePivot(0);
+    // //     // }
+        
+    // //     if(getPosition() < -.1){
+    // //         setVoltagePivot(0);
+    // //     }else{
+    // //         setVoltagePivot(-Math.abs(getPosition() - IntakeConstants.pivotMinHeight));
+    // //     }
+        
+    // // }
+    
+    // // raise the intake to the raised position
+    // // public void raiseIntake(){
+    // //     // if(getPosition() <= -.25){
+    // //     //     setVoltagePivot(pivotPID.calculate(getPosition(), IntakeConstants.pivotMaxHeight));
+    // //     // } else{
+    // //     //     setVoltagePivot(0);
+    // //     // }
+        
+    // //     if(getPosition() > -.2){
+    // //         setVoltagePivot(0);
+    // //     }else{
+    // //         setVoltagePivot(Math.abs(getPosition() - IntakeConstants.pivotMaxHeight) * 30);
+    // //     }
+    // // }
+
+    // // stop the intake from spinning
+    // public void stopIntake(){
+    //     setVoltageSpin(0);
+    //     intaking = false;
+    // }
 
     @Override
     public void periodic(){
-        SmartDashboard.putNumber("Pivot Velocity", getVelocityPivot());
-        SmartDashboard.putNumber("Spin Velocity", getVelocitySpin());
-        SmartDashboard.putNumber("Encoder Position", getPosition());
-        SmartDashboard.putData("Pivot PID", pivotPID);
+        // SmartDashboard.putNumber("Pivot Velocity", getVelocityPivot());
+        // SmartDashboard.putNumber("Spin Velocity", getVelocitySpin());
+        // SmartDashboard.putNumber("Encoder Position", getPosition());
+        // SmartDashboard.putData("Pivot PID", pivotPID);
 
-        SmartDashboard.putNumber("Pivot Input", testing());
+        // SmartDashboard.putNumber("Pivot Input", testing());
     }
 }
