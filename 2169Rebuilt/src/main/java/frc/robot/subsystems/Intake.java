@@ -1,42 +1,82 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.TalonFX;
-import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.Ports;
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 
 public class Intake extends SubsystemBase{
     private TalonFX topIntake;
     private TalonFX bottomIntake;
-    private DutyCycleEncoder encoder;
 
-    public boolean intaking;
-    public boolean outtaking;
+    public boolean stopIntake = false;
+
+
+
+    // Constructor for the intake subsystem
+    public Intake(){
+        topIntake = new TalonFX(Ports.topIntake);
+        bottomIntake = new TalonFX(Ports.bottomIntake);
+    }
+
+    // Sets proper direction for intake/outtake procedure
+    public void intakeDirection(double voltage) {
+        topIntake.setVoltage(voltage);
+        bottomIntake.setVoltage(voltage);
+        stopIntake = false;
+    }
+
+    // Stops the intake from spinning
+    public void stopIntaking() {
+        topIntake.setVoltage(0);
+        bottomIntake.setVoltage(0);
+        stopIntake = true;
+    }
+
+
+
+    // DO NOT look down
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
 
 
 
 
-    public Intake(){
-        topIntake = new TalonFX(Ports.topIntake);
-        bottomIntake = new TalonFX(Ports.bottomIntake);
-        intaking = false;
-        outtaking = false;
-    }
-
-    public void intakeDirection(double voltage) {
-        topIntake.setVoltage(voltage);
-        bottomIntake.setVoltage(voltage);
-    }
-
-    public void stopIntaking() {
-        topIntake.setVoltage(0);
-        bottomIntake.setVoltage(0);
-    }
 
 
     
@@ -64,9 +104,9 @@ public class Intake extends SubsystemBase{
     // // }
 
     // boolean for the toggle
-    public void setIntaking(boolean bool){
-        intaking = bool;
-    }
+    // public void setIntaking(boolean bool){
+    //     intaking = bool;
+    // }
 
     // Toggle the intake on and off
     // public void spinToggle(){

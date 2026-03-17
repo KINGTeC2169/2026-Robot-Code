@@ -95,12 +95,7 @@ public class RobotContainer {
         rt for shoot
         a for intake
          */
-        //operatorControl.a().debounce(.09).onTrue(new IntakeBall(intake, indexer));
-        operatorControl.b().debounce(.09).onTrue(new StopIntake(intake));
-        //operatorControl.rightBumper().whileTrue(new Shoot(shooter, 4500)); //hold to shoot
-        operatorControl.leftBumper().debounce(.09).onTrue(new IntakeBall(intake, IntakeConstants.intakeVolts)); 
-        operatorControl.a().debounce(.09).onTrue(new IntakeBall(intake, IntakeConstants.outtakeVolts)); 
-
+        //operatorControl.a().debounce(.09).onTrue(new IntakeBall(intake, indexer)); 
         //operatorControl.leftTrigger().whileTrue(new IndexBalls(indexer));
         //operatorControl.rightBumper().debounce(.09).onTrue(new Shoot(shooter, 3500)); //toggle shoot
         //operatorControl.rightStick().whileTrue(new SpinTurret(shooter, leftStick.getX()));
@@ -111,7 +106,20 @@ public class RobotContainer {
         // operatorControl.y().whileTrue(new IndexBalls(indexer, 1));
         //operatorControl.leftTrigger().debounce(.09).onTrue(new Shoot(shooter, 3500));
         //operatorControl.start().debounce(.09).onTrue(new Stop(shooter, intake, indexer));
+        //operatorControl.rightBumper().whileTrue(new Shoot(shooter, 4500)); //hold to shoot
 
+
+
+                // OPERATOR CONTROLS
+
+        // Stops the intake when B is pressed
+        operatorControl.b().debounce(.09).onTrue(new StopIntake(intake));
+
+        // Intakes the ball when left bumper is pressed at a default 40% voltage
+        operatorControl.leftBumper().debounce(.09).onTrue(new IntakeBall(intake, IntakeConstants.intakeVolts)); 
+
+        // Outtakes the ball when right bumper is pressed at a default -40% voltage
+        operatorControl.a().debounce(.09).onTrue(new IntakeBall(intake, IntakeConstants.outtakeVolts)); 
 
 
 

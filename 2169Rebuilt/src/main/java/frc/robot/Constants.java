@@ -3,8 +3,6 @@ package frc.robot;
 
 import com.pathplanner.lib.config.PIDConstants;
 
-import edu.wpi.first.math.controller.PIDController;
-
 public final class Constants {
     
     public static final class Ports{
