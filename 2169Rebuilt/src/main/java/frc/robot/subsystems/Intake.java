@@ -33,7 +33,7 @@ public class Intake extends SubsystemBase{
         bottomIntake.setVoltage(voltage);
     }
 
-    public void stopIntaking+() {
+    public void stopIntaking() {
         topIntake.setVoltage(0);
         bottomIntake.setVoltage(0);
     }
@@ -69,14 +69,14 @@ public class Intake extends SubsystemBase{
     }
 
     // Toggle the intake on and off
-    public void spinToggle(){
-        intaking = !intaking;
-        if(intaking){
-            setVoltageSpin(.65 * 12);
-        } else{
-            setVoltageSpin(0);
-        }
-    }
+    // public void spinToggle(){
+    //     intaking = !intaking;
+    //     if(intaking){
+    //         setVoltageSpin(.65 * 12);
+    //     } else{
+    //         setVoltageSpin(0);
+    //     }
+    // }
 
     // public void spinToggleN(){
     //     setVoltageSpin(-.65 * 12);
