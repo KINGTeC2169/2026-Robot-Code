@@ -23,6 +23,8 @@ public class LED extends SubsystemBase {
     private AddressableLEDBuffer m_ledBuffer;
 
     //Used to control each strip of LED
+
+    //fix for actual leds once they are real
     private AddressableLEDBufferView m_leftSide;
     private AddressableLEDBufferView m_leftMiddle;
     private AddressableLEDBufferView m_rightSide;
@@ -44,16 +46,17 @@ public class LED extends SubsystemBase {
 
     //Patterns
     private LEDPattern breathing = LEDPattern.gradient(GradientType.kDiscontinuous, royalMaroon, royalYellow).breathe(Seconds.of(2));
+    private LEDPattern gradient = LEDPattern.gradient(GradientType.kDiscontinuous, royalMaroon, royalYellow)
     private LEDPattern solidYellow = LEDPattern.solid(royalYellow);
-    /*private LEDPattern solidRed = LEDPattern.solid(Color.kRed);
-    private LEDPattern solidBlue = LEDPattern.solid(Color.kBlue);*/
+    private LEDPattern solidRed = LEDPattern.solid(royalRed);
+    //private LEDPattern solidBlue = LEDPattern.solid(Color.kBlue);
     private LEDPattern off = LEDPattern.kOff;
 
     
     private LEDPattern currentPattern = breathing;
 
     public LED(){
-        m_led = new AddressableLED(Constants.Ports.ledPort);//need to put port iin constants once it exists
+        m_led = new AddressableLED(Constants.Ports.ledPort);//need to put port in constants once it exists
         m_ledBuffer = new AddressableLEDBuffer(ledLength);
         m_led.setColorOrder(ColorOrder.kRGB);
 
@@ -65,10 +68,36 @@ public class LED extends SubsystemBase {
         currentPattern = breathing;
     }
 
+    public void still(){
+        currentPattern = gradient;
+    }
+
     public void setYellow(){
         currentPattern = solidYellow;
     }
+
+    public void scrollYellow(){
+        Map<Double, Color> maskSteps = Map.of(0, Color.kWhite, 0.5, Color.kBlack);
     
+        LEDPattern mask =LEDPattern.steps(maskSteps).scrollAtRelativeSpeed(Percent.per(Second).of(0.25));
+        currentPattern = solidYellow.mask(mask);
+    }
+
+    public void setRed(){
+        currentPattern = solidRed;
+    }
+
+    public void scrollRed(){
+        Map<Double, Color> maskSteps = Map.of(0, Color.kWhite, 0.5, Color.kBlack);
+    
+        LEDPattern mask =LEDPattern.steps(maskSteps).scrollAtRelativeSpeed(Percent.per(Second).of(0.25));
+        currentPattern = solidRed.mask(mask);
+    }
+
+    public void rainbow(){
+        currentPattern = LEDPattern.rainbow(255, 255);
+    }
+
 
     public void off(){
         currentPattern = off;
