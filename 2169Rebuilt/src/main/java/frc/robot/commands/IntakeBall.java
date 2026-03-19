@@ -32,6 +32,7 @@ public class IntakeBall extends Command {
         if(volts > 0) {
             volts = 3 + volts * operator.getRightTriggerAxis();
         }
+        intake.intakeDirection(volts);
     }
 
     @Override
