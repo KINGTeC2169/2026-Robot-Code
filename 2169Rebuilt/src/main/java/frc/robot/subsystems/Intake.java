@@ -4,13 +4,12 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import frc.robot.Constants.Ports;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 
 public class Intake extends SubsystemBase{
     private TalonFX topIntake;
     private TalonFX bottomIntake;
-
-    public boolean stopIntake = false;
 
 
 
@@ -20,19 +19,21 @@ public class Intake extends SubsystemBase{
         bottomIntake = new TalonFX(Ports.bottomIntake);
     }
 
-    // Sets proper direction for intake/outtake procedure
-    public void intakeDirection(double voltage) {
+
+    // Sets proper direction and speed for intake/outtake procedure
+    public void intakeDirection(double voltage, CommandXboxController operator) {
+        voltage *= voltage > 0 ? 2 * operator.getRightTriggerAxis() : 1;
         topIntake.setVoltage(voltage);
         bottomIntake.setVoltage(voltage);
-        stopIntake = false;
     }
+
 
     // Stops the intake from spinning
     public void stopIntaking() {
         topIntake.setVoltage(0);
         bottomIntake.setVoltage(0);
-        stopIntake = true;
     }
+
 
 
 
