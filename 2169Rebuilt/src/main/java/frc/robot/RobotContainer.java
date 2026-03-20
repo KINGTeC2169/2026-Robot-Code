@@ -24,11 +24,13 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.Constants.IntakeConstants;
 // import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.LED;
 
 import frc.robot.commands.*;
 
 public class RobotContainer {
   public final Intake intake = new Intake();
+  public final LED led = new LED();
   // public final Indexer indexer = new Indexer();
 
 
@@ -64,14 +66,16 @@ public class RobotContainer {
     public RobotContainer() {
 
         //finish these...
-        NamedCommands.registerCommand("Intake", new IntakeBall(intake, IntakeConstants.intakeVolts));
-        NamedCommands.registerCommand("Outtake", new IntakeBall(intake, IntakeConstants.outtakeVolts));
-        NamedCommands.registerCommand("StopIntake", new StopIntake(intake));
+        NamedCommands.registerCommand("Intake", new IntakeBall(intake, IntakeConstants.intakeVolts, led));
+        NamedCommands.registerCommand("Outtake", new IntakeBall(intake, IntakeConstants.outtakeVolts, led));
+        NamedCommands.registerCommand("StopIntake", new StopIntake(intake, led));
         //NamedCommands.registerCommand("Shoot", new Shoot(shooter, 10)); 
         //NamedCommands.registerCommand("StopShoot", new StopShoot(shooter, indexer));
         //NamedCommands.registerCommand("SpinTurret", new SpinTurret(shooter, 12));
         //NamedCommands.registerCommand("Index", new IndexBalls(indexer, 8));
         //NamedCommands.registerCommand("Feed", new Feed(shooter, indexer));
+
+        led.initialize();
 
         autoChooser = AutoBuilder.buildAutoChooser();
         drivetrain.setDefaultCommand(
@@ -113,13 +117,13 @@ public class RobotContainer {
                 // OPERATOR CONTROLS
 
         // Stops the intake when B is pressed
-        operatorControl.b().debounce(.09).onTrue(new StopIntake(intake));
+        operatorControl.b().debounce(.09).onTrue(new StopIntake(intake, led));
 
         // Intakes the ball when left bumper is pressed at a default 40% voltage
-        operatorControl.leftBumper().debounce(.09).onTrue(new IntakeBall(intake, IntakeConstants.intakeVolts)); 
+        operatorControl.leftBumper().debounce(.09).onTrue(new IntakeBall(intake, IntakeConstants.intakeVolts, led)); 
 
         // Outtakes the ball when right bumper is pressed at a default -40% voltage
-        operatorControl.a().debounce(.09).onTrue(new IntakeBall(intake, IntakeConstants.outtakeVolts)); 
+        operatorControl.a().debounce(.09).onTrue(new IntakeBall(intake, IntakeConstants.outtakeVolts, led)); 
 
 
 

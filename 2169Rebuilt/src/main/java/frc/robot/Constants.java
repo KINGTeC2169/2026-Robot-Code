@@ -12,6 +12,7 @@ public final class Constants {
         public static final int controller = 0;
         public static final int topIntake = 12; 
         public static final int bottomIntake = 15;
+        public static final int ledPort = 5; //fake number need to add real number once the LEDs exist
     }
 
     public static final class IntakeConstants{
