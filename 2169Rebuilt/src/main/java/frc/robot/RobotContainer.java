@@ -75,7 +75,7 @@ public class RobotContainer {
 
         autoChooser = AutoBuilder.buildAutoChooser();
 
-      drivetrain.addVisionMeasurement(vision.getRobotPose().robotPose().toPose2d(), vision.getRobotPose().timestamp());
+        drivetrain.addVisionMeasurement(vision.getRobotPose().robotPose().toPose2d(), vision.getRobotPose().timestamp());
 
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
