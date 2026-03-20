@@ -7,9 +7,8 @@ import frc.robot.subsystems.Intake;
 
 public class IntakeBall extends Command {
     private Intake intake;
-
     private double volts;
-    private final CommandXboxController operator = new CommandXboxController(0);
+    private final CommandXboxController operator = new CommandXboxController(2);
     
     // Constructor for intake command 
     public IntakeBall(Intake intake, double volts) {
@@ -23,23 +22,26 @@ public class IntakeBall extends Command {
     // Set the voltage at which the motors intake/outtake 
     @Override 
     public void initialize(){
-        intake.intakeDirection(volts);
+        intake.intakeDirection(volts, operator);
     }
 
     // Adjust speed at which outtake spits out balls by depth of trigger press up to 65% voltage
     @Override
     public void execute(){
-        if(volts > 0) {
-            volts = 3 + volts * operator.getRightTriggerAxis();
-        }
+        intake.intakeDirection(volts, operator);
     }
 
     @Override
-    public void end(boolean interrupted){}
+    public void end(boolean interrupted){
+      
+    }
 
     // Stops the intake when the stop command runs
     @Override
     public boolean isFinished(){
-        return intake.stopIntake;
+        return(operator.b().debounce(.09).getAsBoolean()) || 
+        operator.a().debounce(.09).getAsBoolean() ||
+        operator.leftBumper().debounce(.09).getAsBoolean();
     }
 }
+
