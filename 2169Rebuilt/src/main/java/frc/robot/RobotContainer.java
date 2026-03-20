@@ -120,11 +120,11 @@ public class RobotContainer {
         operatorControl.leftBumper().debounce(.09).onTrue(new IntakeBall(intake, IntakeConstants.intakeVolts)); 
 
         // Outtakes the ball when right bumper is pressed at a default -40% voltage
-        operatorControl.a().debounce(.09).onTrue(new IntakeBall(intake, IntakeConstants.outtakeVolts)); 
+        operatorControl.rightBumper().debounce(.09).onTrue(new IntakeBall(intake, IntakeConstants.outtakeVolts)); 
 
 
 
-
+ 
 
         // Note that X is defined as forward according to WPILib convention,
 

@@ -7,16 +7,16 @@ public final class Constants {
     
     public static final class Ports{
         //Driver station controller ids
-        public static final int leftStick = 2;
+        public static final int leftStick = 0;
         public static final int rightStick = 1;
-        public static final int controller = 0;
+        public static final int controller = 2;
         public static final int topIntake = 12; 
         public static final int bottomIntake = 15;
     }
 
     public static final class IntakeConstants{
-        public static final double intakeVolts = -0.4 * 12;
-        public static final double outtakeVolts = 0.4 * 12;
+        public static final double intakeVolts = -0.25 * 12;
+        public static final double outtakeVolts = 0.25 * 12;
     }
     
 

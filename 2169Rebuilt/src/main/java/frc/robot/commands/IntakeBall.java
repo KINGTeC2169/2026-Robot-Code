@@ -8,7 +8,7 @@ import frc.robot.subsystems.Intake;
 public class IntakeBall extends Command {
     private Intake intake;
     private double volts;
-    private final CommandXboxController operator = new CommandXboxController(0);
+    private final CommandXboxController operator = new CommandXboxController(2);
     
     // Constructor for intake command 
     public IntakeBall(Intake intake, double volts) {
@@ -33,7 +33,7 @@ public class IntakeBall extends Command {
 
     @Override
     public void end(boolean interrupted){
-        intake.stopIntaking();
+      
     }
 
     // Stops the intake when the stop command runs
@@ -44,3 +44,4 @@ public class IntakeBall extends Command {
         operator.leftBumper().debounce(.09).getAsBoolean();
     }
 }
+
