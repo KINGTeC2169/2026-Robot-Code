@@ -1,34 +1,33 @@
 package frc.robot;
 
-import static edu.wpi.first.units.Units.*;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.RadiansPerSecond;
+import static edu.wpi.first.units.Units.RotationsPerSecond;
 
+import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.pathplanner.lib.auto.NamedCommands;
 
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
-import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.CommandSwerveDrivetrain;
-
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.PhotonVision;
 import frc.robot.Constants.IntakeConstants;
 // import frc.robot.subsystems.Indexer;
-
-import frc.robot.commands.*;
+import frc.robot.commands.IntakeBall;
+import frc.robot.commands.StopIntake;
+import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.PhotonVision;
 
 public class RobotContainer {
   public final Intake intake = new Intake();
-  public final PhotonVision vision = new PhotonVision();
+  public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+  private final PhotonVision vision = new PhotonVision(drivetrain);
   // public final Indexer indexer = new Indexer();
 
 
@@ -59,8 +58,6 @@ public class RobotContainer {
   private final JoystickButton topRightButton = new JoystickButton(rightStick, 1);
   public final JoystickButton bottomRightButton = new JoystickButton(rightStick, 2);
 
-    public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
-
     public RobotContainer() {
 
         //finish these...
@@ -74,8 +71,6 @@ public class RobotContainer {
         //NamedCommands.registerCommand("Feed", new Feed(shooter, indexer));
 
         autoChooser = AutoBuilder.buildAutoChooser();
-
-        drivetrain.addVisionMeasurement(vision.getRobotPose().robotPose().toPose2d(), vision.getRobotPose().timestamp());
 
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
