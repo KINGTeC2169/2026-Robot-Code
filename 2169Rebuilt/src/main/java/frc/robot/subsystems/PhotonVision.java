@@ -1,17 +1,25 @@
 package frc.robot.subsystems;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonUtils;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Vision;
@@ -47,6 +55,11 @@ public class PhotonVision extends SubsystemBase{
 
         frontLeftPoseEst = new PhotonPoseEstimator(kTagLayout, kRobotToFrontLeftCam);
         backRightPoseEst = new PhotonPoseEstimator(kTagLayout, kRobotToBackRightCam);
+
+        //Turn off driver mode for all cameras
+        frontLeftCam.setDriverMode(false);
+        backRightCam.setDriverMode(false);
+        frontCam.setDriverMode(false);
     }
 
     public Matrix<N3, N1> getEstimationStdDevs(EstimatedRobotPose est, int numTags) {
@@ -58,6 +71,7 @@ public class PhotonVision extends SubsystemBase{
         for (var target : est.targetsUsed) {
             avgDist += target.getBestCameraToTarget().getTranslation().getNorm();
         }
+        if (numTags == 0) return VecBuilder.fill(1, 1, 1); //Large uncertainty
         avgDist /= numTags;
 
         // Scaling Factor: Increase std dev as distance increases
@@ -90,7 +104,7 @@ public class PhotonVision extends SubsystemBase{
             //If a pose was successfully calculated, send it to the drivetrain
             if (visionEst.isPresent()) {
                 EstimatedRobotPose est = visionEst.get();
-                // Assuming you have a reference to your drivetrain/swerve subsystem
+                if (est.targetsUsed.size() > 1 || (est.targetsUsed.size() == 1 && est.targetsUsed.get(0).getPoseAmbiguity() < 0.2))
                 drivetrain.addVisionMeasurement(
                     est.estimatedPose.toPose2d(), 
                     est.timestampSeconds,
@@ -123,7 +137,7 @@ public class PhotonVision extends SubsystemBase{
             //If a pose was successfully calculated, send it to the drivetrain
             if (visionEst.isPresent()) {
                 EstimatedRobotPose est = visionEst.get();
-                // Assuming you have a reference to your drivetrain/swerve subsystem
+                if (est.targetsUsed.size() == 1 && est.targetsUsed.get(0).getPoseAmbiguity() < 0.2)
                 drivetrain.addVisionMeasurement(
                     est.estimatedPose.toPose2d(), 
                     est.timestampSeconds,
@@ -133,16 +147,74 @@ public class PhotonVision extends SubsystemBase{
         }
     }
 
-    public Pose3d getFuelPose(){
+    /**
+     * Gets the position of the center of the largest fuel cluster
+     * 
+     * @return the position of the center of the fuel cluser in field relative format 
+     */
+    public Pose2d getFieldRelativeFuelClusterPose(){
 
         var results = frontCam.getAllUnreadResults();
 
         if (!results.isEmpty()){
             var result = results.get(results.size() - 1);
-            result.getTargets();
-        }
+            if (result.hasTargets()){
+                    var clusterCenter = getMaxClusterCenter(result.getTargets());
+                    if (clusterCenter != null){
+                    double distance = getDistanceToCluster(clusterCenter);
 
+                    double xTranslation = distance * Math.cos(Units.degreesToRadians(clusterCenter.getYaw()));
+                    double yTranslation = distance * Math.sin(Units.degreesToRadians(clusterCenter.getYaw()));
+
+                    Pose2d robotPose = drivetrain.getState().Pose;
+
+                    Translation2d fuelOffset = new Translation2d(xTranslation, yTranslation).rotateBy(robotPose.getRotation());
+
+                    return new Pose2d(robotPose.getTranslation().plus(fuelOffset), robotPose.getRotation());
+                }
+            }
+        }
         return null;
+    }
+
+    public PhotonTrackedTarget getMaxClusterCenter(List<PhotonTrackedTarget> targets) {
+        if (targets.isEmpty()) return null;
+
+        // Sort targets by Yaw to make proximity checks easier
+        targets.sort((a, b) -> Double.compare(a.getYaw(), b.getYaw()));
+
+        List<List<PhotonTrackedTarget>> clusters = new ArrayList<>();
+        List<PhotonTrackedTarget> currentCluster = new ArrayList<>();
+        currentCluster.add(targets.get(0));
+
+        for (int i = 1; i < targets.size(); i++) {
+            // If the next object is within 8 degrees of the current one, it's a cluster
+            if (Math.abs(targets.get(i).getYaw() - targets.get(i-1).getYaw()) < 8.0) {
+                currentCluster.add(targets.get(i));
+            } else {
+                clusters.add(new ArrayList<>(currentCluster));
+                currentCluster.clear();
+                currentCluster.add(targets.get(i));
+            }
+        }
+        clusters.add(currentCluster);
+
+        // Find the cluster with the most objects
+        return clusters.stream()
+            .max(Comparator.comparingInt(List::size))
+            .map(c -> c.get(c.size() / 2)) // Return the middle object of the biggest cluster
+            .orElse(null);
+    }
+
+    public double getDistanceToCluster(PhotonTrackedTarget clusterCenter) {
+        if (clusterCenter == null) return -1.0;
+
+        return PhotonUtils.calculateDistanceToTargetMeters(
+            Vision.FRONT_CAMERA_HEIGHT_METERS,   // Fixed height of your camera
+            0,     // Height of the fuel
+            Vision.FRONT_CAMERA_PITCH_RADIANS,   // Fixed angle of your camera
+            Units.degreesToRadians(clusterCenter.getPitch()) // Target's vertical angle
+        );
     }
 
     /**

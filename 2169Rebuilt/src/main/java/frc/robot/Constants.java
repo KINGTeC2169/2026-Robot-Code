@@ -38,7 +38,10 @@ public final class Constants {
         public static final Translation3d FRONT_LEFT_TRANSLATION = new Translation3d(0.5, 0.0, 0.5); //TODO: Replace with correct values
         public static final Translation3d BACK_RIGHT_TRANSLATION = new Translation3d(0.5, 0.0, 0.5); //TODO: Replace with correct values
 
-        public static final Rotation3d FRONT_LEFT_ROTATION = new Rotation3d(0,0,0); //TODO: Replace with correct values        public static final Rotation3d FRONT_LEFT_ROTATION = new Rotation3d(0,0,0); //TODO: Replace with correct values
+        public static final Rotation3d FRONT_LEFT_ROTATION = new Rotation3d(0,0,0); //TODO: Replace with correct values
         public static final Rotation3d BACK_RIGHT_ROTATION = new Rotation3d(0,0,0); //TODO: Replace with correct values
+
+        public static final double FRONT_CAMERA_HEIGHT_METERS = 0; //TODO: Replace with correct value
+        public static final double FRONT_CAMERA_PITCH_RADIANS = 0; 
     }
 }
