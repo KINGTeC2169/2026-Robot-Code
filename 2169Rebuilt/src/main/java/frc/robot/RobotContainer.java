@@ -4,6 +4,7 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 
+import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -12,9 +13,11 @@ import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.IntakeConstants;
 // import frc.robot.subsystems.Indexer;
 import frc.robot.commands.IntakeBall;
@@ -28,7 +31,6 @@ public class RobotContainer {
   public final Intake intake = new Intake();
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
   private final PhotonVision vision = new PhotonVision(drivetrain);
-  // public final Indexer indexer = new Indexer();
 
 
   public SendableChooser<Command> autoChooser;  
@@ -112,13 +114,13 @@ public class RobotContainer {
                 // OPERATOR CONTROLS
 
         // Stops the intake when B is pressed
-        operatorControl.b().debounce(.09).onTrue(new StopIntake(intake));
+        //operatorControl.b().debounce(.09).onTrue(new StopIntake(intake));
 
         // Intakes the ball when left bumper is pressed at a default 40% voltage
-        operatorControl.leftBumper().debounce(.09).onTrue(new IntakeBall(intake, IntakeConstants.intakeVolts)); 
+        //operatorControl.leftBumper().debounce(.09).onTrue(new IntakeBall(intake, IntakeConstants.intakeVolts)); 
 
         // Outtakes the ball when right bumper is pressed at a default -40% voltage
-        operatorControl.rightBumper().debounce(.09).onTrue(new IntakeBall(intake, IntakeConstants.outtakeVolts)); 
+        //operatorControl.rightBumper().debounce(.09).onTrue(new IntakeBall(intake, IntakeConstants.outtakeVolts)); 
 
 
 
@@ -136,13 +138,17 @@ public class RobotContainer {
             drivetrain.applyRequest(() -> idle).ignoringDisable(true)
         );
 
+        SignalLogger.setPath("/home/lvuser/logs/");
+        operatorControl.leftBumper().onTrue(Commands.runOnce(SignalLogger::start));
+        operatorControl.rightBumper().onTrue(Commands.runOnce(SignalLogger::stop));
+
       
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
-        // operatorControl.back().and(operatorControl.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-        // operatorControl.back().and(operatorControl.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-        // operatorControl.start().and(operatorControl.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-        // operatorControl.start().and(operatorControl.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+        operatorControl.back().and(operatorControl.y()).whileTrue(drivetrain.sysIdDynamic(SysIdRoutine.Direction.kForward));
+        operatorControl.back().and(operatorControl.x()).whileTrue(drivetrain.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+        operatorControl.start().and(operatorControl.y()).whileTrue(drivetrain.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+        operatorControl.start().and(operatorControl.x()).whileTrue(drivetrain.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
       
 
         //Reset orientation
