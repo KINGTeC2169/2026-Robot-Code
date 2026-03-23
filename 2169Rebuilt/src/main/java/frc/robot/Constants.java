@@ -15,8 +15,8 @@ public final class Constants {
     }
 
     public static final class IntakeConstants{
-        public static final double intakeVolts = -0.25 * 12;
-        public static final double outtakeVolts = 0.25 * 12;
+        public static final double intakeVolts = -0.4 * 12;
+        public static final double outtakeVolts = 0.4 * 12;
     }
     
 
