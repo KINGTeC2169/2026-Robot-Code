@@ -117,7 +117,11 @@ public class Telemetry {
         m_poseArray[0] = state.Pose.getX();
         m_poseArray[1] = state.Pose.getY();
         m_poseArray[2] = state.Pose.getRotation().getDegrees();
+
+        field.setRobotPose(m_poseArray[0], m_poseArray[1], state.Pose.getRotation());
         fieldPub.set(m_poseArray);
+
+        SmartDashboard.putData("Field", field);
 
         /* Telemeterize each module state to a Mechanism2d */
         for (int i = 0; i < 4; ++i) {
