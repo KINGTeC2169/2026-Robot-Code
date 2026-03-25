@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 import frc.robot.Constants.Ports;
+import frc.robot.Constants.IntakeConstants;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -22,7 +24,7 @@ public class Intake extends SubsystemBase{
 
     // Sets proper direction and speed for intake/outtake procedure
     public void intakeDirection(double voltage, CommandXboxController operator) {
-        voltage *= voltage > 0 ? 1 + (operator.getRightTriggerAxis()) : 1;
+        voltage *= voltage > 0 ? 1 + (operator.getRightTriggerAxis() * IntakeConstants.outtakeMaxBoost) : 1;
         topIntake.setVoltage(voltage);
         bottomIntake.setVoltage(voltage);
     }
@@ -31,6 +33,11 @@ public class Intake extends SubsystemBase{
     // Stops the intake from spinning
     public void stopIntaking() {
         topIntake.setVoltage(0);
+        bottomIntake.setVoltage(0);
+    }
+
+    public void stopIntaking(double topspeed) {
+        topIntake.setVoltage(topspeed);
         bottomIntake.setVoltage(0);
     }
 

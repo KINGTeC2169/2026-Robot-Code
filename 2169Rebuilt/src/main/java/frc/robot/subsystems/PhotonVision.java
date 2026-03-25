@@ -49,9 +49,9 @@ public class PhotonVision extends SubsystemBase{
     public PhotonVision(CommandSwerveDrivetrain drivetrain){
         this.drivetrain = drivetrain;
 
-        frontLeftCam = new PhotonCamera(""); //TODO: Replace with correct camera name
-        backRightCam = new PhotonCamera(""); //TODO: Replace with correct camera name
-        frontCam = new PhotonCamera(""); //TODO: Replace with correct camera name
+        frontLeftCam = new PhotonCamera("Front_Left_Camera");
+        backRightCam = new PhotonCamera("Back_Right_Camera");
+        frontCam = new PhotonCamera("Front_Camera"); 
 
         frontLeftPoseEst = new PhotonPoseEstimator(kTagLayout, kRobotToFrontLeftCam);
         backRightPoseEst = new PhotonPoseEstimator(kTagLayout, kRobotToBackRightCam);

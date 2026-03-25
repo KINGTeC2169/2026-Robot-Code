@@ -5,11 +5,20 @@ import frc.robot.subsystems.Intake;
 
 public class StopIntake extends Command {
     private Intake intake;
+    private double leftover;
 
     
     //Constructor for stop intake command
     public StopIntake(Intake intake) {
         this.intake = intake;
+        this.leftover = 0;
+        addRequirements(intake);
+    }
+
+    //this one keeps top motor running for a little bit
+    public StopIntake(Intake intake, double leftover) {
+        this.intake = intake;
+        this.leftover = leftover;
         addRequirements(intake);
     }
 
@@ -17,7 +26,7 @@ public class StopIntake extends Command {
     // Stops the intake upon running
     @Override
     public void initialize(){
-        intake.stopIntaking();
+        intake.stopIntaking(leftover);
     }
 
     @Override

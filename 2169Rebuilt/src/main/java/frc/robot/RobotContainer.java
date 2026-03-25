@@ -77,9 +77,9 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-            drive.withVelocityX(-leftStick.getY() * MaxSpeed * speed) // Drive forwaPPrd with negative Y (forward)
-                    .withVelocityY(-leftStick.getX() * MaxSpeed * speed) // Drive left with negative X (left)
-                    .withRotationalRate((Math.abs(rightStick.getTwist()) > 0.09 ? rightStick.getTwist() : 0) * MaxAngularRate * speed * 2) // Drive counterclockwise with negative X (left)
+            drive.withVelocityX(-(Math.abs(leftStick.getY()) > 0.05 ? leftStick.getY() : 0) * MaxSpeed * speed) // Drive forwaPPrd with negative Y (forward)
+                    .withVelocityY(-(Math.abs(leftStick.getX()) > 0.05 ? leftStick.getX() : 0) * MaxSpeed * speed) // Drive left with negative X (left)
+                    .withRotationalRate((Math.abs(rightStick.getTwist()) > 0.05 ? rightStick.getTwist() : 0) * MaxAngularRate * speed * 2) // Drive counterclockwise with negative X (left)
                     )
         );
 
@@ -114,13 +114,14 @@ public class RobotContainer {
                 // OPERATOR CONTROLS
 
         // Stops the intake when B is pressed
-        //operatorControl.b().debounce(.09).onTrue(new StopIntake(intake));
+        operatorControl.b().debounce(.01).onTrue(new StopIntake(intake));
+        operatorControl.x().debounce(.01).onTrue(new StopIntake(intake, -0.1 * 12));
 
         // Intakes the ball when left bumper is pressed at a default 40% voltage
-        //operatorControl.leftBumper().debounce(.09).onTrue(new IntakeBall(intake, IntakeConstants.intakeVolts)); 
+        operatorControl.leftBumper().debounce(.01).onTrue(new IntakeBall(intake, IntakeConstants.intakeVolts)); 
 
         // Outtakes the ball when right bumper is pressed at a default -40% voltage
-        //operatorControl.rightBumper().debounce(.09).onTrue(new IntakeBall(intake, IntakeConstants.outtakeVolts)); 
+        operatorControl.rightBumper().debounce(.01).onTrue(new IntakeBall(intake, IntakeConstants.outtakeVolts)); 
 
 
 
@@ -145,11 +146,11 @@ public class RobotContainer {
       
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
-        operatorControl.back().and(operatorControl.y()).whileTrue(drivetrain.sysIdDynamic(SysIdRoutine.Direction.kForward));
+        /**operatorControl.back().and(operatorControl.y()).whileTrue(drivetrain.sysIdDynamic(SysIdRoutine.Direction.kForward));
         operatorControl.back().and(operatorControl.x()).whileTrue(drivetrain.sysIdDynamic(SysIdRoutine.Direction.kReverse));
         operatorControl.start().and(operatorControl.y()).whileTrue(drivetrain.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
         operatorControl.start().and(operatorControl.x()).whileTrue(drivetrain.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-      
+      **/
 
         //Reset orientation
         topRightButton.onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));

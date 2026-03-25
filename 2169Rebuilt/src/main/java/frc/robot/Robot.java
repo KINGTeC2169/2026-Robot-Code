@@ -47,6 +47,7 @@ public class Robot extends TimedRobot {
   public Robot() {
    m_robotContainer = new RobotContainer();
    pdh = new PowerDistribution();
+   pdh.setSwitchableChannel(true);
   }
 
   /**
