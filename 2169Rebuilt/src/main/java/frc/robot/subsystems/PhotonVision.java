@@ -59,7 +59,7 @@ public class PhotonVision extends SubsystemBase{
         //Turn off driver mode for all cameras
         frontLeftCam.setDriverMode(false);
         backRightCam.setDriverMode(false);
-        frontCam.setDriverMode(false);
+        frontCam.setDriverMode(true);
     }
 
     public Matrix<N3, N1> getEstimationStdDevs(EstimatedRobotPose est, int numTags) {
