@@ -1,5 +1,8 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.configs.TalonFXConfigurator;
 import com.ctre.phoenix6.hardware.TalonFX;
 import frc.robot.Constants.Ports;
 import frc.robot.Constants.IntakeConstants;
@@ -10,15 +13,23 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 
 public class Intake extends SubsystemBase{
+
     private TalonFX topIntake;
     private TalonFX bottomIntake;
 
+    private TalonFXConfigurator topIntakeConfig = topIntake.getConfigurator();
+    private TalonFXConfigurator bottomIntakeConfig = bottomIntake.getConfigurator();
+    private TalonFXConfiguration limitConfigs = new TalonFXConfiguration().withCurrentLimits(new CurrentLimitsConfigs()..withStatorCurrentLimit(Amps.of(50))
+                .withStatorCurrentLimitEnable(true));
 
 
     // Constructor for the intake subsystem
     public Intake(){
         topIntake = new TalonFX(Ports.topIntake);
         bottomIntake = new TalonFX(Ports.bottomIntake);
+
+        topIntakeConfig.apply(limitConfigs);
+        bottomIntakeConfig.apply(limitConfigs);
     }
 
 

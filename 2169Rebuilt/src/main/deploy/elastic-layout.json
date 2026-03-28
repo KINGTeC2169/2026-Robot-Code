@@ -74,40 +74,6 @@
             }
           },
           {
-            "title": "Swerve Drive",
-            "x": 0.0,
-            "y": 0.0,
-            "width": 384.0,
-            "height": 384.0,
-            "type": "SwerveDrive",
-            "properties": {
-              "topic": "/SmartDashboard/Swerve Drive",
-              "period": 0.06,
-              "show_robot_rotation": true,
-              "rotation_unit": "Radians"
-            }
-          },
-          {
-            "title": "Field",
-            "x": 384.0,
-            "y": 0.0,
-            "width": 768.0,
-            "height": 384.0,
-            "type": "Field",
-            "properties": {
-              "topic": "/SmartDashboard/Field",
-              "period": 0.06,
-              "field_game": "Reefscape",
-              "robot_width": 0.85,
-              "robot_length": 0.85,
-              "show_other_objects": true,
-              "show_trajectories": true,
-              "field_rotation": 0.0,
-              "robot_color": 4294198070,
-              "trajectory_color": 4294967295
-            }
-          },
-          {
             "title": "Swerve Speed",
             "x": 0.0,
             "y": 384.0,
@@ -138,16 +104,37 @@
             }
           },
           {
-            "title": "Music",
-            "x": 832.0,
-            "y": 384.0,
-            "width": 320.0,
-            "height": 128.0,
-            "type": "ComboBox Chooser",
+            "title": "Field",
+            "x": 0.0,
+            "y": 0.0,
+            "width": 704.0,
+            "height": 384.0,
+            "type": "Field",
             "properties": {
-              "topic": "/SmartDashboard/Music",
+              "topic": "/SmartDashboard/Field",
               "period": 0.06,
-              "sort_options": false
+              "field_game": "Rebuilt",
+              "robot_width": 0.85,
+              "robot_length": 0.85,
+              "show_other_objects": true,
+              "show_trajectories": true,
+              "field_rotation": 0.0,
+              "robot_color": 4294198070,
+              "trajectory_color": 4294967295,
+              "show_robot_outside_widget": true
+            }
+          },
+          {
+            "title": "Front Camera",
+            "x": 704.0,
+            "y": 0.0,
+            "width": 448.0,
+            "height": 384.0,
+            "type": "Camera Stream",
+            "properties": {
+              "topic": "/CameraPublisher/vision-one_Port_1188_Output_MJPEG_Server",
+              "period": 0.06,
+              "rotation_turns": 0
             }
           }
         ]
@@ -241,7 +228,8 @@
               "show_trajectories": true,
               "field_rotation": 0.0,
               "robot_color": 4294198070,
-              "trajectory_color": 4294967295
+              "trajectory_color": 4294967295,
+              "show_robot_outside_widget": true
             }
           },
           {
@@ -254,83 +242,242 @@
             "properties": {
               "topic": "/SmartDashboard/SendableChooser[0]",
               "period": 0.06,
-              "sort_options": false
+              "sort_options": true
             }
           }
         ]
       }
     },
     {
-      "name": "Testing",
+      "name": "Tab 3",
       "grid_layout": {
-        "layouts": [],
+        "layouts": [
+          {
+            "title": "Module 0",
+            "x": 320.0,
+            "y": 320.0,
+            "width": 256.0,
+            "height": 256.0,
+            "type": "List Layout",
+            "properties": {
+              "label_position": "TOP"
+            },
+            "children": [
+              {
+                "title": "backgroundColor",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Module 0/backgroundColor",
+                  "period": 0.06,
+                  "data_type": "string",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "dims",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/SmartDashboard/Module 0/dims",
+                  "period": 0.06,
+                  "data_type": "double[]",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "driverMode",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Boolean Box",
+                "properties": {
+                  "topic": "/photonvision/Back_Right_Camera/driverMode",
+                  "period": 0.06,
+                  "data_type": "boolean",
+                  "true_color": 4283215696,
+                  "false_color": 4294198070,
+                  "true_icon": "None",
+                  "false_icon": "None"
+                }
+              },
+              {
+                "title": "streams",
+                "x": 192.0,
+                "y": 320.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/CameraPublisher/Front_Camera/streams",
+                  "period": 0.06,
+                  "data_type": "string[]",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "streams",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/CameraPublisher/vision-one_Port_1181_Input_MJPEG_Server/streams",
+                  "period": 0.06,
+                  "data_type": "string[]",
+                  "show_submit_button": false
+                }
+              },
+              {
+                "title": "cameraDistortion",
+                "x": 0.0,
+                "y": 0.0,
+                "width": 128.0,
+                "height": 128.0,
+                "type": "Text Display",
+                "properties": {
+                  "topic": "/photonvision/Front_Left_Camera/cameraDistortion",
+                  "period": 0.06,
+                  "data_type": "double[]",
+                  "show_submit_button": false
+                }
+              }
+            ]
+          }
+        ],
         "containers": [
           {
-            "title": "pdh",
-            "x": 0.0,
+            "title": "Front_Camera",
+            "x": 576.0,
             "y": 0.0,
-            "width": 384.0,
-            "height": 448.0,
-            "type": "PowerDistribution",
-            "properties": {
-              "topic": "/SmartDashboard/pdh",
-              "period": 0.06
-            }
-          },
-          {
-            "title": "Pico",
-            "x": 832.0,
-            "y": 64.0,
             "width": 256.0,
-            "height": 384.0,
-            "type": "PIDController",
+            "height": 256.0,
+            "type": "Camera Stream",
             "properties": {
-              "topic": "/SmartDashboard/Pico",
-              "period": 0.06
+              "topic": "/CameraPublisher/Front_Camera",
+              "period": 0.06,
+              "rotation_turns": 0
             }
           },
           {
-            "title": "Top Motor RPM",
-            "x": 512.0,
-            "y": 64.0,
-            "width": 320.0,
-            "height": 384.0,
-            "type": "Graph",
+            "title": "Front_Left_Camera",
+            "x": 832.0,
+            "y": 0.0,
+            "width": 256.0,
+            "height": 256.0,
+            "type": "Camera Stream",
             "properties": {
-              "topic": "/SmartDashboard/Top Motor RPM",
-              "period": 0.033,
-              "data_type": "double",
-              "time_displayed": 30.0,
-              "color": 4278238420,
-              "line_width": 2.0
+              "topic": "/CameraPublisher/Front_Left_Camera",
+              "period": 0.06,
+              "rotation_turns": 0
             }
           },
           {
-            "title": "Top Motor RPM",
-            "x": 1280.0,
-            "y": 128.0,
+            "title": "Cameras Connected?",
+            "x": 576.0,
+            "y": 320.0,
             "width": 128.0,
             "height": 128.0,
-            "type": "Text Display",
+            "type": "Boolean Box",
             "properties": {
-              "topic": "/SmartDashboard/Top Motor RPM",
+              "topic": "/SmartDashboard/Cameras Connected?",
               "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
             }
           },
           {
-            "title": "BallDistance:",
-            "x": 1280.0,
+            "title": "connected",
+            "x": 768.0,
             "y": 256.0,
             "width": 128.0,
             "height": 128.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "/CameraPublisher/vision-one_Port_1181_Input_MJPEG_Server/connected",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
+          },
+          {
+            "title": "connected",
+            "x": 960.0,
+            "y": 320.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "/CameraPublisher/vision-one_Port_1186_Output_MJPEG_Server/connected",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
+          },
+          {
+            "title": "streams",
+            "x": 1088.0,
+            "y": 192.0,
+            "width": 448.0,
+            "height": 128.0,
             "type": "Text Display",
             "properties": {
-              "topic": "/SmartDashboard/BallDistance:",
+              "topic": "/CameraPublisher/vision-one_Port_1186_Output_MJPEG_Server/streams",
               "period": 0.06,
-              "data_type": "double",
+              "data_type": "string[]",
               "show_submit_button": false
+            }
+          },
+          {
+            "title": "source",
+            "x": 1088.0,
+            "y": 64.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/CameraPublisher/Front_Camera/source",
+              "period": 0.06,
+              "data_type": "string",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "Field",
+            "x": 0.0,
+            "y": 0.0,
+            "width": 512.0,
+            "height": 320.0,
+            "type": "Field",
+            "properties": {
+              "topic": "/SmartDashboard/Field",
+              "period": 0.06,
+              "field_game": "Reefscape",
+              "robot_width": 0.85,
+              "robot_length": 0.85,
+              "show_other_objects": true,
+              "show_trajectories": true,
+              "field_rotation": 0.0,
+              "robot_color": 4294198070,
+              "trajectory_color": 4294967295,
+              "show_robot_outside_widget": true
             }
           }
         ]
@@ -342,163 +489,66 @@
         "layouts": [],
         "containers": [
           {
-            "title": "IntakeM Current",
-            "x": 0.0,
-            "y": 0.0,
-            "width": 832.0,
-            "height": 512.0,
-            "type": "Graph",
-            "properties": {
-              "topic": "/SmartDashboard/IntakeM Current",
-              "period": 0.033,
-              "data_type": "double",
-              "time_displayed": 5.0,
-              "color": 4278238420,
-              "line_width": 2.0
-            }
-          }
-        ]
-      }
-    },
-    {
-      "name": "Tab 5",
-      "grid_layout": {
-        "layouts": [],
-        "containers": [
-          {
-            "title": "reef IntakePosition",
-            "x": 640.0,
-            "y": 64.0,
-            "width": 384.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "/SmartDashboard/reef IntakePosition",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          },
-          {
-            "title": "reef FeedForward",
-            "x": 640.0,
-            "y": 256.0,
-            "width": 384.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "/SmartDashboard/reef FeedForward",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          },
-          {
-            "title": "reef PID Value",
-            "x": 1024.0,
-            "y": 256.0,
-            "width": 192.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "/SmartDashboard/reef PID Value",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          },
-          {
-            "title": "reef Pivot PID",
-            "x": 1216.0,
-            "y": 0.0,
-            "width": 256.0,
-            "height": 384.0,
-            "type": "PIDController",
-            "properties": {
-              "topic": "/SmartDashboard/reef Pivot PID",
-              "period": 0.06
-            }
-          },
-          {
-            "title": "reef IntakePosition",
-            "x": 448.0,
-            "y": 256.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "/SmartDashboard/reef IntakePosition",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          },
-          {
-            "title": "reef SetPosition",
-            "x": 448.0,
-            "y": 128.0,
-            "width": 128.0,
-            "height": 128.0,
-            "type": "Text Display",
-            "properties": {
-              "topic": "/SmartDashboard/reef SetPosition",
-              "period": 0.06,
-              "data_type": "double",
-              "show_submit_button": false
-            }
-          },
-          {
-            "title": "reef IntakePosition",
-            "x": 0.0,
+            "title": "Back Right Field",
+            "x": 576.0,
             "y": 64.0,
             "width": 448.0,
-            "height": 448.0,
-            "type": "Graph",
+            "height": 320.0,
+            "type": "Field",
             "properties": {
-              "topic": "/SmartDashboard/reef IntakePosition",
-              "period": 0.033,
-              "data_type": "double",
-              "time_displayed": 5.0,
-              "min_value": 0.0,
-              "max_value": 0.5,
-              "color": 4278238420,
-              "line_width": 2.0
-            }
-          }
-        ]
-      }
-    },
-    {
-      "name": "Tab 6",
-      "grid_layout": {
-        "layouts": [],
-        "containers": [
-          {
-            "title": "Pivot Input",
-            "x": 512.0,
-            "y": 64.0,
-            "width": 256.0,
-            "height": 256.0,
-            "type": "Graph",
-            "properties": {
-              "topic": "/SmartDashboard/Pivot Input",
-              "period": 0.033,
-              "data_type": "double",
-              "time_displayed": 5.0,
-              "color": 4278238420,
-              "line_width": 2.0
+              "topic": "/SmartDashboard/Back Right Field",
+              "period": 0.06,
+              "field_game": "Rebuilt",
+              "robot_width": 0.85,
+              "robot_length": 0.85,
+              "show_other_objects": true,
+              "show_trajectories": true,
+              "field_rotation": -180.0,
+              "robot_color": 4294198070,
+              "trajectory_color": 4294967295,
+              "show_robot_outside_widget": true
             }
           },
           {
-            "title": "PathPlanner",
-            "x": 896.0,
-            "y": 0.0,
-            "width": 256.0,
-            "height": 384.0,
-            "type": "Alerts",
+            "title": "Field",
+            "x": 0.0,
+            "y": 64.0,
+            "width": 576.0,
+            "height": 320.0,
+            "type": "Field",
             "properties": {
-              "topic": "/SmartDashboard/PathPlanner",
-              "period": 0.06
+              "topic": "/SmartDashboard/Field",
+              "period": 0.06,
+              "field_game": "Rebuilt",
+              "robot_width": 0.85,
+              "robot_length": 0.85,
+              "show_other_objects": true,
+              "show_trajectories": true,
+              "field_rotation": -180.0,
+              "robot_color": 4294198070,
+              "trajectory_color": 4294967295,
+              "show_robot_outside_widget": true
+            }
+          },
+          {
+            "title": "Front Left Field",
+            "x": 1024.0,
+            "y": 64.0,
+            "width": 512.0,
+            "height": 320.0,
+            "type": "Field",
+            "properties": {
+              "topic": "/SmartDashboard/Front Left Field",
+              "period": 0.06,
+              "field_game": "Rebuilt",
+              "robot_width": 0.85,
+              "robot_length": 0.85,
+              "show_other_objects": true,
+              "show_trajectories": true,
+              "field_rotation": -180.0,
+              "robot_color": 4294198070,
+              "trajectory_color": 4294967295,
+              "show_robot_outside_widget": true
             }
           }
         ]

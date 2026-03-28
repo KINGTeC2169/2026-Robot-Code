@@ -117,10 +117,10 @@ public class RobotContainer {
         operatorControl.b().debounce(.01).onTrue(new StopIntake(intake));
         operatorControl.x().debounce(.01).onTrue(new StopIntake(intake, -0.05 * 12));
 
-        // Intakes the ball when left bumper is pressed at a default 40% voltage
+        // Intakes the ball when left bumper is pressed at a default 50% voltage
         operatorControl.leftBumper().debounce(.01).onTrue(new IntakeBall(intake, IntakeConstants.intakeVolts)); 
 
-        // Outtakes the ball when right bumper is pressed at a default -40% voltage
+        // Outtakes the ball when right bumper is pressed at a default -50% voltage
         operatorControl.rightBumper().debounce(.01).onTrue(new IntakeBall(intake, IntakeConstants.outtakeVolts)); 
 
 
