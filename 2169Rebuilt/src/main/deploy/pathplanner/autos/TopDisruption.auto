@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Alpha1"
+            "pathName": "HalfDis"
           }
         },
         {
@@ -15,54 +15,55 @@
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "Shoot"
+                  "pathName": "HalfDis2"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "Index"
+                  "name": "Intake"
                 }
               }
             ]
           }
         },
         {
-          "type": "wait",
+          "type": "path",
           "data": {
-            "waitTime": 1.5
+            "pathName": "HalfReturn"
           }
         },
         {
-          "type": "named",
+          "type": "deadline",
           "data": {
-            "name": "StopShoot"
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 4.0
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Outtake"
+                }
+              }
+            ]
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Alpha2"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Alpha3"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Alpha4"
+            "pathName": "TopEnd"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Top",
   "choreoAuto": true
 }

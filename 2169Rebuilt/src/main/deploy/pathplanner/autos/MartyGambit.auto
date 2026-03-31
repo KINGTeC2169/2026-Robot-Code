@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "JustShoot1"
+            "pathName": "BeginningTop"
           }
         },
         {
@@ -17,7 +17,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "JustShoot2"
+                  "pathName": "HalfTop"
                 }
               },
               {
@@ -32,13 +32,38 @@
         {
           "type": "path",
           "data": {
-            "pathName": "JustShoot3"
+            "pathName": "HalfReturn"
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 4.0
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Outtake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "MartyGambit"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Top",
   "choreoAuto": true
 }

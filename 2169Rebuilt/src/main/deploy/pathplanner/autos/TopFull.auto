@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Beta1"
+            "pathName": "BeginningTop"
           }
         },
         {
@@ -17,7 +17,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Beta2"
+                  "pathName": "FullTop"
                 }
               },
               {
@@ -32,19 +32,32 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Beta3"
+            "pathName": "BottomDropoff"
           }
         },
         {
-          "type": "named",
+          "type": "deadline",
           "data": {
-            "name": "Shoot"
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 10.0
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Outtake"
+                }
+              }
+            ]
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Top",
   "choreoAuto": true
 }

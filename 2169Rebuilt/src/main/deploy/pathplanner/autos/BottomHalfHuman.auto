@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Epsilon1"
+            "pathName": "BottomStart"
           }
         },
         {
@@ -17,7 +17,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Epsilon2"
+                  "pathName": "BottomHalf"
                 }
               },
               {
@@ -32,56 +32,32 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Epsilon3"
+            "pathName": "Dropoff"
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "Epsilon4"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
-          }
-        },
-        {
-          "type": "parallel",
+          "type": "deadline",
           "data": {
             "commands": [
               {
-                "type": "path",
+                "type": "wait",
                 "data": {
-                  "pathName": "Epsilon5"
+                  "waitTime": 14.0
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "Intake"
+                  "name": "Outtake"
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Epsilon6"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Bottom",
   "choreoAuto": true
 }
