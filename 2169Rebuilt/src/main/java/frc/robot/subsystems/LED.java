@@ -46,7 +46,7 @@ public class LED extends SubsystemBase {
 
     //Patterns
     private LEDPattern breathing = LEDPattern.gradient(GradientType.kDiscontinuous, royalMaroon, royalYellow).breathe(Seconds.of(2));
-    private LEDPattern gradient = LEDPattern.gradient(GradientType.kDiscontinuous, royalMaroon, royalYellow)
+    private LEDPattern gradient = LEDPattern.gradient(GradientType.kDiscontinuous, royalMaroon, royalYellow);
     private LEDPattern solidYellow = LEDPattern.solid(royalYellow);
     private LEDPattern solidRed = LEDPattern.solid(royalRed);
     //private LEDPattern solidBlue = LEDPattern.solid(Color.kBlue);
