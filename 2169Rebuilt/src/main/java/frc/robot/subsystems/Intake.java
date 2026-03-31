@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Amps;
+
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfigurator;
@@ -19,7 +21,7 @@ public class Intake extends SubsystemBase{
 
     private TalonFXConfigurator topIntakeConfig = topIntake.getConfigurator();
     private TalonFXConfigurator bottomIntakeConfig = bottomIntake.getConfigurator();
-    private TalonFXConfiguration limitConfigs = new TalonFXConfiguration().withCurrentLimits(new CurrentLimitsConfigs()..withStatorCurrentLimit(Amps.of(50))
+    private TalonFXConfiguration limitConfigs = new TalonFXConfiguration().withCurrentLimits(new CurrentLimitsConfigs().withStatorCurrentLimit(Amps.of(50))
                 .withStatorCurrentLimitEnable(true));
 
 
