@@ -2,15 +2,18 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.LED;
 
 public class StopIntake extends Command {
     private Intake intake;
+    private LED led;
     private double leftover;
 
     
     //Constructor for stop intake command
-    public StopIntake(Intake intake) {
+    public StopIntake(Intake intake, LED led) {
         this.intake = intake;
+        this.led = led;
         this.leftover = 0;
         addRequirements(intake);
     }
@@ -19,7 +22,7 @@ public class StopIntake extends Command {
     public StopIntake(Intake intake, double leftover) {
         this.intake = intake;
         this.leftover = leftover;
-        addRequirements(intake);
+        addRequirements(intake, led);
     }
 
 
@@ -27,6 +30,7 @@ public class StopIntake extends Command {
     @Override
     public void initialize(){
         intake.stopIntaking(leftover);
+        led.rainbow();
     }
 
     @Override

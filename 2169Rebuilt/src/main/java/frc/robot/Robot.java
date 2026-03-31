@@ -98,6 +98,7 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
+    m_robotContainer.led.still();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
@@ -114,7 +115,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when the robot is disabled. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+     m_robotContainer.led.initialize();
+  }
 
   /** This function is called periodically when disabled. */
   @Override
@@ -147,7 +150,9 @@ public class Robot extends TimedRobot {
   }
   /** This function is called once when test mode is enabled. */
   @Override
-  public void testInit() {}
+  public void testInit() {
+    m_robotContainer.led.still();
+  }
 
   /** This function is called periodically during test mode. */
   @Override

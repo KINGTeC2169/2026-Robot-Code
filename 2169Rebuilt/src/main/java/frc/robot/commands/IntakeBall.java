@@ -3,18 +3,23 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.LED;
+import frc.robot.Constants.IntakeConstants;
 
 
 public class IntakeBall extends Command {
     private Intake intake;
+    private LED led;
+
     private double volts;
     private final CommandXboxController operator = new CommandXboxController(2);
     
     // Constructor for intake command 
-    public IntakeBall(Intake intake, double volts) {
+    public IntakeBall(Intake intake, double volts, LED led) {
         this.intake = intake;
         this.volts = volts;
-        addRequirements(intake);
+        this.led = led;
+        addRequirements(intake, led);
     }
 
 
@@ -23,6 +28,12 @@ public class IntakeBall extends Command {
     @Override 
     public void initialize(){
         intake.intakeDirection(volts, operator);
+        if(volts <0){ //for intaking
+            led.scrollYellow();
+        }
+        else if(volts > 0){ //for outtaking
+            led.scrollRed();
+        }
     }
 
     // Adjust speed at which outtake spits out balls by depth of trigger press up to 65% voltage
@@ -33,7 +44,7 @@ public class IntakeBall extends Command {
 
     @Override
     public void end(boolean interrupted){
-      
+        led.still();
     }
 
     // Stops the intake when the stop command runs
