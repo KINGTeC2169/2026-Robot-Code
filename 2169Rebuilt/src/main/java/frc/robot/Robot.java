@@ -37,7 +37,7 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private final RobotContainer m_robotContainer;
-  private final PowerDistribution pdh;
+  //private final PowerDistribution pdh;
   private String autoName, newAutoName;
   private List<PathPlannerPath> pathPlannerPaths = null;
   /**
@@ -46,9 +46,7 @@ public class Robot extends TimedRobot {
    */
   public Robot() {
    m_robotContainer = new RobotContainer();
-   pdh = new PowerDistribution();
-   
-   pdh.setSwitchableChannel(true);
+   //pdh = new PowerDistribution();
   }
 
   /**
@@ -66,7 +64,7 @@ public class Robot extends TimedRobot {
       Elastic.selectTab("Autonomous");
     }
     SmartDashboard.putData(m_robotContainer.autoChooser);
-    SmartDashboard.putData("pdh", pdh);
+    //SmartDashboard.putData("pdh", pdh);
   }
 
   /**

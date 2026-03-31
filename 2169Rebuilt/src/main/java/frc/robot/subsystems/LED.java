@@ -1,18 +1,16 @@
 package frc.robot.subsystems;
 
-import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.Percent;
 import static edu.wpi.first.units.Units.Second;
 import static edu.wpi.first.units.Units.Seconds;
 
 import java.util.Map;
 
-import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.AddressableLED;
+import edu.wpi.first.wpilibj.AddressableLED.ColorOrder;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.AddressableLEDBufferView;
 import edu.wpi.first.wpilibj.LEDPattern;
-import edu.wpi.first.wpilibj.AddressableLED.ColorOrder;
 import edu.wpi.first.wpilibj.LEDPattern.GradientType;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -25,20 +23,12 @@ public class LED extends SubsystemBase {
     //Used to control each strip of LED
 
     //fix for actual leds once they are real
-    private AddressableLEDBufferView m_leftSide;
-    private AddressableLEDBufferView m_leftMiddle;
-    private AddressableLEDBufferView m_rightSide;
-    private AddressableLEDBufferView m_rightMiddle;
+    private AddressableLEDBufferView m_bufferView;
 
-    private int ledLength = 205; //need actual length once there are real LEDs
+    private int ledLength = 122; //need actual length once there are real LEDs
 
     // Our LED strip has a density of 60 LEDs per meter
     //private final Distance kLedSpacing = Meters.of(1 / 60.0);
-
-    //TODO: Find indexes where LED strip breaks
-    //private final int breakOne = 63;
-    //private final int breakTwo = 104;
-    //private final int breakThree = 161  ;
 
     private Color royalMaroon = new Color("#A00014");
     private Color royalRed = new Color("#C00000");
@@ -59,6 +49,8 @@ public class LED extends SubsystemBase {
         m_led = new AddressableLED(Constants.Ports.ledPort);//need to put port in constants once it exists
         m_ledBuffer = new AddressableLEDBuffer(ledLength);
         m_led.setColorOrder(ColorOrder.kRGB);
+
+        m_bufferView = m_ledBuffer.createView(0, ledLength - 1);
 
         m_led.setLength(m_ledBuffer.getLength());
         m_led.start();
@@ -106,10 +98,7 @@ public class LED extends SubsystemBase {
     }
 
     private void setAllStrips(LEDPattern pattern){
-        pattern.applyTo(m_leftSide);
-        pattern.applyTo(m_leftMiddle);
-        pattern.applyTo(m_rightMiddle);
-        pattern.applyTo(m_rightSide);
+        pattern.applyTo(m_bufferView);
     }
 
     @Override

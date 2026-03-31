@@ -19,10 +19,12 @@ public class StopIntake extends Command {
     }
 
     //this one keeps top motor running for a little bit
-    public StopIntake(Intake intake, double leftover) {
+    public StopIntake(Intake intake, double leftover, LED led) {
         this.intake = intake;
         this.leftover = leftover;
-        addRequirements(intake, led);
+        this.led = led;
+        addRequirements(intake);
+        addRequirements(led);
     }
 
 
