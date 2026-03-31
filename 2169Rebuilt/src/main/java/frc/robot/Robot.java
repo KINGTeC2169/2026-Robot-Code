@@ -47,6 +47,7 @@ public class Robot extends TimedRobot {
   public Robot() {
    m_robotContainer = new RobotContainer();
    pdh = new PowerDistribution();
+   
    pdh.setSwitchableChannel(true);
   }
 
@@ -65,6 +66,7 @@ public class Robot extends TimedRobot {
       Elastic.selectTab("Autonomous");
     }
     SmartDashboard.putData(m_robotContainer.autoChooser);
+    SmartDashboard.putData("pdh", pdh);
   }
 
   /**
@@ -107,7 +109,6 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-
     
   }
 
