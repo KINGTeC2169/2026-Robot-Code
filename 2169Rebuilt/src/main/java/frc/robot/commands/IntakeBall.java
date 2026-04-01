@@ -44,6 +44,7 @@ public class IntakeBall extends Command {
 
     @Override
     public void end(boolean interrupted){
+        intake.stopIntaking();
         led.still();
     }
 
