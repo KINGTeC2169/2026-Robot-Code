@@ -109,11 +109,11 @@ public class PhotonVision extends SubsystemBase{
             if (visionEst.isPresent()) {
                 EstimatedRobotPose est = visionEst.get();
                 if (est.targetsUsed.get(0).getPoseAmbiguity() < 0.2)
-                drivetrain.addVisionMeasurement(
-                    est.estimatedPose.toPose2d(), 
-                    est.timestampSeconds,
-                    getEstimationStdDevs(est, est.targetsUsed.size())
-                );
+                // drivetrain.addVisionMeasurement(
+                //     est.estimatedPose.toPose2d(), 
+                //     est.timestampSeconds,
+                //     getEstimationStdDevs(est, est.targetsUsed.size())
+                // );
                 frontLeftField.setRobotPose(est.estimatedPose.toPose2d());
             }
         }
@@ -143,12 +143,12 @@ public class PhotonVision extends SubsystemBase{
             if (visionEst.isPresent()) {
                 EstimatedRobotPose est = visionEst.get();
                 if (est.targetsUsed.get(0).getPoseAmbiguity() < 0.2)
-                drivetrain.addVisionMeasurement(
-                    est.estimatedPose.toPose2d(), 
-                    est.timestampSeconds,
-                    getEstimationStdDevs(est, est.targetsUsed.size())
-                );
-                backRightField.setRobotPose(est.estimatedPose.toPose2d());
+                // drivetrain.addVisionMeasurement(
+                //     est.estimatedPose.toPose2d(), 
+                //     est.timestampSeconds,
+                //     getEstimationStdDevs(est, est.targetsUsed.size())
+                // );
+                 backRightField.setRobotPose(est.estimatedPose.toPose2d());
             }
         }
     }
