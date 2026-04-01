@@ -70,7 +70,7 @@ public class RobotContainer {
 
         //finish these...
         NamedCommands.registerCommand("Intake", new IntakeBall(intake, IntakeConstants.intakeVolts, led));
-        NamedCommands.registerCommand("Outtake", new IntakeBall(intake, IntakeConstants.outtakeVolts, led).withTimeout(4));
+        NamedCommands.registerCommand("Outtake", new IntakeBall(intake, IntakeConstants.outtakeVolts, led));
         NamedCommands.registerCommand("StopIntake", new StopIntake(intake, led));
         //NamedCommands.registerCommand("Shoot", new Shoot(shooter, 10)); 
         //NamedCommands.registerCommand("StopShoot", new StopShoot(shooter, indexer));
