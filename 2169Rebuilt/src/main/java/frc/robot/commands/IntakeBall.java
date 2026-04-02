@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.Intake;
@@ -51,9 +52,13 @@ public class IntakeBall extends Command {
     // Stops the intake when the stop command runs
     @Override
     public boolean isFinished(){
+        if(DriverStation.isTeleop()){
         return(operator.b().debounce(.09).getAsBoolean()) || 
         operator.a().debounce(.09).getAsBoolean() ||
         operator.leftBumper().debounce(.09).getAsBoolean();
+        }else{
+            return false;
+        }
     }
 }
 
