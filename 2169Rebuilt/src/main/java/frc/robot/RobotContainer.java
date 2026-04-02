@@ -123,7 +123,7 @@ public class RobotContainer {
 
         // Stops the intake when B is pressed
         operatorControl.b().debounce(.01).onTrue(new StopIntake(intake, led));
-        operatorControl.x().debounce(.01).onTrue(new StopIntake(intake, -0.05 * 12, led));
+        operatorControl.x().debounce(.01).onTrue(new StopIntake(intake, 0.05 * 12, led));
 
         // Intakes the ball when left bumper is pressed at a default 50% voltage
         operatorControl.leftBumper().debounce(.01).onTrue(new IntakeBall(intake, IntakeConstants.intakeVolts, led)); 

@@ -26,7 +26,7 @@ public class Intake extends SubsystemBase{
                 .withStatorCurrentLimit(Amps.of(50))
                 .withStatorCurrentLimitEnable(true));
 
-
+    private boolean direction;
     // Constructor for the intake subsystem
     public Intake(){
         topIntake = new TalonFX(Ports.topIntake);
@@ -45,6 +45,11 @@ public class Intake extends SubsystemBase{
         voltage *= voltage != 0 ? 1 + (operator.getRightTriggerAxis() * IntakeConstants.outtakeMaxBoost) : 1;
         topIntake.setVoltage(voltage * 0.5);
         bottomIntake.setVoltage(voltage * 0.25);
+        if(voltage > 0){
+            direction = true; //intake
+        }else{
+            direction = false;
+        }
     }
 
 
@@ -59,7 +64,7 @@ public class Intake extends SubsystemBase{
         bottomIntake.setVoltage(0);
     }
 
-
+    
 
 
     // DO NOT look down
@@ -207,7 +212,7 @@ public class Intake extends SubsystemBase{
     @Override
     public void periodic(){
         // SmartDashboard.putNumber("Pivot Velocity", getVelocityPivot());
-        // SmartDashboard.putNumber("Spin Velocity", getVelocitySpin());
+         SmartDashboard.putBoolean("Spin Velocity", direction);
         // SmartDashboard.putNumber("Encoder Position", getPosition());
         // SmartDashboard.putData("Pivot PID", pivotPID);
 
