@@ -23,7 +23,7 @@ public class Intake extends SubsystemBase{
     private TalonFXConfigurator bottomIntakeConfig;
     private TalonFXConfiguration limitConfigs = new TalonFXConfiguration() 
                 .withCurrentLimits(new CurrentLimitsConfigs()
-                .withStatorCurrentLimit(Amps.of(50))
+                .withStatorCurrentLimit(Amps.of(40))
                 .withStatorCurrentLimitEnable(true));
 
     private boolean direction;

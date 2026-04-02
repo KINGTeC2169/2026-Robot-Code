@@ -50,9 +50,10 @@ public class LED extends SubsystemBase {
         m_ledBuffer = new AddressableLEDBuffer(ledLength);
         m_led.setColorOrder(ColorOrder.kRGB);
 
-        m_bufferView = m_ledBuffer.createView(0, ledLength - 1);
-
         m_led.setLength(m_ledBuffer.getLength());
+
+        m_bufferView = m_ledBuffer.createView(0, ledLength - 1);
+        
         m_led.start();
     }
 
@@ -104,6 +105,7 @@ public class LED extends SubsystemBase {
     @Override
     public void periodic(){
         setAllStrips(currentPattern);
+        m_led.setData(m_ledBuffer);
     }
 
 }

@@ -29,7 +29,7 @@ public class IntakeBall extends Command {
     @Override 
     public void initialize(){
         intake.intakeDirection(volts, operator);
-        if(volts <0){ //for intaking
+        if(volts < 0){ //for intaking
             led.scrollYellow();
         }
         else if(volts > 0){ //for outtaking
