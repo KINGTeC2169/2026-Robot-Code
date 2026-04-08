@@ -21,11 +21,11 @@ public final class Constants {
 
     public static final class IntakeConstants{
 
-        public static final double intakeVolts = 0.8 * 12; //INTAKE IS POSITIVE
-        public static final double outtakeVolts = -0.8 * 12;
+        public static final double intakeVolts = 0.7 * 12; //INTAKE IS POSITIVE
+        public static final double outtakeVolts = -0.7 * 12;
 
-        //1.5 max boost = 150% faster
-        public static final double outtakeMaxBoost = 1.0;
+        //1.25 max boost = 125% faster
+        public static final double outtakeMaxBoost = 1.25;
     }
     
 

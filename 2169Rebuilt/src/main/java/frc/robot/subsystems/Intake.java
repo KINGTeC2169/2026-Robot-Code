@@ -23,10 +23,13 @@ public class Intake extends SubsystemBase{
     private TalonFXConfigurator bottomIntakeConfig;
     private TalonFXConfiguration limitConfigs = new TalonFXConfiguration() 
                 .withCurrentLimits(new CurrentLimitsConfigs()
-                .withStatorCurrentLimit(Amps.of(40))
-                .withStatorCurrentLimitEnable(true));
+                .withStatorCurrentLimit(Amps.of(30))
+                .withStatorCurrentLimitEnable(true)
+                .withSupplyCurrentLimit(Amps.of(30))
+                .withSupplyCurrentLimitEnable(true));
 
     private boolean direction;
+    private boolean intakeOn;
     // Constructor for the intake subsystem
     public Intake(){
         topIntake = new TalonFX(Ports.topIntake);
@@ -43,8 +46,9 @@ public class Intake extends SubsystemBase{
     // Sets proper direction and speed for intake/outtake procedure
     public void intakeDirection(double voltage, CommandXboxController operator) {
         voltage *= voltage != 0 ? 1 + (operator.getRightTriggerAxis() * IntakeConstants.outtakeMaxBoost) : 1;
-        topIntake.setVoltage(voltage * 0.5);
-        bottomIntake.setVoltage(voltage * 0.25);
+        topIntake.setVoltage(voltage);
+        bottomIntake.setVoltage(-voltage * 0.75);
+        intakeOn = true;
         if(voltage > 0){
             direction = true; //intake
         }else{
@@ -57,11 +61,13 @@ public class Intake extends SubsystemBase{
     public void stopIntaking() {
         topIntake.setVoltage(0);
         bottomIntake.setVoltage(0);
+        intakeOn = false;
     }
 
     public void stopIntaking(double topspeed) {
         topIntake.setVoltage(topspeed);
         bottomIntake.setVoltage(0);
+        intakeOn = false;
     }
 
     
@@ -213,6 +219,7 @@ public class Intake extends SubsystemBase{
     public void periodic(){
         // SmartDashboard.putNumber("Pivot Velocity", getVelocityPivot());
          SmartDashboard.putBoolean("Spin Velocity", direction);
+         SmartDashboard.putBoolean("Intake on?", intakeOn);
         // SmartDashboard.putNumber("Encoder Position", getPosition());
         // SmartDashboard.putData("Pivot PID", pivotPID);
 

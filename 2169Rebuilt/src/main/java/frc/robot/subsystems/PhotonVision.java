@@ -311,10 +311,10 @@ public class PhotonVision extends SubsystemBase{
             }
         }
 
-        SmartDashboard.putBoolean("Cameras Connected?", isConnected());
+        // SmartDashboard.putBoolean("Cameras Connected?", isConnected());
         SmartDashboard.putData("Back Right Field", backRightField);
         SmartDashboard.putData("Front Left Field", frontLeftField);
-        updateFrontLeftPoseEst(drivetrain);
-        updateBackRightPoseEst(drivetrain);
+        // updateFrontLeftPoseEst(drivetrain);
+        // updateBackRightPoseEst(drivetrain);
     }
 }
