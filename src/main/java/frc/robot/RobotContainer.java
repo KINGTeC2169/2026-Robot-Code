@@ -17,19 +17,14 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.IntakeConstants;
-// import frc.robot.subsystems.Indexer;
 import frc.robot.commands.IntakeBall;
 import frc.robot.commands.StopIntake;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Intake;
-import frc.robot.Constants.IntakeConstants;
-// import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.LED;
 
-import frc.robot.commands.*;
 import frc.robot.subsystems.PhotonVision;
 
 public class RobotContainer {
