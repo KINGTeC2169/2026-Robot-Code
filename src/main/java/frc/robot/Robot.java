@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.ctre.phoenix6.Utils;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
@@ -16,8 +17,10 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.net.WebServer;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.Notifier;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -36,6 +39,11 @@ public class Robot extends TimedRobot {
   //private final PowerDistribution pdh;
   private String autoName, newAutoName;
   private List<PathPlannerPath> pathPlannerPaths = null;
+
+  //Swerve drive sim stuff
+  private static final double kSimLoopPeriod = 0.004; // 4 ms
+  private Notifier m_simNotifier = null;
+  private double m_lastSimTime;
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -139,9 +147,6 @@ public class Robot extends TimedRobot {
           m_robotContainer.logger.field.getObject("path").setPoses(poses);
       }
     }
-        
-    
-    
   }
   /** This function is called once when test mode is enabled. */
   @Override
@@ -154,8 +159,21 @@ public class Robot extends TimedRobot {
   public void testPeriodic() {}
 
   /** This function is called once when the robot is first started up. */
-  @Override
-  public void simulationInit() {}
+@Override
+public void simulationInit() {
+    m_lastSimTime = Utils.getCurrentTimeSeconds();
+
+    /* Run simulation at a faster rate so PID gains behave more reasonably */
+    m_simNotifier = new Notifier(() -> {
+        final double currentTime = Utils.getCurrentTimeSeconds();
+        double deltaTime = currentTime - m_lastSimTime;
+        m_lastSimTime = currentTime;
+
+        /* Use the measured time delta, get battery voltage from WPILib */
+        m_robotContainer.drivetrain.updateSimState(deltaTime, RobotController.getBatteryVoltage());
+    });
+    m_simNotifier.startPeriodic(kSimLoopPeriod);
+  }
 
   /** This function is called periodically whilst in simulation. */
   @Override
