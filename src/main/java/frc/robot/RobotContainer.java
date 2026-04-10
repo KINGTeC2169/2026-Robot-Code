@@ -37,11 +37,12 @@ public class RobotContainer {
 
   /* Setting up bindings for necessary control of the swerve drive platform */
   private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-          // .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+          .withDeadband(MaxSpeed * 0.05).withRotationalDeadband(MaxAngularRate * 0.05) // Add a 5% deadband
           .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
   private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
   private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
   private final SwerveRequest.RobotCentric forwardStraight = new SwerveRequest.RobotCentric()
+          .withDeadband(MaxSpeed * 0.05).withRotationalDeadband(MaxAngularRate * 0.05) // Add a 5% deadband
           .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
   final Telemetry logger = new Telemetry(MaxSpeed);
@@ -63,11 +64,6 @@ public class RobotContainer {
         NamedCommands.registerCommand("Intake", new IntakeBall(intake, IntakeConstants.intakeVolts, led));
         NamedCommands.registerCommand("Outtake", new IntakeBall(intake, IntakeConstants.outtakeVolts, led));
         NamedCommands.registerCommand("StopIntake", new StopIntake(intake, led));
-        //NamedCommands.registerCommand("Shoot", new Shoot(shooter, 10)); 
-        //NamedCommands.registerCommand("StopShoot", new StopShoot(shooter, indexer));
-        //NamedCommands.registerCommand("SpinTurret", new SpinTurret(shooter, 12));
-        //NamedCommands.registerCommand("Index", new IndexBalls(indexer, 8));
-        //NamedCommands.registerCommand("Feed", new Feed(shooter, indexer));
 
         led.initialize();
 
@@ -77,18 +73,18 @@ public class RobotContainer {
           drivetrain.setDefaultCommand(
               // Drivetrain will execute this command periodically
               drivetrain.applyRequest(() ->
-              drive.withVelocityX(-(Math.abs(leftStick.getY()) > 0.05 ? leftStick.getY() : 0) * MaxSpeed) // Drive forwaPPrd with negative Y (forward)
-                      .withVelocityY(-(Math.abs(leftStick.getX()) > 0.05 ? leftStick.getX() : 0) * MaxSpeed) // Drive left with negative X (left)
-                      .withRotationalRate((Math.abs(rightStick.getTwist()) > 0.05 ? rightStick.getTwist() : 0) * MaxAngularRate * 2) // Drive counterclockwise with negative X (left)
+              drive.withVelocityX(-leftStick.getY() * MaxSpeed) // Drive forwaPPrd with negative Y (forward)
+                      .withVelocityY(-leftStick.getX()* MaxSpeed) // Drive left with negative X (left)
+                      .withRotationalRate(rightStick.getTwist()* MaxAngularRate) // Drive counterclockwise with negative X (left)
                       )
           );
         } else {
             drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
               drivetrain.applyRequest(() ->
-              drive.withVelocityX(-(Math.abs(leftStick.getY()) > 0.05 ? leftStick.getY() : 0) * MaxSpeed) // Drive forward with negative Y (forward)
-                      .withVelocityY(-(Math.abs(leftStick.getX()) > 0.05 ? leftStick.getX() : 0) * MaxSpeed) // Drive left with negative X (left)
-                      .withRotationalRate((Math.abs(rightStick.getX()) > 0.05 ? -rightStick.getX() : 0) * MaxAngularRate) // Drive counterclockwise with negative X (left)
+              drive.withVelocityX(-leftStick.getY() * MaxSpeed) // Drive forwaPPrd with negative Y (forward)
+                      .withVelocityY(-leftStick.getX()* MaxSpeed) // Drive left with negative X (left)
+                      .withRotationalRate(-rightStick.getX()* MaxAngularRate) // Drive counterclockwise with negative X (left)
                       )
             );
         }
@@ -100,27 +96,7 @@ public class RobotContainer {
 
     private void configureBindings() {
 
-        /*
-        sticks to aim and turn
-        rt for shoot
-        a for intake
-         */
-        //operatorControl.a().debounce(.09).onTrue(new IntakeBall(intake, indexer)); 
-        //operatorControl.leftTrigger().whileTrue(new IndexBalls(indexer));
-        //operatorControl.rightBumper().debounce(.09).onTrue(new Shoot(shooter, 3500)); //toggle shoot
-        //operatorControl.rightStick().whileTrue(new SpinTurret(shooter, leftStick.getX()));
-        //operatorControl.rightTrigger().whileTrue(new Feed(shooter, indexer)); 
-        //operatorControl.povUp().debounce(.09).onTrue(new ModifySpeed(shooter, 1));
-        //operatorControl.povDown().debounce(.09).onTrue(new ModifySpeed(shooter, -1));
-        // operatorControl.x().whileTrue(new IndexBalls(indexer, -1));
-        // operatorControl.y().whileTrue(new IndexBalls(indexer, 1));
-        //operatorControl.leftTrigger().debounce(.09).onTrue(new Shoot(shooter, 3500));
-        //operatorControl.start().debounce(.09).onTrue(new Stop(shooter, intake, indexer));
-        //operatorControl.rightBumper().whileTrue(new Shoot(shooter, 4500)); //hold to shoot
-
-
-
-                // OPERATOR CONTROLS
+        // OPERATOR CONTROLS
 
         // Stops the intake when B is pressed
         operatorControl.b().debounce(.01).onTrue(new StopIntake(intake, led));
@@ -131,15 +107,6 @@ public class RobotContainer {
 
         // Outtakes the ball when right bumper is pressed at a default -50% voltage
         operatorControl.rightBumper().debounce(.01).onTrue(new IntakeBall(intake, IntakeConstants.outtakeVolts, led)); 
-
-
-
- 
-
-        // Note that X is defined as forward according to WPILib convention,
-
-        
-        // and Y is defined as to the left according to WPILib convention.
        
         // Idle while the robot is disabled. This ensures the configured
         // neutral mode is applied to the drive motors while disabled.
@@ -168,21 +135,24 @@ public class RobotContainer {
         topLeftButton.whileTrue(drivetrain.applyRequest(() -> brake));
 
         //Robot centric mode
-        bottomRightButton.whileTrue(drivetrain.applyRequest(() ->
-              forwardStraight.withVelocityX(-(Math.abs(leftStick.getY()) > 0.05 ? leftStick.getY() : 0) * MaxSpeed) // Drive forwaPPrd with negative Y (forward)
-                      .withVelocityY(-(Math.abs(leftStick.getX()) > 0.05 ? leftStick.getX() : 0) * MaxSpeed) // Drive left with negative X (left)
-                      .withRotationalRate((Math.abs(rightStick.getTwist()) > 0.05 ? rightStick.getTwist() : 0) * MaxAngularRate * 2) // Drive counterclockwise with negative X (left)
+        if (Robot.isReal()) bottomRightButton.whileTrue(drivetrain.applyRequest(() ->
+              forwardStraight.withVelocityX(-leftStick.getY() * MaxSpeed) // Drive forwaPPrd with negative Y (forward)
+                      .withVelocityY(-leftStick.getX()* MaxSpeed) // Drive left with negative X (left)
+                      .withRotationalRate(rightStick.getTwist()* MaxAngularRate) // Drive counterclockwise with negative X (left)
+                      )
+          );
+        else bottomRightButton.whileTrue(drivetrain.applyRequest(() ->
+              forwardStraight.withVelocityX(-leftStick.getY() * MaxSpeed) // Drive forwaPPrd with negative Y (forward)
+                      .withVelocityY(-leftStick.getX()* MaxSpeed) // Drive left with negative X (left)
+                      .withRotationalRate(-rightStick.getX()* MaxAngularRate) // Drive counterclockwise with negative X (left)
                       )
           );
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }
 
-
     public Command getAutonomousCommand() {
     //An example command will be run in autonomous
     return autoChooser.getSelected();
     }
 }
- 
-
