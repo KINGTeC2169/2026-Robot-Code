@@ -35,7 +35,6 @@ public class RobotContainer {
 
 
   public SendableChooser<Command> autoChooser;  
-  private double speed = 0.5;
     private double MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
@@ -80,9 +79,9 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-            drive.withVelocityX(-(Math.abs(leftStick.getY()) > 0.05 ? leftStick.getY() : 0) * MaxSpeed * speed) // Drive forwaPPrd with negative Y (forward)
-                    .withVelocityY(-(Math.abs(leftStick.getX()) > 0.05 ? leftStick.getX() : 0) * MaxSpeed * speed) // Drive left with negative X (left)
-                    .withRotationalRate((Math.abs(rightStick.getTwist()) > 0.05 ? rightStick.getTwist() : 0) * MaxAngularRate * speed * 2) // Drive counterclockwise with negative X (left)
+            drive.withVelocityX(-(Math.abs(leftStick.getY()) > 0.05 ? leftStick.getY() : 0) * MaxSpeed) // Drive forwaPPrd with negative Y (forward)
+                    .withVelocityY(-(Math.abs(leftStick.getX()) > 0.05 ? leftStick.getX() : 0) * MaxSpeed) // Drive left with negative X (left)
+                    .withRotationalRate((Math.abs(rightStick.getTwist()) > 0.05 ? rightStick.getTwist() : 0) * MaxAngularRate * 2) // Drive counterclockwise with negative X (left)
                     )
         );
 
