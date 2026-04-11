@@ -75,7 +75,7 @@ public class RobotContainer {
               drivetrain.applyRequest(() ->
               drive.withVelocityX(-leftStick.getY() * MaxSpeed) // Drive forwaPPrd with negative Y (forward)
                       .withVelocityY(-leftStick.getX()* MaxSpeed) // Drive left with negative X (left)
-                      .withRotationalRate(rightStick.getTwist()* MaxAngularRate) // Drive counterclockwise with negative X (left)
+                      .withRotationalRate(rightStick.getTwist()* MaxAngularRate * 2) // Drive counterclockwise with negative X (left)
                       )
           );
         } else {
@@ -84,7 +84,7 @@ public class RobotContainer {
               drivetrain.applyRequest(() ->
               drive.withVelocityX(-leftStick.getY() * MaxSpeed) // Drive forwaPPrd with negative Y (forward)
                       .withVelocityY(-leftStick.getX()* MaxSpeed) // Drive left with negative X (left)
-                      .withRotationalRate(-rightStick.getX()* MaxAngularRate) // Drive counterclockwise with negative X (left)
+                      .withRotationalRate(-rightStick.getX()* MaxAngularRate * 2) // Drive counterclockwise with negative X (left)
                       )
             );
         }
@@ -138,13 +138,13 @@ public class RobotContainer {
         if (Robot.isReal()) bottomRightButton.whileTrue(drivetrain.applyRequest(() ->
               forwardStraight.withVelocityX(-leftStick.getY() * MaxSpeed) // Drive forwaPPrd with negative Y (forward)
                       .withVelocityY(-leftStick.getX()* MaxSpeed) // Drive left with negative X (left)
-                      .withRotationalRate(rightStick.getTwist()* MaxAngularRate) // Drive counterclockwise with negative X (left)
+                      .withRotationalRate(rightStick.getTwist()* MaxAngularRate * 2) // Drive counterclockwise with negative X (left)
                       )
           );
         else bottomRightButton.whileTrue(drivetrain.applyRequest(() ->
               forwardStraight.withVelocityX(-leftStick.getY() * MaxSpeed) // Drive forwaPPrd with negative Y (forward)
                       .withVelocityY(-leftStick.getX()* MaxSpeed) // Drive left with negative X (left)
-                      .withRotationalRate(-rightStick.getX()* MaxAngularRate) // Drive counterclockwise with negative X (left)
+                      .withRotationalRate(-rightStick.getX()* MaxAngularRate * 2) // Drive counterclockwise with negative X (left)
                       )
           );
 
