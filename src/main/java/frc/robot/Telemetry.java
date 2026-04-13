@@ -14,16 +14,13 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StringPublisher;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.StructPublisher;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 
 public class Telemetry {
     private final double MaxSpeed;
-    public final Field2d field = new Field2d();
     private final NetworkTableInstance inst = NetworkTableInstance.getDefault();
     
     /**
@@ -38,10 +35,6 @@ public class Telemetry {
         MaxSpeed = maxSpeed;
         SignalLogger.start();
 
-        /* Set up the module state Mechanism2d telemetry */
-        for (int i = 0; i < 4; ++i) {
-            SmartDashboard.putData("Module " + i, m_moduleMechanisms[i]);
-        }
         inst.setServerTeam(2169);
         inst.startDSClient();
         inst.setServer("host", NetworkTableInstance.kDefaultPort4);
@@ -60,7 +53,7 @@ public class Telemetry {
     private final DoublePublisher driveOdometryFrequency = driveStateTable.getDoubleTopic("OdometryFrequency").publish();
 
     /* Robot pose for field positioning */
-    private final NetworkTable table = inst.getTable("Pose");
+    private final NetworkTable table = inst.getTable("DriveState/Pose");
     private final DoubleArrayPublisher fieldPub = table.getDoubleArrayTopic("robotPose").publish();
     private final StringPublisher fieldTypePub = table.getStringTopic(".type").publish();
 
@@ -118,10 +111,7 @@ public class Telemetry {
         m_poseArray[1] = state.Pose.getY();
         m_poseArray[2] = state.Pose.getRotation().getDegrees();
 
-        field.setRobotPose(m_poseArray[0], m_poseArray[1], state.Pose.getRotation());
         fieldPub.set(m_poseArray);
-
-        SmartDashboard.putData("Field", field);
 
         /* Telemeterize each module state to a Mechanism2d */
         for (int i = 0; i < 4; ++i) {
