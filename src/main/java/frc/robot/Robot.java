@@ -16,17 +16,13 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.net.WebServer;
-import edu.wpi.first.networktables.DoubleArrayPublisher;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Notifier;
-import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.util.Elastic; 
@@ -40,13 +36,9 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private final RobotContainer m_robotContainer;
-  private final PowerDistribution pdh;
+  //private final PowerDistribution pdh;
   private String autoName, newAutoName;
   private List<PathPlannerPath> pathPlannerPaths = null;
-
-  private final NetworkTableInstance inst = NetworkTableInstance.getDefault();
-  private final DoubleArrayPublisher pathPosesPublisher = 
-      inst.getTable("DriveState/Field").getDoubleArrayTopic("pathPoses").publish();
 
   //Swerve drive sim stuff
   private static final double kSimLoopPeriod = 0.004; // 4 ms
@@ -59,11 +51,7 @@ public class Robot extends TimedRobot {
   public Robot() {
    m_robotContainer = new RobotContainer();
    WebServer.start(5800, Filesystem.getDeployDirectory().getPath());
-   pdh = new PowerDistribution();
-
-   LiveWindow.enableTelemetry(pdh);
-   LiveWindow.enableTelemetry(m_robotContainer.autoChooser);
-   SendableRegistry.addLW(pdh, "PDH", "Power Distribution");
+   //pdh = new PowerDistribution();
   }
 
   /**
@@ -80,6 +68,8 @@ public class Robot extends TimedRobot {
      if (DriverStation.isAutonomous()){
       Elastic.selectTab("Autonomous");
     }
+    SmartDashboard.putData(m_robotContainer.autoChooser);
+    //SmartDashboard.putData("pdh", pdh);
   }
 
   /**
@@ -117,7 +107,7 @@ public class Robot extends TimedRobot {
     }
 
     Elastic.selectTab("Teleoperated");
-    pathPosesPublisher.set(new double[0]);
+    m_robotContainer.logger.field.getObject("path").setPoses();
   }
 
   /** This function is called periodically during operator control. */
@@ -135,45 +125,29 @@ public class Robot extends TimedRobot {
   /** This function is called periodically when disabled. */
   @Override
   public void disabledPeriodic() {
-      newAutoName = m_robotContainer.getAutonomousCommand().getName();
+ 
+    
+  newAutoName = m_robotContainer.getAutonomousCommand().getName();
 
-      if (autoName != newAutoName) {
-          autoName = newAutoName;
-          if (AutoBuilder.getAllAutoNames().contains(autoName)) {
-              try {
-                  pathPlannerPaths = PathPlannerAuto.getPathGroupFromAutoFile(newAutoName);
-              } catch (Exception e) {
-                  e.printStackTrace();
-                  pathPlannerPaths = null;
-              }
-              
-              // Convert poses to double array: [x1, y1, rot1, x2, y2, rot2, ...]
-              List<Double> posesList = new ArrayList<>();
-              for (PathPlannerPath path : pathPlannerPaths) {
-                  List<Pose2d> poses = new ArrayList<>();
-                  if (DriverStation.getAlliance().get() == Alliance.Red) {
-                      poses.addAll(path.flipPath().getAllPathPoints().stream()
-                          .map(point -> new Pose2d(point.position.getX(), point.position.getY(), new Rotation2d()))
-                          .collect(Collectors.toList()));
-                  } else {
-                      poses.addAll(path.getAllPathPoints().stream()
-                          .map(point -> new Pose2d(point.position.getX(), point.position.getY(), new Rotation2d()))
-                          .collect(Collectors.toList()));
-                  }
-                  
-                  for (Pose2d pose : poses) {
-                      posesList.add(pose.getX());
-                      posesList.add(pose.getY());
-                      posesList.add(pose.getRotation().getDegrees());
-                  }
-              }
-              
-              // Publish as double array
-              pathPosesPublisher.set(posesList.stream().mapToDouble(Double::doubleValue).toArray());
+   if (autoName != newAutoName) {
+      autoName = newAutoName;
+      if (AutoBuilder.getAllAutoNames().contains(autoName)) {
+          
+          try {
+            pathPlannerPaths = PathPlannerAuto.getPathGroupFromAutoFile(newAutoName);
+          } catch (Exception e) {
+            e.printStackTrace();
+            pathPlannerPaths = null;
           }
+          List<Pose2d> poses = new ArrayList<>();
+          for (PathPlannerPath path : pathPlannerPaths) {
+              if (DriverStation.getAlliance().get() == Alliance.Red) poses.addAll(path.flipPath().getAllPathPoints().stream().map(point -> new Pose2d(point.position.getX(), point.position.getY(), new Rotation2d())).collect(Collectors.toList()));
+              else poses.addAll(path.getAllPathPoints().stream().map(point -> new Pose2d(point.position.getX(), point.position.getY(), new Rotation2d())).collect(Collectors.toList()));
+            }
+          m_robotContainer.logger.field.getObject("path").setPoses(poses);
       }
+    }
   }
-
   /** This function is called once when test mode is enabled. */
   @Override
   public void testInit() {

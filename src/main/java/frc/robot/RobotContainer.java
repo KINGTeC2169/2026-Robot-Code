@@ -9,7 +9,6 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
-import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -31,9 +30,10 @@ public class RobotContainer {
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
   private final PhotonVision vision = new PhotonVision(drivetrain);
 
+
   public SendableChooser<Command> autoChooser;  
-  private double MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
-  private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+    private double MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
+    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
   /* Setting up bindings for necessary control of the swerve drive platform */
   private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -53,6 +53,7 @@ public class RobotContainer {
   public final JoystickButton topLeftButton = new JoystickButton(leftStick, 1);
   public final JoystickButton bottomLeftButton = new JoystickButton(leftStick, 2);
 
+  
   private final Joystick rightStick = new Joystick(Constants.Ports.rightStick);
   private final JoystickButton topRightButton = new JoystickButton(rightStick, 1);
   public final JoystickButton bottomRightButton = new JoystickButton(rightStick, 2);
@@ -67,8 +68,6 @@ public class RobotContainer {
         led.initialize();
 
         autoChooser = AutoBuilder.buildAutoChooser();
-
-         SendableRegistry.addLW(autoChooser, "Autonomous", "Auto Chooser");
 
         if (Robot.isReal()) {
           drivetrain.setDefaultCommand(

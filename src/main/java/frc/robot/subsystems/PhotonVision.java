@@ -25,9 +25,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.networktables.DoubleArrayPublisher;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Vision;
 import frc.robot.Robot;
@@ -43,11 +42,8 @@ public class PhotonVision extends SubsystemBase{
     private PhotonPoseEstimator frontLeftPoseEst;
     private PhotonPoseEstimator backRightPoseEst;
 
-    private final NetworkTableInstance inst = NetworkTableInstance.getDefault();
-    private final DoubleArrayPublisher frontLeftPosePublisher = 
-        inst.getTable("photonvision").getDoubleArrayTopic("FrontLeftPose").publish();
-    private final DoubleArrayPublisher backRightPosePublisher = 
-        inst.getTable("photonvision").getDoubleArrayTopic("BackRightPose").publish();
+    private Field2d frontLeftField = new Field2d();
+    private Field2d backRightField = new Field2d();
 
     private boolean originSet = false;
 
@@ -157,17 +153,12 @@ public class PhotonVision extends SubsystemBase{
             if (visionEst.isPresent()) {
                 EstimatedRobotPose est = visionEst.get();
                 if (est.targetsUsed.get(0).getPoseAmbiguity() < 0.2)
-                drivetrain.addVisionMeasurement(
-                    est.estimatedPose.toPose2d(), 
-                    est.timestampSeconds,
-                    getEstimationStdDevs(est, est.targetsUsed.size())
-                );
-                Pose2d pose = est.estimatedPose.toPose2d();
-                frontLeftPosePublisher.set(new double[]{
-                    pose.getX(),
-                    pose.getY(),
-                    pose.getRotation().getDegrees()
-                });
+                // drivetrain.addVisionMeasurement(
+                //     est.estimatedPose.toPose2d(), 
+                //     est.timestampSeconds,
+                //     getEstimationStdDevs(est, est.targetsUsed.size())
+                // );
+                frontLeftField.setRobotPose(est.estimatedPose.toPose2d());
             }
         }
     }
@@ -196,17 +187,12 @@ public class PhotonVision extends SubsystemBase{
             if (visionEst.isPresent()) {
                 EstimatedRobotPose est = visionEst.get();
                 if (est.targetsUsed.get(0).getPoseAmbiguity() < 0.2)
-                drivetrain.addVisionMeasurement(
-                    est.estimatedPose.toPose2d(), 
-                    est.timestampSeconds,
-                    getEstimationStdDevs(est, est.targetsUsed.size())
-                );
-                Pose2d pose = est.estimatedPose.toPose2d();
-                backRightPosePublisher.set(new double[]{
-                    pose.getX(),
-                    pose.getY(),
-                    pose.getRotation().getDegrees()
-                });
+                // drivetrain.addVisionMeasurement(
+                //     est.estimatedPose.toPose2d(), 
+                //     est.timestampSeconds,
+                //     getEstimationStdDevs(est, est.targetsUsed.size())
+                // );
+                 backRightField.setRobotPose(est.estimatedPose.toPose2d());
             }
         }
     }
@@ -386,6 +372,9 @@ public class PhotonVision extends SubsystemBase{
             }
         }
 
+        // SmartDashboard.putBoolean("Cameras Connected?", isConnected());
+        SmartDashboard.putData("Back Right Field", backRightField);
+        SmartDashboard.putData("Front Left Field", frontLeftField);
         updateFrontLeftPoseEst(drivetrain);
         updateBackRightPoseEst(drivetrain);
     }
