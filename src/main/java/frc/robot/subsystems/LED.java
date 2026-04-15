@@ -35,12 +35,18 @@ public class LED extends SubsystemBase {
     private Color royalYellow = new Color("#FAD200");
 
     //Patterns
-    private LEDPattern breathing = LEDPattern.gradient(GradientType.kDiscontinuous, royalMaroon, royalYellow).breathe(Seconds.of(2));
-    private LEDPattern gradient = LEDPattern.gradient(GradientType.kDiscontinuous, royalMaroon, royalYellow);
+    private LEDPattern breathing = LEDPattern.gradient(GradientType.kDiscontinuous, royalRed, royalYellow).breathe(Seconds.of(2));
+    private LEDPattern gradient = LEDPattern.gradient(GradientType.kDiscontinuous, royalRed, royalYellow);
     private LEDPattern solidYellow = LEDPattern.solid(royalYellow);
     private LEDPattern solidRed = LEDPattern.solid(royalRed);
     //private LEDPattern solidBlue = LEDPattern.solid(Color.kBlue);
     private LEDPattern off = LEDPattern.kOff;
+
+    private Map<Number, Color> blinkingRedMaskSteps = Map.of(0, Color.kWhite, 0.32, Color.kBlack);
+    private LEDPattern blinkingRed = solidRed.mask(LEDPattern.steps(blinkingRedMaskSteps).scrollAtRelativeSpeed(Percent.per(Second).of(175))).reversed();
+
+    private Map<Number, Color> blinkingYellowMaskSteps = Map.of(0, Color.kWhite, 0.32, Color.kBlack);
+    private LEDPattern blinkingYellow = solidYellow.mask(LEDPattern.steps(blinkingYellowMaskSteps).scrollAtRelativeSpeed(Percent.per(Second).of(175)));
 
     
     private LEDPattern currentPattern = breathing;
@@ -71,10 +77,11 @@ public class LED extends SubsystemBase {
 
     public void scrollYellow(){ //use to scroll in yellow when we intake
         //Map<Double, Color> maskSteps = Map.of(0, Color.kWhite, 0.5, Color.kBlack);
-         LEDPattern maskSteps = LEDPattern.steps(Map.of(0, Color.kWhite, 0.5, Color.kBlack));
+         /*LEDPattern maskSteps = LEDPattern.steps(Map.of(0, Color.kWhite, 0.5, Color.kBlack));
     
         LEDPattern mask =(maskSteps).scrollAtRelativeSpeed(Percent.per(Second).of(0.5));
-        currentPattern = solidYellow.mask(mask);
+        currentPattern = solidYellow.mask(mask);*/
+        currentPattern= blinkingYellow;
     }
 
     public void setRed(){
@@ -83,10 +90,10 @@ public class LED extends SubsystemBase {
 
     public void scrollRed(){ //scroll out red on outtake
         //Map<Double, Color> 
-        LEDPattern maskSteps = LEDPattern.steps(Map.of(0, Color.kWhite, 0.5, Color.kBlack));
-    
+        /*LEDPattern maskSteps = LEDPattern.steps(Map.of(0, Color.kWhite, 0.5, Color.kBlack));
         LEDPattern mask =(maskSteps).scrollAtRelativeSpeed(Percent.per(Second).of(0.5));
-        currentPattern = solidRed.mask(mask).reversed(); //dont kno which one to be reversed yet
+        currentPattern = solidRed.mask(mask).reversed(); //dont kno which one to be reversed yet*/
+        currentPattern = blinkingRed;
     }
 
     public void rainbow(){
