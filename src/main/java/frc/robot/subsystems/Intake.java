@@ -57,7 +57,7 @@ public class Intake extends SubsystemBase{
 
     // Sets proper direction and speed for intake/outtake procedure
     public void intakeDirection(double voltage, CommandXboxController operator) {
-        voltage *= voltage != 0 ? 1 + (operator.getRightTriggerAxis() * IntakeConstants.outtakeMaxBoost) : 1;
+        voltage *= voltage != 0 ? 1 - (operator.getRightTriggerAxis() * IntakeConstants.outtakeMaxBoost) : 1;
         topIntake.setVoltage(voltage);
         bottomIntake.setVoltage(-voltage * 0.75);
         intakeOn = true;

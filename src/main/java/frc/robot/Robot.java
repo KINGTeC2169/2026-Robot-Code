@@ -16,10 +16,14 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.net.WebServer;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Notifier;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -36,7 +40,7 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private final RobotContainer m_robotContainer;
-  //private final PowerDistribution pdh;
+  private final PowerDistribution pdh;
   private String autoName, newAutoName;
   private List<PathPlannerPath> pathPlannerPaths = null;
 
@@ -51,7 +55,30 @@ public class Robot extends TimedRobot {
   public Robot() {
    m_robotContainer = new RobotContainer();
    WebServer.start(5800, Filesystem.getDeployDirectory().getPath());
-   //pdh = new PowerDistribution();
+   pdh = new PowerDistribution();
+   DataLogManager.start("/u/logs");
+
+    //Swerve Widget
+    SmartDashboard.putData("Swerve Drive", new Sendable() {
+    @Override
+    public void initSendable(SendableBuilder builder) {
+        builder.setSmartDashboardType("SwerveDrive");
+
+        builder.addDoubleProperty("Front Left Angle", () -> m_robotContainer.drivetrain.getModule(0).getCurrentState().angle.getRadians(), null);
+        builder.addDoubleProperty("Front Left Velocity", () -> m_robotContainer.drivetrain.getModule(0).getCurrentState().speedMetersPerSecond, null);
+
+        builder.addDoubleProperty("Front Right Angle", () -> m_robotContainer.drivetrain.getModule(1).getCurrentState().angle.getRadians(), null);
+        builder.addDoubleProperty("Front Right Velocity", () -> m_robotContainer.drivetrain.getModule(1).getCurrentState().speedMetersPerSecond, null);
+
+        builder.addDoubleProperty("Back Left Angle", () -> m_robotContainer.drivetrain.getModule(2).getCurrentState().angle.getRadians(), null);
+        builder.addDoubleProperty("Back Left Velocity", () -> m_robotContainer.drivetrain.getModule(2).getCurrentState().speedMetersPerSecond, null);
+
+        builder.addDoubleProperty("Back Right Angle", () -> m_robotContainer.drivetrain.getModule(3).getCurrentState().angle.getRadians(), null);
+        builder.addDoubleProperty("Back Right Velocity", () -> m_robotContainer.drivetrain.getModule(3).getCurrentState().speedMetersPerSecond, null);
+
+        builder.addDoubleProperty("Robot Angle", () -> m_robotContainer.drivetrain.getPigeon2().getRotation2d().getRadians(), null);
+      }
+    });
   }
 
   /**
@@ -69,7 +96,7 @@ public class Robot extends TimedRobot {
       Elastic.selectTab("Autonomous");
     }
     SmartDashboard.putData(m_robotContainer.autoChooser);
-    //SmartDashboard.putData("pdh", pdh);
+    SmartDashboard.putData("pdh", pdh);
   }
 
   /**

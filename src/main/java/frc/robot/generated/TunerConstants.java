@@ -21,18 +21,16 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 public class TunerConstants {
     // Both sets of gains need to be tuned to your individual robot.
 
-    // EXPERIMENT VALUES USING ROTATIONAL TEST!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     // The steer motor uses any SwerveModule.SteerRequestType control request with the
     // output type specified by SwerveModuleConstants.SteerMotorClosedLoopOutput
     private static final Slot0Configs steerGains = new Slot0Configs()
-        .withKP(100).withKI(0).withKD(0.5)
+        .withKP(175).withKI(0).withKD(0.5)
         .withKS(0.1).withKV(2.49).withKA(0)
         .withStaticFeedforwardSign(StaticFeedforwardSignValue.UseClosedLoopSign);
     // When using closed-loop control, the drive motor uses the control
     // output type specified by SwerveModuleConstants.DriveMotorClosedLoopOutput
     private static final Slot0Configs driveGains = new Slot0Configs()
-    
-        .withKP(0.1).withKI(0).withKD(0)
+        .withKP(1).withKI(0).withKD(.1)
         .withKS(0).withKV(0.124);
 
     // The closed-loop output type to use for the steer motors;
@@ -52,24 +50,18 @@ public class TunerConstants {
     private static final SteerFeedbackType kSteerFeedbackType = SteerFeedbackType.FusedCANcoder;
 
     // The stator current at which the wheels start to slip;
-    // This needs to be tuned to your individual robot 
-    private static final Current kSlipCurrent = Amps.of(65);
+    // This needs to be tuned to your individual robot
+    private static final Current kSlipCurrent = Amps.of(120);
 
     // Initial configs for the drive and steer motors and the azimuth encoder; these cannot be null.
     // Some configs will be overwritten; check the `with*InitialConfigs()` API documentation.
-    private static final TalonFXConfiguration driveInitialConfigs = new TalonFXConfiguration().withCurrentLimits(
-            new CurrentLimitsConfigs()
-                // Swerve azimuth does not require much torque output, so we can set a relatively low
-                // stator current limit to help avoid brownouts without impacting performance.
-                .withStatorCurrentLimit(Amps.of(55))
-                .withStatorCurrentLimitEnable(true)
-        );
+    private static final TalonFXConfiguration driveInitialConfigs = new TalonFXConfiguration();
     private static final TalonFXConfiguration steerInitialConfigs = new TalonFXConfiguration()
         .withCurrentLimits(
             new CurrentLimitsConfigs()
                 // Swerve azimuth does not require much torque output, so we can set a relatively low
                 // stator current limit to help avoid brownouts without impacting performance.
-                .withStatorCurrentLimit(Amps.of(20))
+                .withStatorCurrentLimit(Amps.of(60))
                 .withStatorCurrentLimitEnable(true)
         );
     private static final CANcoderConfiguration encoderInitialConfigs = new CANcoderConfiguration();
@@ -82,13 +74,13 @@ public class TunerConstants {
 
     // Theoretical free speed (m/s) at 12 V applied output;
     // This needs to be tuned to your individual robot
-    public static final LinearVelocity kSpeedAt12Volts = MetersPerSecond.of(5.85);
+    public static final LinearVelocity kSpeedAt12Volts = MetersPerSecond.of(5.12);
 
     // Every 1 rotation of the azimuth results in kCoupleRatio drive motor turns;
     // This may need to be tuned to your individual robot
-    private static final double kCoupleRatio = 3.375;
+    private static final double kCoupleRatio = 3.857142857142857;
 
-    private static final double kDriveGearRatio = 5.2734375;
+    private static final double kDriveGearRatio = 6.026785714285714;
     private static final double kSteerGearRatio = 26.09090909090909;
     private static final Distance kWheelRadius = Inches.of(2);
 
@@ -270,10 +262,10 @@ public class TunerConstants {
          *                                  unspecified or set to 0 Hz, this is 250 Hz on
          *                                  CAN FD, and 100 Hz on CAN 2.0.
          * @param odometryStandardDeviation The standard deviation for odometry calculation
-         *                                  in the form [x, y, theta]ᵀ, with units in meters
+         *                                  in the form [x, y, theta]áµ€, with units in meters
          *                                  and radians
          * @param visionStandardDeviation   The standard deviation for vision calculation
-         *                                  in the form [x, y, theta]ᵀ, with units in meters
+         *                                  in the form [x, y, theta]áµ€, with units in meters
          *                                  and radians
          * @param modules                   Constants for each specific module
          */

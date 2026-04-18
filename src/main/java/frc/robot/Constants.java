@@ -25,7 +25,7 @@ public final class Constants {
         public static final double outtakeVolts = -0.7 * 12;
 
         //1.25 max boost = 125% faster
-        public static final double outtakeMaxBoost = 1.25;
+        public static final double outtakeMaxBoost = 0.5;
     }
     
 
