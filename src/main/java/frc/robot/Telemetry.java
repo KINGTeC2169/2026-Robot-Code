@@ -123,6 +123,12 @@ public class Telemetry {
 
         SmartDashboard.putData("Field", field);
 
+        //Logged for tuning swerve PIDs
+        SmartDashboard.putNumber("VXMetersPerSecond", state.Speeds.vxMetersPerSecond);
+        SmartDashboard.putNumber("VYMetersPerSecond", state.Speeds.vyMetersPerSecond);
+        SmartDashboard.putNumber("OmegaRadPerSecond", state.Speeds.omegaRadiansPerSecond);
+        SmartDashboard.putNumber("Module0Angle", state.ModulePositions[0].angle.getDegrees());
+
         /* Telemeterize each module state to a Mechanism2d */
         for (int i = 0; i < 4; ++i) {
             m_moduleSpeeds[i].setAngle(state.ModuleStates[i].angle);
