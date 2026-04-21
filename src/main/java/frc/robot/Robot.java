@@ -152,11 +152,10 @@ public class Robot extends TimedRobot {
   /** This function is called periodically when disabled. */
   @Override
   public void disabledPeriodic() {
- 
-    
-  newAutoName = m_robotContainer.getAutonomousCommand().getName();
 
-   if (autoName != newAutoName) {
+    newAutoName = m_robotContainer.getAutonomousCommand() != null ? m_robotContainer.getAutonomousCommand().getName() : null;
+
+    if (autoName == null || !autoName.equals(newAutoName)) {
       autoName = newAutoName;
       if (AutoBuilder.getAllAutoNames().contains(autoName)) {
           
@@ -167,11 +166,13 @@ public class Robot extends TimedRobot {
             pathPlannerPaths = null;
           }
           List<Pose2d> poses = new ArrayList<>();
+          if (pathPlannerPaths != null) {
           for (PathPlannerPath path : pathPlannerPaths) {
               if (DriverStation.getAlliance().get() == Alliance.Red) poses.addAll(path.flipPath().getAllPathPoints().stream().map(point -> new Pose2d(point.position.getX(), point.position.getY(), new Rotation2d())).collect(Collectors.toList()));
               else poses.addAll(path.getAllPathPoints().stream().map(point -> new Pose2d(point.position.getX(), point.position.getY(), new Rotation2d())).collect(Collectors.toList()));
             }
-          m_robotContainer.logger.field.getObject("path").setPoses(poses);
+                      m_robotContainer.logger.field.getObject("path").setPoses(poses);
+          }
       }
     }
   }
