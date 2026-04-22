@@ -93,7 +93,7 @@ public class Robot extends TimedRobot {
      CommandScheduler.getInstance().run();
 
      if (DriverStation.isAutonomous()){
-      Elastic.selectTab("Autonomous");
+      // Elastic.selectTab("Autonomous");
     }
     SmartDashboard.putData(m_robotContainer.autoChooser);
     SmartDashboard.putData("pdh", pdh);
@@ -133,7 +133,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
-    Elastic.selectTab("Teleoperated");
+    // Elastic.selectTab("Teleoperated");
     m_robotContainer.logger.field.getObject("path").setPoses();
   }
 
