@@ -39,7 +39,7 @@ public class LED extends SubsystemBase {
     private LEDPattern gradient = LEDPattern.gradient(GradientType.kDiscontinuous, royalRed, royalYellow);
     private LEDPattern solidYellow = LEDPattern.solid(royalYellow);
     private LEDPattern solidRed = LEDPattern.solid(royalRed);
-    //private LEDPattern solidBlue = LEDPattern.solid(Color.kBlue);
+    private LEDPattern solidGreen = LEDPattern.solid(Color.kLimeGreen);
     private LEDPattern off = LEDPattern.kOff;
 
     private Map<Number, Color> blinkingRedMaskSteps = Map.of(0, Color.kWhite, 0.32, Color.kBlack);
@@ -63,11 +63,11 @@ public class LED extends SubsystemBase {
         m_led.start();
     }
 
-    public void initialize(){
+    public void initialize(){ //robot turns on
         currentPattern = breathing;
     }
 
-    public void still(){
+    public void still(){ //robot enabled
         currentPattern = gradient;
     }
 
@@ -75,7 +75,7 @@ public class LED extends SubsystemBase {
         currentPattern = solidYellow;
     }
 
-    public void scrollYellow(){ //use to scroll in yellow when we intake
+    public void scrollYellow(){ //intake
         //Map<Double, Color> maskSteps = Map.of(0, Color.kWhite, 0.5, Color.kBlack);
          /*LEDPattern maskSteps = LEDPattern.steps(Map.of(0, Color.kWhite, 0.5, Color.kBlack));
     
@@ -84,11 +84,15 @@ public class LED extends SubsystemBase {
         currentPattern= blinkingYellow;
     }
 
+    public void setGreen(){
+            currentPattern=solidGreen;
+    }
+
     public void setRed(){
         currentPattern = solidRed;
     }
 
-    public void scrollRed(){ //scroll out red on outtake
+    public void scrollRed(){ //outtake
         //Map<Double, Color> 
         /*LEDPattern maskSteps = LEDPattern.steps(Map.of(0, Color.kWhite, 0.5, Color.kBlack));
         LEDPattern mask =(maskSteps).scrollAtRelativeSpeed(Percent.per(Second).of(0.5));
@@ -96,7 +100,7 @@ public class LED extends SubsystemBase {
         currentPattern = blinkingRed;
     }
 
-    public void rainbow(){
+    public void rainbow(){//intake stops
         currentPattern = LEDPattern.rainbow(255, 255);
     }
 
