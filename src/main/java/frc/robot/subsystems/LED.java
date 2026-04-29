@@ -25,7 +25,7 @@ public class LED extends SubsystemBase {
     //fix for actual leds once they are real
     private AddressableLEDBufferView m_bufferView;
 
-    private int ledLength = 122; //need actual length once there are real LEDs
+    private int ledLength = 139; //need actual length once there are real LEDs
 
     // Our LED strip has a density of 60 LEDs per meter
     //private final Distance kLedSpacing = Meters.of(1 / 60.0);
@@ -38,6 +38,7 @@ public class LED extends SubsystemBase {
     private LEDPattern breathing = LEDPattern.gradient(GradientType.kDiscontinuous, royalRed, royalYellow).breathe(Seconds.of(2));
     private LEDPattern gradient = LEDPattern.gradient(GradientType.kDiscontinuous, royalRed, royalYellow);
     private LEDPattern solidYellow = LEDPattern.solid(royalYellow);
+    
     private LEDPattern solidRed = LEDPattern.solid(royalRed);
     private LEDPattern solidGreen = LEDPattern.solid(Color.kLimeGreen);
     private LEDPattern off = LEDPattern.kOff;
@@ -75,7 +76,7 @@ public class LED extends SubsystemBase {
         currentPattern = solidYellow;
     }
 
-    public void scrollYellow(){ //intake
+    public void scrollOrange(){ //intake
         //Map<Double, Color> maskSteps = Map.of(0, Color.kWhite, 0.5, Color.kBlack);
          /*LEDPattern maskSteps = LEDPattern.steps(Map.of(0, Color.kWhite, 0.5, Color.kBlack));
     

@@ -32,7 +32,7 @@ public class StopIntake extends Command {
     @Override
     public void initialize(){
         intake.stopIntaking(leftover);
-        led.rainbow();
+        led.scrollOrange();
     }
 
     @Override

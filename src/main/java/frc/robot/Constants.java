@@ -16,13 +16,13 @@ public final class Constants {
         public static final int controller = 2;
         public static final int topIntake = 12; 
         public static final int bottomIntake = 15;
-        public static final int ledPort = 5;
+        public static final int ledPort = 0;
     }
 
     public static final class IntakeConstants{
 
         public static final double intakeVolts = 0.7 * 12; //INTAKE IS POSITIVE
-        public static final double outtakeVolts = -0.7 * 12;
+        public static final double outtakeVolts = 0; //-0.7 * 12
 
         //1.25 max boost = 125% faster
         public static final double outtakeMaxBoost = 0.5;
