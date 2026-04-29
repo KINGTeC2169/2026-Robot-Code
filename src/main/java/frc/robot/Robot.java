@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -53,10 +54,11 @@ public class Robot extends TimedRobot {
    * initialization code.
    */
   public Robot() {
+   if (RobotBase.isReal()) DataLogManager.start("/u/logs");
+   else DataLogManager.start();
    m_robotContainer = new RobotContainer();
    WebServer.start(5800, Filesystem.getDeployDirectory().getPath());
    pdh = new PowerDistribution();
-   DataLogManager.start("/u/logs");
 
     //Swerve Widget
     SmartDashboard.putData("Swerve Drive", new Sendable() {
