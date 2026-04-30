@@ -51,16 +51,21 @@ public class TunerConstants {
 
     // The stator current at which the wheels start to slip;
     // This needs to be tuned to your individual robot
-    private static final Current kSlipCurrent = Amps.of(120);
+
+    // I droped this value as it should lower the instant power to lessen wheel slip this might also need to be raised 
+    private static final Current kSlipCurrent = Amps.of(90);
 
     // Initial configs for the drive and steer motors and the azimuth encoder; these cannot be null.
     // Some configs will be overwritten; check the `with*InitialConfigs()` API documentation.
     private static final TalonFXConfiguration driveInitialConfigs = new TalonFXConfiguration()
         .withCurrentLimits(
             new CurrentLimitsConfigs()
-                // Default supply current limit is 70 A, but it can be lowered to avoid brownouts.
+                 // Stator current affects the ammount the motor can pull preventing spikes in power draw
+                 // I suggest updating this value if your drive either feels too weak or you are still browing out
+                .withStatorCurrentLimit(80)
+                .withStatorCurrentLimitEnable(true)
+                 // Default supply current limit is 70 A, but it can be lowered to avoid brownouts.
                 // Supply current limits can be larger than the breaker current rating.
-
                 .withSupplyCurrentLimit(Amps.of(70))
                 .withSupplyCurrentLimitEnable(true)
         );
