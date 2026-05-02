@@ -30,6 +30,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.LED;
 import frc.robot.util.Elastic; 
 
 /**
@@ -54,6 +55,7 @@ public class Robot extends TimedRobot {
    * initialization code.
    */
   public Robot() {
+    RobotController.setBrownoutVoltage(6.15);
    if (RobotBase.isReal()) DataLogManager.start("/u/logs");
    else DataLogManager.start();
    m_robotContainer = new RobotContainer();
@@ -119,6 +121,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+    m_robotContainer.led.scrollOrange();
   }
 
   /** This function is called periodically during autonomous. */
@@ -137,6 +140,7 @@ public class Robot extends TimedRobot {
 
     // Elastic.selectTab("Teleoperated");
     m_robotContainer.logger.field.getObject("path").setPoses();
+    m_robotContainer.led.scrollOrange();
   }
 
   /** This function is called periodically during operator control. */

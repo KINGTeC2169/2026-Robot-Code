@@ -30,15 +30,16 @@ public class LED extends SubsystemBase {
     // Our LED strip has a density of 60 LEDs per meter
     //private final Distance kLedSpacing = Meters.of(1 / 60.0);
 
-    private Color royalMaroon = new Color("#A00014");
     private Color royalRed = new Color("#C00000");
     private Color royalYellow = new Color("#FAD200");
+    private Color RSLOrange = new Color("#bc3800");
 
     //Patterns
     private LEDPattern breathing = LEDPattern.gradient(GradientType.kDiscontinuous, royalRed, royalYellow).breathe(Seconds.of(2));
     private LEDPattern gradient = LEDPattern.gradient(GradientType.kDiscontinuous, royalRed, royalYellow);
     private LEDPattern solidYellow = LEDPattern.solid(royalYellow);
-    
+    private LEDPattern solidOrange = LEDPattern.solid(RSLOrange);
+
     private LEDPattern solidRed = LEDPattern.solid(royalRed);
     private LEDPattern solidGreen = LEDPattern.solid(Color.kLimeGreen);
     private LEDPattern off = LEDPattern.kOff;
@@ -49,8 +50,9 @@ public class LED extends SubsystemBase {
     private Map<Number, Color> blinkingYellowMaskSteps = Map.of(0, Color.kWhite, 0.32, Color.kBlack);
     private LEDPattern blinkingYellow = solidYellow.mask(LEDPattern.steps(blinkingYellowMaskSteps).scrollAtRelativeSpeed(Percent.per(Second).of(175)));
 
-    
-    private LEDPattern currentPattern = breathing;
+    private LEDPattern blinkingOrange = solidOrange.breathe(Seconds.of(.5));
+
+    private LEDPattern currentPattern = solidOrange;
 
     public LED(){
         m_led = new AddressableLED(Constants.Ports.ledPort);//need to put port in constants once it exists
@@ -65,11 +67,11 @@ public class LED extends SubsystemBase {
     }
 
     public void initialize(){ //robot turns on
-        currentPattern = breathing;
+        currentPattern = solidOrange;
     }
 
     public void still(){ //robot enabled
-        currentPattern = gradient;
+        currentPattern = breathing;
     }
 
     public void setYellow(){
@@ -82,7 +84,7 @@ public class LED extends SubsystemBase {
     
         LEDPattern mask =(maskSteps).scrollAtRelativeSpeed(Percent.per(Second).of(0.5));
         currentPattern = solidYellow.mask(mask);*/
-        currentPattern= blinkingYellow;
+        currentPattern = blinkingOrange;
     }
 
     public void setGreen(){
