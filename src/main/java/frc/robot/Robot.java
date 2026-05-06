@@ -4,9 +4,34 @@
 
 package frc.robot;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import com.ctre.phoenix6.Utils;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathPlannerPath;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.net.WebServer;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.Notifier;
+import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.LED;
+import frc.robot.util.Elastic; 
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -14,19 +39,50 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * this project, you must also update the Main.java file in the project.
  */
 public class Robot extends TimedRobot {
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
-  private String m_autoSelected;
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  private Command m_autonomousCommand;
 
+  private final RobotContainer m_robotContainer;
+  private final PowerDistribution pdh;
+  private String autoName, newAutoName;
+  private List<PathPlannerPath> pathPlannerPaths = null;
+
+  //Swerve drive sim stuff
+  private static final double kSimLoopPeriod = 0.004; // 4 ms
+  private Notifier m_simNotifier = null;
+  private double m_lastSimTime;
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
   public Robot() {
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
-    SmartDashboard.putData("Auto choices", m_chooser);
+    RobotController.setBrownoutVoltage(6.15);
+   if (RobotBase.isReal()) DataLogManager.start("/u/logs");
+   else DataLogManager.start();
+   m_robotContainer = new RobotContainer();
+   WebServer.start(5800, Filesystem.getDeployDirectory().getPath());
+   pdh = new PowerDistribution();
+
+    //Swerve Widget
+    SmartDashboard.putData("Swerve Drive", new Sendable() {
+    @Override
+    public void initSendable(SendableBuilder builder) {
+        builder.setSmartDashboardType("SwerveDrive");
+
+        builder.addDoubleProperty("Front Left Angle", () -> m_robotContainer.drivetrain.getModule(0).getCurrentState().angle.getRadians(), null);
+        builder.addDoubleProperty("Front Left Velocity", () -> m_robotContainer.drivetrain.getModule(0).getCurrentState().speedMetersPerSecond, null);
+
+        builder.addDoubleProperty("Front Right Angle", () -> m_robotContainer.drivetrain.getModule(1).getCurrentState().angle.getRadians(), null);
+        builder.addDoubleProperty("Front Right Velocity", () -> m_robotContainer.drivetrain.getModule(1).getCurrentState().speedMetersPerSecond, null);
+
+        builder.addDoubleProperty("Back Left Angle", () -> m_robotContainer.drivetrain.getModule(2).getCurrentState().angle.getRadians(), null);
+        builder.addDoubleProperty("Back Left Velocity", () -> m_robotContainer.drivetrain.getModule(2).getCurrentState().speedMetersPerSecond, null);
+
+        builder.addDoubleProperty("Back Right Angle", () -> m_robotContainer.drivetrain.getModule(3).getCurrentState().angle.getRadians(), null);
+        builder.addDoubleProperty("Back Right Velocity", () -> m_robotContainer.drivetrain.getModule(3).getCurrentState().speedMetersPerSecond, null);
+
+        builder.addDoubleProperty("Robot Angle", () -> m_robotContainer.drivetrain.getPigeon2().getRotation2d().getRadians(), null);
+      }
+    });
   }
 
   /**
@@ -37,7 +93,15 @@ public class Robot extends TimedRobot {
    * SmartDashboard integrated updating.
    */
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+     CommandScheduler.getInstance().run();
+
+     if (DriverStation.isAutonomous()){
+      // Elastic.selectTab("Autonomous");
+    }
+    SmartDashboard.putData(m_robotContainer.autoChooser);
+    SmartDashboard.putData("pdh", pdh);
+  }
 
   /**
    * This autonomous (along with the chooser code above) shows how to select between different
@@ -51,54 +115,102 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autoSelected = m_chooser.getSelected();
-    // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    System.out.println("Auto selected: " + m_autoSelected);
+  m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+
+    // schedule the autonomous command (example)
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.schedule();
+    }
+    m_robotContainer.led.scrollOrange();
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    switch (m_autoSelected) {
-      case kCustomAuto:
-        // Put custom auto code here
-        break;
-      case kDefaultAuto:
-      default:
-        // Put default auto code here
-        break;
-    }
+    
   }
 
   /** This function is called once when teleop is enabled. */
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+    m_robotContainer.led.still();
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.cancel();
+    }
+
+    // Elastic.selectTab("Teleoperated");
+    m_robotContainer.logger.field.getObject("path").setPoses();
+    m_robotContainer.led.scrollOrange();
+  }
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    
+  }
 
   /** This function is called once when the robot is disabled. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+     m_robotContainer.led.initialize();
+  }
 
   /** This function is called periodically when disabled. */
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
 
+    newAutoName = m_robotContainer.getAutonomousCommand() != null ? m_robotContainer.getAutonomousCommand().getName() : null;
+
+    if (autoName == null || !autoName.equals(newAutoName)) {
+      autoName = newAutoName;
+      if (AutoBuilder.getAllAutoNames().contains(autoName)) {
+          
+          try {
+            pathPlannerPaths = PathPlannerAuto.getPathGroupFromAutoFile(newAutoName);
+          } catch (Exception e) {
+            e.printStackTrace();
+            pathPlannerPaths = null;
+          }
+          List<Pose2d> poses = new ArrayList<>();
+          if (pathPlannerPaths != null) {
+          for (PathPlannerPath path : pathPlannerPaths) {
+              if (DriverStation.getAlliance().get() == Alliance.Red) poses.addAll(path.flipPath().getAllPathPoints().stream().map(point -> new Pose2d(point.position.getX(), point.position.getY(), new Rotation2d())).collect(Collectors.toList()));
+              else poses.addAll(path.getAllPathPoints().stream().map(point -> new Pose2d(point.position.getX(), point.position.getY(), new Rotation2d())).collect(Collectors.toList()));
+            }
+                      m_robotContainer.logger.field.getObject("path").setPoses(poses);
+          }
+      }
+    }
+  }
   /** This function is called once when test mode is enabled. */
   @Override
-  public void testInit() {}
+  public void testInit() {
+    m_robotContainer.led.still();
+  }
 
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {}
 
   /** This function is called once when the robot is first started up. */
-  @Override
-  public void simulationInit() {}
+@Override
+public void simulationInit() {
+    m_lastSimTime = Utils.getCurrentTimeSeconds();
+
+    /* Run simulation at a faster rate so PID gains behave more reasonably */
+    m_simNotifier = new Notifier(() -> {
+        final double currentTime = Utils.getCurrentTimeSeconds();
+        double deltaTime = currentTime - m_lastSimTime;
+        m_lastSimTime = currentTime;
+
+        /* Use the measured time delta, get battery voltage from WPILib */
+        m_robotContainer.drivetrain.updateSimState(deltaTime, RobotController.getBatteryVoltage());
+    });
+    m_simNotifier.startPeriodic(kSimLoopPeriod);
+  }
 
   /** This function is called periodically whilst in simulation. */
   @Override
   public void simulationPeriodic() {}
+  
 }
