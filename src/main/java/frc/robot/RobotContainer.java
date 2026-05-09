@@ -8,6 +8,7 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -18,8 +19,13 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.commands.DriveCommands;
+import frc.robot.commands.IntakeBall;
+import frc.robot.commands.StopIntake;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.LED;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
@@ -37,6 +43,8 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 public class RobotContainer {
   // Subsystems
   private final Drive drive;
+  private final Intake intake;
+  private final LED led;
 
   // Controller
   private final CommandXboxController operatorControl =
@@ -67,6 +75,9 @@ public class RobotContainer {
                 new ModuleIOTalonFX(TunerConstants.FrontRight),
                 new ModuleIOTalonFX(TunerConstants.BackLeft),
                 new ModuleIOTalonFX(TunerConstants.BackRight));
+            
+        intake = new Intake();
+        led = new LED();
 
         // The ModuleIOTalonFXS implementation provides an example implementation for
         // TalonFXS controller connected to a CANdi with a PWM encoder. The
@@ -96,6 +107,8 @@ public class RobotContainer {
                 new ModuleIOSim(TunerConstants.FrontRight),
                 new ModuleIOSim(TunerConstants.BackLeft),
                 new ModuleIOSim(TunerConstants.BackRight));
+        intake = new Intake();
+        led = new LED();
         break;
 
       default:
@@ -107,6 +120,8 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {},
                 new ModuleIO() {});
+        intake = new Intake();
+        led = new LED();
         break;
     }
 
@@ -128,6 +143,30 @@ public class RobotContainer {
         "Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
     autoChooser.addOption(
         "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+    autoChooser.addOption(
+        "BottomDis", new PathPlannerAuto("BottomDis"));
+    autoChooser.addOption(
+        "BottomFull", new PathPlannerAuto("BottomFull"));
+    autoChooser.addOption(
+        "BottomHalf", new PathPlannerAuto("BottomHalf"));
+    autoChooser.addOption(
+        "BottomHalfHuman", new PathPlannerAuto("BottomHalfHuman"));
+    autoChooser.addOption(
+        "BottomMartyGambit", new PathPlannerAuto("BottomMartyGambit"));
+    autoChooser.addOption(
+        "Forward", new PathPlannerAuto("Forward"));
+    autoChooser.addOption(
+        "JustOuttake", new PathPlannerAuto("JustOuttake"));
+    autoChooser.addOption(
+        "MartyGambit", new PathPlannerAuto("MartyGambit"));
+    autoChooser.addOption(
+        "Test", new PathPlannerAuto("Test"));
+    autoChooser.addOption(
+        "TopDisruption", new PathPlannerAuto("TopDisruption"));
+    autoChooser.addOption(
+        "TopFull", new PathPlannerAuto("TopFull"));
+    autoChooser.addOption(
+        "TopHalf", new PathPlannerAuto("TopHalf"));
 
     // Configure the button bindings
     configureButtonBindings();
@@ -143,22 +182,40 @@ public class RobotContainer {
     // Default command, normal field-relative drive
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
-            drive, () -> -leftStick.getY(), () -> -leftStick.getX(), () -> rightStick.getTwist()));
+            drive, 
+            () -> -leftStick.getY(), 
+            () -> -leftStick.getX(), 
+            () -> rightStick.getTwist()));
 
     // Lock to 0° when A button is held
     bottomRightButton.whileTrue(
         DriveCommands.joystickDriveAtAngle(
-            drive, () -> -leftStick.getY(), () -> -leftStick.getX(), () -> Rotation2d.kZero));
+            drive, 
+            () -> -leftStick.getY(), 
+            () -> -leftStick.getX(), 
+            () -> Rotation2d.kZero));
 
-    // Switch to X pattern when X button is pressed
+    // Switch to X pattern when top left button is pressed
     topLeftButton.onTrue(Commands.runOnce(drive::stopWithX, drive));
 
-    // Reset gyro to 0° when B button is pressed
+    // Reset gyro to 0° when top right button is pressed
     topRightButton.onTrue(
         Commands.runOnce(
                 () -> drive.setPose(new Pose2d(drive.getPose().getTranslation(), Rotation2d.kZero)),
                 drive)
             .ignoringDisable(true));
+
+    // OPERATOR CONTROLS
+
+    // Stops the intake when B is pressed
+    operatorControl.b().debounce(.01).onTrue(new StopIntake(intake, led));
+    //operatorControl.x().debounce(.01).onTrue(new StopIntake(intake, 0.05 * 12, led));
+
+    // Intakes the ball when left bumper is pressed at a default 50% voltage
+    operatorControl.leftBumper().debounce(.01).onTrue(new IntakeBall(intake, IntakeConstants.intakeVolts, led)); 
+
+    // Outtakes the ball when right bumper is pressed at a default -50% voltage
+    operatorControl.rightBumper().debounce(.01).onTrue(new IntakeBall(intake, IntakeConstants.outtakeVolts, led)); 
   }
 
   /**
