@@ -7,10 +7,7 @@
 
 package frc.robot;
 
-import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
-
 import com.pathplanner.lib.auto.AutoBuilder;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -29,6 +26,7 @@ import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOSim;
 import frc.robot.subsystems.drive.ModuleIOTalonFX;
+import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -41,17 +39,16 @@ public class RobotContainer {
   private final Drive drive;
 
   // Controller
-  private final CommandXboxController operatorControl = new CommandXboxController(Constants.Ports.controller);
+  private final CommandXboxController operatorControl =
+      new CommandXboxController(Constants.Ports.controller);
 
   private final Joystick leftStick = new Joystick(Constants.Ports.leftStick);
   private final JoystickButton topLeftButton = new JoystickButton(leftStick, 1);
   private final JoystickButton bottomLeftButton = new JoystickButton(leftStick, 2);
 
-  
   private final Joystick rightStick = new Joystick(Constants.Ports.rightStick);
   private final JoystickButton topRightButton = new JoystickButton(rightStick, 1);
   private final JoystickButton bottomRightButton = new JoystickButton(rightStick, 2);
-
 
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
@@ -146,31 +143,22 @@ public class RobotContainer {
     // Default command, normal field-relative drive
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(
-            drive,
-            () -> -leftStick.getY(),
-            () -> -leftStick.getX(),
-            () -> rightStick.getTwist()));
+            drive, () -> -leftStick.getY(), () -> -leftStick.getX(), () -> rightStick.getTwist()));
 
     // Lock to 0° when A button is held
-    bottomRightButton
-        .whileTrue(
-            DriveCommands.joystickDriveAtAngle(
-                drive,
-                () -> -leftStick.getY(),
-                () -> -leftStick.getX(),
-                () -> Rotation2d.kZero));
+    bottomRightButton.whileTrue(
+        DriveCommands.joystickDriveAtAngle(
+            drive, () -> -leftStick.getY(), () -> -leftStick.getX(), () -> Rotation2d.kZero));
 
     // Switch to X pattern when X button is pressed
     topLeftButton.onTrue(Commands.runOnce(drive::stopWithX, drive));
 
     // Reset gyro to 0° when B button is pressed
     topRightButton.onTrue(
-            Commands.runOnce(
-                    () ->
-                        drive.setPose(
-                            new Pose2d(drive.getPose().getTranslation(), Rotation2d.kZero)),
-                    drive)
-                .ignoringDisable(true));
+        Commands.runOnce(
+                () -> drive.setPose(new Pose2d(drive.getPose().getTranslation(), Rotation2d.kZero)),
+                drive)
+            .ignoringDisable(true));
   }
 
   /**

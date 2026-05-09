@@ -29,17 +29,26 @@ public final class Constants {
     REPLAY
   }
 
-  public static final class Ports{
-    //Driver station controller ids
+  public static final class Ports {
+    // Driver station controller ids
     public static final int leftStick = 0;
     public static final int rightStick = 1;
     public static final int controller = 2;
 
-    //Intake can ids
-    public static final int topIntake = 12; 
+    // Intake can ids
+    public static final int topIntake = 12;
     public static final int bottomIntake = 15;
 
-    //LED DIO port
+    // LED DIO port
     public static final int ledPort = 0;
+  }
+
+  public static final class IntakeConstants {
+
+    public static final double intakeVolts = 0.7 * 12; // INTAKE IS POSITIVE
+    public static final double outtakeVolts = -0.7 * 12; // -0.7 * 12
+
+    // 1.25 max boost = 125% faster
+    public static final double outtakeMaxBoost = 0.5;
   }
 }
