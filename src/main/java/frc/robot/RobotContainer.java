@@ -8,7 +8,6 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -36,7 +35,6 @@ import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOPhotonVision;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
-
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -50,7 +48,7 @@ public class RobotContainer {
   private final Drive drive;
   private final Vision vision;
   private final Intake intake;
-  private final LED led;
+  public final LED led;
 
   // Controller
   private final CommandXboxController operatorControl =
@@ -81,10 +79,14 @@ public class RobotContainer {
                 new ModuleIOTalonFX(TunerConstants.FrontRight),
                 new ModuleIOTalonFX(TunerConstants.BackLeft),
                 new ModuleIOTalonFX(TunerConstants.BackRight));
-            
-        vision = new Vision(drive::addVisionMeasurement,
-                            new VisionIOPhotonVision("Front_Left_Camera", Constants.Vision.FRONT_LEFT_CAMERA_TO_ROBOT),
-                            new VisionIOPhotonVision("Back_Right_Camera", Constants.Vision.BACK_RIGHT_CAMERA_TO_ROBOT));
+
+        vision =
+            new Vision(
+                drive::addVisionMeasurement,
+                new VisionIOPhotonVision(
+                    "Front_Left_Camera", Constants.Vision.FRONT_LEFT_CAMERA_TO_ROBOT),
+                new VisionIOPhotonVision(
+                    "Back_Right_Camera", Constants.Vision.BACK_RIGHT_CAMERA_TO_ROBOT));
         intake = new Intake();
         led = new LED();
 
@@ -116,9 +118,17 @@ public class RobotContainer {
                 new ModuleIOSim(TunerConstants.FrontRight),
                 new ModuleIOSim(TunerConstants.BackLeft),
                 new ModuleIOSim(TunerConstants.BackRight));
-        vision = new Vision(drive::addVisionMeasurement,
-                            new VisionIOPhotonVisionSim("Front_Left_Camera", Constants.Vision.FRONT_LEFT_CAMERA_TO_ROBOT, drive::getPose),
-                            new VisionIOPhotonVisionSim("Back_Right_Camera", Constants.Vision.BACK_RIGHT_CAMERA_TO_ROBOT, drive::getPose));
+        vision =
+            new Vision(
+                drive::addVisionMeasurement,
+                new VisionIOPhotonVisionSim(
+                    "Front_Left_Camera",
+                    Constants.Vision.FRONT_LEFT_CAMERA_TO_ROBOT,
+                    drive::getPose),
+                new VisionIOPhotonVisionSim(
+                    "Back_Right_Camera",
+                    Constants.Vision.BACK_RIGHT_CAMERA_TO_ROBOT,
+                    drive::getPose));
         intake = new Intake();
         led = new LED();
         break;
@@ -156,30 +166,6 @@ public class RobotContainer {
         "Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
     autoChooser.addOption(
         "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
-    autoChooser.addOption(
-        "BottomDis", new PathPlannerAuto("BottomDis"));
-    autoChooser.addOption(
-        "BottomFull", new PathPlannerAuto("BottomFull"));
-    autoChooser.addOption(
-        "BottomHalf", new PathPlannerAuto("BottomHalf"));
-    autoChooser.addOption(
-        "BottomHalfHuman", new PathPlannerAuto("BottomHalfHuman"));
-    autoChooser.addOption(
-        "BottomMartyGambit", new PathPlannerAuto("BottomMartyGambit"));
-    autoChooser.addOption(
-        "Forward", new PathPlannerAuto("Forward"));
-    autoChooser.addOption(
-        "JustOuttake", new PathPlannerAuto("JustOuttake"));
-    autoChooser.addOption(
-        "MartyGambit", new PathPlannerAuto("MartyGambit"));
-    autoChooser.addOption(
-        "Test", new PathPlannerAuto("Test"));
-    autoChooser.addOption(
-        "TopDisruption", new PathPlannerAuto("TopDisruption"));
-    autoChooser.addOption(
-        "TopFull", new PathPlannerAuto("TopFull"));
-    autoChooser.addOption(
-        "TopHalf", new PathPlannerAuto("TopHalf"));
 
     // Configure the button bindings
     configureButtonBindings();
@@ -193,20 +179,30 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Default command, normal field-relative drive
-    drive.setDefaultCommand(
-        DriveCommands.joystickDrive(
-            drive, 
-            () -> -leftStick.getY(), 
-            () -> -leftStick.getX(), 
-            () -> rightStick.getTwist()));
+    switch (Constants.currentMode) {
+      case SIM:
+        drive.setDefaultCommand(
+            DriveCommands.joystickDrive(
+                drive,
+                () -> -operatorControl.getLeftY(),
+                () -> -operatorControl.getLeftX(),
+                () -> operatorControl.getRightX()));
+        break;
+
+      default:
+        drive.setDefaultCommand(
+            DriveCommands.joystickDrive(
+                drive,
+                () -> -leftStick.getY(),
+                () -> -leftStick.getX(),
+                () -> rightStick.getTwist()));
+        break;
+    }
 
     // Lock to 0° when A button is held
     bottomRightButton.whileTrue(
         DriveCommands.joystickDriveAtAngle(
-            drive, 
-            () -> -leftStick.getY(), 
-            () -> -leftStick.getX(), 
-            () -> Rotation2d.kZero));
+            drive, () -> -leftStick.getY(), () -> -leftStick.getX(), () -> Rotation2d.kZero));
 
     // Switch to X pattern when top left button is pressed
     topLeftButton.onTrue(Commands.runOnce(drive::stopWithX, drive));
@@ -222,13 +218,19 @@ public class RobotContainer {
 
     // Stops the intake when B is pressed
     operatorControl.b().debounce(.01).onTrue(new StopIntake(intake, led));
-    //operatorControl.x().debounce(.01).onTrue(new StopIntake(intake, 0.05 * 12, led));
+    // operatorControl.x().debounce(.01).onTrue(new StopIntake(intake, 0.05 * 12, led));
 
     // Intakes the ball when left bumper is pressed at a default 50% voltage
-    operatorControl.leftBumper().debounce(.01).onTrue(new IntakeBall(intake, IntakeConstants.intakeVolts, led)); 
+    operatorControl
+        .leftBumper()
+        .debounce(.01)
+        .onTrue(new IntakeBall(intake, IntakeConstants.intakeVolts, led));
 
     // Outtakes the ball when right bumper is pressed at a default -50% voltage
-    operatorControl.rightBumper().debounce(.01).onTrue(new IntakeBall(intake, IntakeConstants.outtakeVolts, led)); 
+    operatorControl
+        .rightBumper()
+        .debounce(.01)
+        .onTrue(new IntakeBall(intake, IntakeConstants.outtakeVolts, led));
   }
 
   /**
