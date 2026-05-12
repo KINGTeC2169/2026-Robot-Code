@@ -35,6 +35,7 @@ import frc.robot.subsystems.vision.Vision;
 import frc.robot.subsystems.vision.VisionIO;
 import frc.robot.subsystems.vision.VisionIOPhotonVision;
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim;
+import java.util.List;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 /**
@@ -231,6 +232,17 @@ public class RobotContainer {
         .rightBumper()
         .debounce(.01)
         .onTrue(new IntakeBall(intake, IntakeConstants.outtakeVolts, led));
+  }
+
+  /**
+   * Passes the trajectory to the field map in the Drive subsystem for visualization on the
+   * dashboard.
+   *
+   * @param trajectory - An array of Pose2d representing the trajectory to be visualized on the
+   *     field map
+   */
+  public void setFieldMapTrajectory(List<Pose2d> trajectory) {
+    drive.setFieldMapTrajectory(trajectory);
   }
 
   /**

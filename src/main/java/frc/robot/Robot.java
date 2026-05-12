@@ -7,9 +7,21 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathPlannerPath;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.util.Elastic;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -26,9 +38,12 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 public class Robot extends LoggedRobot {
   private Command autonomousCommand;
   private RobotContainer robotContainer;
+  private String autoName, newAutoName;
+  private List<PathPlannerPath> pathPlannerPaths = null;
 
   public Robot() {
     RobotController.setBrownoutVoltage(6.15);
+    SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
     // Record metadata
     Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
     Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
@@ -100,7 +115,43 @@ public class Robot extends LoggedRobot {
 
   /** This function is called periodically when disabled. */
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+
+    if (robotContainer.getAutonomousCommand().getName() != null)
+      newAutoName = robotContainer.getAutonomousCommand().getName();
+    if (autoName != newAutoName && robotContainer.getAutonomousCommand().getName() != null) {
+      autoName = newAutoName;
+      if (AutoBuilder.getAllAutoNames().contains(autoName)) {
+        try {
+          pathPlannerPaths = PathPlannerAuto.getPathGroupFromAutoFile(newAutoName);
+        } catch (Exception e) {
+          e.printStackTrace();
+          pathPlannerPaths = null;
+        }
+        List<Pose2d> poses = new ArrayList<>();
+        for (PathPlannerPath path : pathPlannerPaths) {
+          if (DriverStation.getAlliance().isPresent()
+              && DriverStation.getAlliance().get() == Alliance.Blue)
+            poses.addAll(
+                path.flipPath().getAllPathPoints().stream()
+                    .map(
+                        point ->
+                            new Pose2d(
+                                point.position.getX(), point.position.getY(), new Rotation2d()))
+                    .collect(Collectors.toList()));
+          else
+            poses.addAll(
+                path.getAllPathPoints().stream()
+                    .map(
+                        point ->
+                            new Pose2d(
+                                point.position.getX(), point.position.getY(), new Rotation2d()))
+                    .collect(Collectors.toList()));
+        }
+        robotContainer.setFieldMapTrajectory(poses);
+      }
+    }
+  }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
@@ -112,6 +163,7 @@ public class Robot extends LoggedRobot {
     if (autonomousCommand != null) {
       CommandScheduler.getInstance().schedule(autonomousCommand);
     }
+    if (DriverStation.isFMSAttached()) Elastic.selectTab("Autonomous");
   }
 
   /** This function is called periodically during autonomous. */
@@ -129,6 +181,7 @@ public class Robot extends LoggedRobot {
       autonomousCommand.cancel();
     }
     robotContainer.led.scrollOrange();
+    if (DriverStation.isFMSAttached()) Elastic.selectTab("Teleoperated");
   }
 
   /** This function is called periodically during operator control. */

@@ -36,6 +36,8 @@ import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -43,6 +45,7 @@ import frc.robot.Constants;
 import frc.robot.Constants.Mode;
 import frc.robot.generated.TunerConstants;
 import frc.robot.util.LocalADStarAK;
+import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import org.littletonrobotics.junction.AutoLogOutput;
@@ -85,6 +88,8 @@ public class Drive extends SubsystemBase {
   private final SysIdRoutine sysId;
   private final Alert gyroDisconnectedAlert =
       new Alert("Disconnected gyro, using kinematics as fallback.", AlertType.kError);
+
+  private Field2d field = new Field2d();
 
   private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(getModuleTranslations());
   private Rotation2d rawGyroRotation = Rotation2d.kZero;
@@ -147,10 +152,44 @@ public class Drive extends SubsystemBase {
                 (state) -> Logger.recordOutput("Drive/SysIdState", state.toString())),
             new SysIdRoutine.Mechanism(
                 (voltage) -> runCharacterization(voltage.in(Volts)), null, this));
+
+    // Swerve drive states for Elastic
+    SmartDashboard.putData(
+        "Swerve",
+        builder -> {
+          builder.setSmartDashboardType("SwerveDrive");
+
+          builder.addDoubleProperty(
+              "Front Left Angle", () -> modules[0].getPosition().angle.getRadians(), null);
+          builder.addDoubleProperty(
+              "Front Left Velocity", () -> modules[0].getState().speedMetersPerSecond, null);
+
+          builder.addDoubleProperty(
+              "Front Right Angle", () -> modules[1].getPosition().angle.getRadians(), null);
+          builder.addDoubleProperty(
+              "Front Right Velocity", () -> modules[1].getState().speedMetersPerSecond, null);
+
+          builder.addDoubleProperty(
+              "Back Left Angle", () -> modules[2].getPosition().angle.getRadians(), null);
+          builder.addDoubleProperty(
+              "Back Left Velocity", () -> modules[2].getState().speedMetersPerSecond, null);
+
+          builder.addDoubleProperty(
+              "Back Right Angle", () -> modules[3].getPosition().angle.getRadians(), null);
+          builder.addDoubleProperty(
+              "Back Right Velocity", () -> modules[3].getState().speedMetersPerSecond, null);
+
+          builder.addDoubleProperty("Robot Angle", () -> getRotation().getRadians(), null);
+        });
+
+    SmartDashboard.putData("Field", field);
   }
 
   @Override
   public void periodic() {
+
+    field.setRobotPose(getPose());
+
     odometryLock.lock(); // Prevents odometry updates while reading data
     gyroIO.updateInputs(gyroInputs);
     Logger.processInputs("Drive/Gyro", gyroInputs);
@@ -206,6 +245,17 @@ public class Drive extends SubsystemBase {
 
     // Update gyro alert
     gyroDisconnectedAlert.set(!gyroInputs.connected && Constants.currentMode != Mode.SIM);
+  }
+
+  /**
+   * Sets the trajectory on the Field2d object for visualization. This is not used for odometry or
+   * control, and is only for visualization purposes. The trajectory should be in field-relative
+   * coordinates.
+   *
+   * @param trajectory - An array of Pose2D representing the auto trajectory
+   */
+  public void setFieldMapTrajectory(List<Pose2d> trajectory) {
+    field.getObject("trajectory").setPoses(trajectory);
   }
 
   /**
