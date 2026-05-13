@@ -11,20 +11,21 @@ public class IntakeBall extends Command {
   private LED led;
 
   private double volts;
-  private final CommandXboxController operator = new CommandXboxController(2);
+  private final CommandXboxController controller;
 
   // Constructor for intake command
-  public IntakeBall(Intake intake, double volts, LED led) {
+  public IntakeBall(Intake intake, double volts, LED led, CommandXboxController controller) {
     this.intake = intake;
     this.volts = volts;
     this.led = led;
+    this.controller = controller;
     addRequirements(intake, led);
   }
 
   // Set the voltage at which the motors intake/outtake
   @Override
   public void initialize() {
-    intake.intakeDirection(volts, operator);
+    intake.intakeDirection(volts, controller);
     if (volts > 0) { // for intaking
       // led.scrollYellow();
       led.setGreen();
@@ -36,7 +37,7 @@ public class IntakeBall extends Command {
   // Adjust speed at which outtake spits out balls by depth of trigger press up to 65% voltage
   @Override
   public void execute() {
-    intake.intakeDirection(volts, operator);
+    intake.intakeDirection(volts, controller);
   }
 
   @Override
@@ -49,9 +50,9 @@ public class IntakeBall extends Command {
   @Override
   public boolean isFinished() {
     if (DriverStation.isTeleop()) {
-      return (operator.b().debounce(.09).getAsBoolean())
-          || operator.a().debounce(.09).getAsBoolean()
-          || operator.leftBumper().debounce(.09).getAsBoolean();
+      return (controller.b().debounce(.09).getAsBoolean())
+          || controller.a().debounce(.09).getAsBoolean()
+          || controller.leftBumper().debounce(.09).getAsBoolean();
     } else {
       return false;
     }

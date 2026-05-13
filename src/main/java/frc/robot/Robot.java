@@ -43,7 +43,6 @@ public class Robot extends LoggedRobot {
 
   public Robot() {
     RobotController.setBrownoutVoltage(6.15);
-    SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
     // Record metadata
     Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
     Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
@@ -103,6 +102,8 @@ public class Robot extends LoggedRobot {
     // the Command-based framework to work.
     CommandScheduler.getInstance().run();
 
+    SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
+
     // Return to non-RT thread priority (do not modify the first argument)
     // Threads.setCurrentThreadPriority(false, 10);
   }
@@ -116,10 +117,10 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically when disabled. */
   @Override
   public void disabledPeriodic() {
-
+    autoName = "";
     if (robotContainer.getAutonomousCommand().getName() != null)
       newAutoName = robotContainer.getAutonomousCommand().getName();
-    if (autoName != newAutoName && robotContainer.getAutonomousCommand().getName() != null) {
+    if ((autoName != null && newAutoName != null) && !autoName.equals(newAutoName)) {
       autoName = newAutoName;
       if (AutoBuilder.getAllAutoNames().contains(autoName)) {
         try {
@@ -131,7 +132,7 @@ public class Robot extends LoggedRobot {
         List<Pose2d> poses = new ArrayList<>();
         for (PathPlannerPath path : pathPlannerPaths) {
           if (DriverStation.getAlliance().isPresent()
-              && DriverStation.getAlliance().get() == Alliance.Blue)
+              && DriverStation.getAlliance().get() == Alliance.Red)
             poses.addAll(
                 path.flipPath().getAllPathPoints().stream()
                     .map(

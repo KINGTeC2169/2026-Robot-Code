@@ -56,7 +56,7 @@ public final class Constants {
     public static final double outtakeMaxBoost = 0.5;
   }
 
-  public final class Vision {
+  public static final class Vision {
 
     // PhotonVision stuff
     public static final Translation3d FRONT_LEFT_TRANSLATION =

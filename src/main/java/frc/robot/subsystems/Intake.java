@@ -48,7 +48,7 @@ public class Intake extends SubsystemBase {
     voltage *=
         voltage != 0 ? 1 - (operator.getRightTriggerAxis() * IntakeConstants.outtakeMaxBoost) : 1;
     topIntake.setVoltage(voltage);
-    bottomIntake.setVoltage(-voltage * 0); // was 0.75
+    // bottomIntake.setVoltage(-voltage * 0); // was 0.75
     intakeOn = true;
     if (voltage > 0) {
       direction = true; // intake

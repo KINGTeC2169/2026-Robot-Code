@@ -22,8 +22,7 @@ public class StopIntake extends Command {
     this.intake = intake;
     this.leftover = leftover;
     this.led = led;
-    addRequirements(intake);
-    addRequirements(led);
+    addRequirements(intake, led);
   }
 
   // Stops the intake upon running

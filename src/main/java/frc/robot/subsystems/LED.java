@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.AddressableLED.ColorOrder;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.AddressableLEDBufferView;
 import edu.wpi.first.wpilibj.LEDPattern;
-import edu.wpi.first.wpilibj.LEDPattern.GradientType;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -19,12 +18,8 @@ public class LED extends SubsystemBase {
   private AddressableLED m_led;
   private AddressableLEDBuffer m_ledBuffer;
 
-  // Used to control each strip of LED
-
-  // fix for actual leds once they are real
   private AddressableLEDBufferView m_bufferView;
-
-  private int ledLength = 139; // need actual length once there are real LEDs
+  private int ledLength = 139;
 
   // Our LED strip has a density of 60 LEDs per meter
   // private final Distance kLedSpacing = Meters.of(1 / 60.0);
@@ -34,9 +29,6 @@ public class LED extends SubsystemBase {
   private Color RSLOrange = new Color("#bc3800");
 
   // Patterns
-  private LEDPattern breathing =
-      LEDPattern.gradient(GradientType.kDiscontinuous, royalRed, royalYellow)
-          .breathe(Seconds.of(2));
   private LEDPattern solidYellow = LEDPattern.solid(royalYellow);
   private LEDPattern solidOrange = LEDPattern.solid(RSLOrange);
 
@@ -58,7 +50,7 @@ public class LED extends SubsystemBase {
 
   public LED() {
     m_led =
-        new AddressableLED(Constants.Ports.ledPort); // need to put port in constants once it exists
+        new AddressableLED(Constants.Ports.ledPort);
     m_ledBuffer = new AddressableLEDBuffer(ledLength);
     m_led.setColorOrder(ColorOrder.kRGB);
 

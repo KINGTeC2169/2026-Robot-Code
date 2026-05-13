@@ -8,6 +8,7 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -149,6 +150,13 @@ public class RobotContainer {
         break;
     }
 
+    // Named commands for pathplanner
+    NamedCommands.registerCommand(
+        "Intake", new IntakeBall(intake, IntakeConstants.intakeVolts, led, operatorControl));
+    NamedCommands.registerCommand(
+        "Outtake", new IntakeBall(intake, IntakeConstants.outtakeVolts, led, operatorControl));
+    NamedCommands.registerCommand("StopIntake", new StopIntake(intake, led));
+
     // Set up auto routines
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
@@ -225,13 +233,13 @@ public class RobotContainer {
     operatorControl
         .leftBumper()
         .debounce(.01)
-        .onTrue(new IntakeBall(intake, IntakeConstants.intakeVolts, led));
+        .onTrue(new IntakeBall(intake, IntakeConstants.intakeVolts, led, operatorControl));
 
     // Outtakes the ball when right bumper is pressed at a default -50% voltage
     operatorControl
         .rightBumper()
         .debounce(.01)
-        .onTrue(new IntakeBall(intake, IntakeConstants.outtakeVolts, led));
+        .onTrue(new IntakeBall(intake, IntakeConstants.outtakeVolts, led, operatorControl));
   }
 
   /**
