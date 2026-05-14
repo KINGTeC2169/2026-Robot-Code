@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.AddressableLED.ColorOrder;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.AddressableLEDBufferView;
 import edu.wpi.first.wpilibj.LEDPattern;
-import edu.wpi.first.wpilibj.LEDPattern.GradientType;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -34,9 +33,6 @@ public class LED extends SubsystemBase {
   private Color RSLOrange = new Color("#bc3800");
 
   // Patterns
-  private LEDPattern breathing =
-      LEDPattern.gradient(GradientType.kDiscontinuous, royalRed, royalYellow)
-          .breathe(Seconds.of(2));
   private LEDPattern solidYellow = LEDPattern.solid(royalYellow);
   private LEDPattern solidOrange = LEDPattern.solid(RSLOrange);
 

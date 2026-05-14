@@ -43,7 +43,6 @@ public class Robot extends LoggedRobot {
 
   public Robot() {
     RobotController.setBrownoutVoltage(6.15);
-    SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
     // Record metadata
     Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
     Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
@@ -102,6 +101,7 @@ public class Robot extends LoggedRobot {
     // This must be called from the robot's periodic block in order for anything in
     // the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
 
     // Return to non-RT thread priority (do not modify the first argument)
     // Threads.setCurrentThreadPriority(false, 10);
@@ -116,7 +116,6 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically when disabled. */
   @Override
   public void disabledPeriodic() {
-
     if (robotContainer.getAutonomousCommand().getName() != null)
       newAutoName = robotContainer.getAutonomousCommand().getName();
     if (autoName != newAutoName && robotContainer.getAutonomousCommand().getName() != null) {

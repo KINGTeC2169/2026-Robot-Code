@@ -84,8 +84,8 @@ public class RobotContainer {
         vision =
             new Vision(
                 drive::addVisionMeasurement,
-                new VisionIOPhotonVision(
-                    "Front_Left_Camera", Constants.Vision.FRONT_LEFT_CAMERA_TO_ROBOT),
+                // new VisionIOPhotonVision(
+                //     "Front_Left_Camera", Constants.Vision.FRONT_LEFT_CAMERA_TO_ROBOT),
                 new VisionIOPhotonVision(
                     "Back_Right_Camera", Constants.Vision.BACK_RIGHT_CAMERA_TO_ROBOT));
         intake = new Intake();
@@ -122,10 +122,10 @@ public class RobotContainer {
         vision =
             new Vision(
                 drive::addVisionMeasurement,
-                new VisionIOPhotonVisionSim(
-                    "Front_Left_Camera",
-                    Constants.Vision.FRONT_LEFT_CAMERA_TO_ROBOT,
-                    drive::getPose),
+                // new VisionIOPhotonVisionSim(
+                // "Front_Left_Camera",
+                // Constants.Vision.FRONT_LEFT_CAMERA_TO_ROBOT,
+                // drive::getPose),
                 new VisionIOPhotonVisionSim(
                     "Back_Right_Camera",
                     Constants.Vision.BACK_RIGHT_CAMERA_TO_ROBOT,
@@ -181,7 +181,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // Default command, normal field-relative drive
     switch (Constants.currentMode) {
-      case SIM:
+      case REAL:
         drive.setDefaultCommand(
             DriveCommands.joystickDrive(
                 drive,
