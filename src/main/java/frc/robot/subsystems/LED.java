@@ -49,8 +49,7 @@ public class LED extends SubsystemBase {
   private LEDPattern currentPattern = solidOrange;
 
   public LED() {
-    m_led =
-        new AddressableLED(Constants.Ports.ledPort);
+    m_led = new AddressableLED(Constants.Ports.ledPort);
     m_ledBuffer = new AddressableLEDBuffer(ledLength);
     m_led.setColorOrder(ColorOrder.kRGB);
 
