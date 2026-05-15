@@ -9,7 +9,7 @@
         "containers": [
           {
             "title": "FMSInfo",
-            "x": 896.0,
+            "x": 1088.0,
             "y": 0.0,
             "width": 384.0,
             "height": 128.0,
@@ -21,7 +21,7 @@
           },
           {
             "title": "direction",
-            "x": 1088.0,
+            "x": 1280.0,
             "y": 128.0,
             "width": 192.0,
             "height": 128.0,
@@ -38,7 +38,7 @@
           },
           {
             "title": "intakeOn",
-            "x": 896.0,
+            "x": 1088.0,
             "y": 128.0,
             "width": 192.0,
             "height": 128.0,
@@ -55,9 +55,9 @@
           },
           {
             "title": "Swerve",
-            "x": 640.0,
+            "x": 768.0,
             "y": 0.0,
-            "width": 256.0,
+            "width": 320.0,
             "height": 256.0,
             "type": "SwerveDrive",
             "properties": {
@@ -71,8 +71,8 @@
             "title": "Field",
             "x": 0.0,
             "y": 0.0,
-            "width": 640.0,
-            "height": 448.0,
+            "width": 768.0,
+            "height": 512.0,
             "type": "Field",
             "properties": {
               "topic": "/SmartDashboard/Field",
@@ -90,10 +90,10 @@
           },
           {
             "title": "Match Time",
-            "x": 640.0,
+            "x": 768.0,
             "y": 256.0,
-            "width": 320.0,
-            "height": 192.0,
+            "width": 704.0,
+            "height": 256.0,
             "type": "Match Time",
             "properties": {
               "topic": "/SmartDashboard/Match Time",
@@ -114,9 +114,9 @@
         "containers": [
           {
             "title": "Auto Choices",
-            "x": 128.0,
+            "x": 832.0,
             "y": 0.0,
-            "width": 384.0,
+            "width": 320.0,
             "height": 128.0,
             "type": "ComboBox Chooser",
             "properties": {
@@ -127,9 +127,9 @@
           },
           {
             "title": "Field",
-            "x": 192.0,
-            "y": 128.0,
-            "width": 896.0,
+            "x": 0.0,
+            "y": 0.0,
+            "width": 832.0,
             "height": 448.0,
             "type": "Field",
             "properties": {
@@ -148,7 +148,7 @@
           },
           {
             "title": "FMSInfo",
-            "x": 768.0,
+            "x": 1152.0,
             "y": 0.0,
             "width": 384.0,
             "height": 128.0,
@@ -160,9 +160,9 @@
           },
           {
             "title": "direction",
-            "x": 512.0,
-            "y": 0.0,
-            "width": 128.0,
+            "x": 1344.0,
+            "y": 128.0,
+            "width": 192.0,
             "height": 128.0,
             "type": "Boolean Box",
             "properties": {
@@ -177,9 +177,9 @@
           },
           {
             "title": "Intake On?",
-            "x": 640.0,
-            "y": 0.0,
-            "width": 128.0,
+            "x": 1152.0,
+            "y": 128.0,
+            "width": 192.0,
             "height": 128.0,
             "type": "Boolean Box",
             "properties": {
@@ -190,6 +190,22 @@
               "false_color": 4294198070,
               "true_icon": "None",
               "false_icon": "None"
+            }
+          },
+          {
+            "title": "Match Time",
+            "x": 832.0,
+            "y": 256.0,
+            "width": 704.0,
+            "height": 192.0,
+            "type": "Match Time",
+            "properties": {
+              "topic": "/SmartDashboard/Match Time",
+              "period": 0.06,
+              "data_type": "double",
+              "time_display_mode": "Minutes and Seconds",
+              "red_start_time": 20,
+              "yellow_start_time": 30
             }
           }
         ]
