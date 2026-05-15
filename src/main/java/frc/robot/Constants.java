@@ -78,7 +78,7 @@ public final class Constants {
         new Transform3d(BACK_RIGHT_TRANSLATION, BACK_RIGHT_ROTATION);
 
     public static final double FRONT_CAMERA_HEIGHT_METERS =
-        .24765; // TODO: Replace with correct value
+        .24765; 
     public static final double FRONT_CAMERA_PITCH_RADIANS = 0;
   }
 }
