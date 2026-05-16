@@ -77,8 +77,7 @@ public final class Constants {
     public static final Transform3d BACK_RIGHT_CAMERA_TO_ROBOT =
         new Transform3d(BACK_RIGHT_TRANSLATION, BACK_RIGHT_ROTATION);
 
-    public static final double FRONT_CAMERA_HEIGHT_METERS =
-        .24765; 
+    public static final double FRONT_CAMERA_HEIGHT_METERS = .24765;
     public static final double FRONT_CAMERA_PITCH_RADIANS = 0;
   }
 }

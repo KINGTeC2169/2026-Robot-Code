@@ -200,7 +200,7 @@ public class RobotContainer {
                 drive,
                 () -> -leftStick.getY(),
                 () -> -leftStick.getX(),
-                () -> rightStick.getTwist()));
+                () -> rightStick.getTwist() * 1.5));
         break;
     }
 
